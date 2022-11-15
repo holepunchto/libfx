@@ -35,6 +35,13 @@ target_sources(
   fx
   INTERFACE
     include/fx.h
+    include/fx/image.h
+    include/fx/node.h
+    include/fx/screen.h
+    include/fx/text.h
+    include/fx/text-input.h
+    include/fx/video.h
+    include/fx/window.h
 )
 
 if(IOS)
