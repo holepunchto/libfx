@@ -6,6 +6,7 @@
 #import "text.h"
 #import "video.h"
 #import "view.h"
+#import "web-view.h"
 
 int
 fx_set_child (fx_node_t *parent, fx_node_t *child, size_t index) {
@@ -36,6 +37,9 @@ fx_set_child (fx_node_t *parent, fx_node_t *child, size_t index) {
     break;
   case fx_video_node:
     child_view = ((fx_video_t *) child)->native_video;
+    break;
+  case fx_web_view_node:
+    child_view = ((fx_web_view_t *) child)->native_web_view;
     break;
   }
 

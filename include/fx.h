@@ -67,6 +67,7 @@ fx_set_data (fx_t *app, void *data);
 #include "fx/text.h"
 #include "fx/video.h"
 #include "fx/view.h"
+#include "fx/web-view.h"
 #include "fx/window.h"
 
 #ifdef __cplusplus

@@ -3,6 +3,7 @@ list(APPEND tests
   text
   text-input
   video
+  web-view
 )
 
 foreach(test IN LISTS tests)

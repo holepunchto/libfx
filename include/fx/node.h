@@ -13,6 +13,7 @@ typedef enum {
   fx_text_input_node,
   fx_image_node,
   fx_video_node,
+  fx_web_view_node,
 } fx_node_type_t;
 
 struct fx_node_s {

@@ -41,6 +41,7 @@ target_sources(
     include/fx/text.h
     include/fx/text-input.h
     include/fx/video.h
+    include/fx/web-view.h
     include/fx/window.h
 )
 
@@ -70,6 +71,7 @@ elseif(APPLE)
       src/darwin/appkit/text-input.m
       src/darwin/appkit/video.m
       src/darwin/appkit/view.m
+      src/darwin/appkit/web-view.m
       src/darwin/appkit/window.m
   )
 endif()
@@ -103,6 +105,7 @@ if(IOS)
       "-framework UIKit"
       "-framework AVFoundation"
       "-framework AVKit"
+      "-framework WebKit"
   )
 elseif(APPLE)
   target_link_libraries(
@@ -112,6 +115,7 @@ elseif(APPLE)
       "-framework AppKit"
       "-framework AVFoundation"
       "-framework AVKit"
+      "-framework WebKit"
   )
 endif()
 
@@ -137,6 +141,7 @@ if(IOS)
       "-framework UIKit"
       "-framework AVFoundation"
       "-framework AVKit"
+      "-framework WebKit"
   )
 elseif(APPLE)
   target_link_libraries(
@@ -146,6 +151,7 @@ elseif(APPLE)
       "-framework AppKit"
       "-framework AVFoundation"
       "-framework AVKit"
+      "-framework WebKit"
   )
 endif()
 
