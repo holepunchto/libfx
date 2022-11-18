@@ -1,5 +1,6 @@
 list(APPEND tests
   image
+  message
   text
   text-input
   video

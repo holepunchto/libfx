@@ -43,6 +43,11 @@ target_sources(
     include/fx/video.h
     include/fx/web-view.h
     include/fx/window.h
+  PRIVATE
+    src/message.c
+    src/message-queue.c
+    src/message-queue.h
+    src/platform.h
 )
 
 if(IOS)
@@ -66,6 +71,7 @@ elseif(APPLE)
       src/darwin/appkit/fx.m
       src/darwin/appkit/image.m
       src/darwin/appkit/node.m
+      src/darwin/appkit/platform.m
       src/darwin/appkit/screen.m
       src/darwin/appkit/text.m
       src/darwin/appkit/text-input.m

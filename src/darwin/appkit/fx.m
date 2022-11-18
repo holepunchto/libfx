@@ -1,9 +1,11 @@
+#import <assert.h>
 #import <stdbool.h>
 #import <uv.h>
 
 #import <AppKit/AppKit.h>
 
 #import "../../../include/fx.h"
+#import "../../message-queue.h"
 #import "fx.h"
 
 static fx_t *fx_main_app = NULL;
@@ -11,7 +13,7 @@ static fx_t *fx_main_app = NULL;
 @implementation FXDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
-  fx_t *app = ((FX *) notification.object).fxApp;
+  fx_t *app = ((FX *) notification.object).fxMainApp;
 
   if (app->on_launch != NULL) app->on_launch(app);
 }
@@ -22,6 +24,18 @@ static fx_t *fx_main_app = NULL;
 
 @end
 
+static void
+on_message (fx_message_queue_t *queue) {
+  fx_t *app = queue->app;
+  fx_message_t *message;
+
+  while ((message = fx_message_queue_pop(queue))) {
+    if (app->on_message) app->on_message(app, &message->buf, message->sender);
+
+    free(message);
+  }
+}
+
 int
 fx_init (uv_loop_t *loop, fx_t **result) {
   FX *native_app = [FX sharedApplication];
@@ -29,8 +43,6 @@ fx_init (uv_loop_t *loop, fx_t **result) {
   native_app.delegate = [[FXDelegate alloc] init];
 
   fx_t *app = malloc(sizeof(fx_t));
-
-  if (fx_main_app == NULL) fx_main_app = app;
 
   app->native_app = native_app;
 
@@ -41,7 +53,14 @@ fx_init (uv_loop_t *loop, fx_t **result) {
   app->on_launch = NULL;
   app->on_message = NULL;
 
-  native_app.fxApp = app;
+  int err;
+
+  err = fx_message_queue_init(loop, app, &app->messages, 1024, on_message);
+  assert(err == 0);
+
+  if (fx_main_app == NULL) {
+    native_app.fxMainApp = fx_main_app = app;
+  }
 
   *result = app;
 
@@ -92,52 +111,9 @@ fx_dispatch (fx_dispatch_cb cb, void *data) {
   return 0;
 }
 
-static void
-on_message (fx_t *app, void *data) {
-  fx_send_t *req = (fx_send_t *) data;
-
-  if (app->on_message) app->on_message(app, req->message, req->app);
-
-  uv_async_send(&req->async);
-}
-
-static void
-on_message_async_closed (uv_handle_t *handle) {
-  fx_send_t *req = (fx_send_t *) handle->data;
-
-  if (req->cb) req->cb(req);
-}
-
-static void
-on_message_delivered (uv_async_t *async) {
-  uv_close((uv_handle_t *) async, on_message_async_closed);
-}
-
-int
-fx_send (fx_t *app, fx_send_t *req, void *message, fx_delivered_cb cb) {
-  req->app = app;
-  req->cb = cb;
-  req->message = message;
-  req->async.data = (void *) req;
-
-  int err = uv_async_init(app->loop, &req->async, on_message_delivered);
-  if (err < 0) return err;
-
-  fx_dispatch(on_message, (void *) req);
-
-  return 0;
-}
-
 int
 fx_on_launch (fx_t *app, fx_launch_cb cb) {
   app->on_launch = cb;
-
-  return 0;
-}
-
-int
-fx_on_message (fx_t *app, fx_message_cb cb) {
-  app->on_message = cb;
 
   return 0;
 }
