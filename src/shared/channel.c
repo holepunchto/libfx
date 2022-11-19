@@ -67,7 +67,10 @@ int
 fx_channel_pop (fx_channel_t *channel, fx_t **sender, uv_buf_t *message) {
   uv_mutex_lock(&channel->lock);
 
-  if (channel->size == 0) return -1;
+  if (channel->size == 0) {
+    uv_mutex_unlock(&channel->lock);
+    return -1;
+  }
 
   channel->size--;
 
@@ -81,7 +84,6 @@ fx_channel_pop (fx_channel_t *channel, fx_t **sender, uv_buf_t *message) {
   }
 
   uv_mutex_unlock(&channel->lock);
-
   return 0;
 }
 
@@ -89,7 +91,10 @@ int
 fx_channel_push (fx_channel_t *channel, fx_t *sender, const uv_buf_t *message) {
   uv_mutex_lock(&channel->lock);
 
-  if (channel->size >= channel->capacity) return 0;
+  if (channel->size >= channel->capacity) {
+    uv_mutex_unlock(&channel->lock);
+    return -1;
+  }
 
   channel->size++;
 
@@ -105,14 +110,13 @@ fx_channel_push (fx_channel_t *channel, fx_t *sender, const uv_buf_t *message) {
     channel->front = 0;
   }
 
-  uv_mutex_unlock(&channel->lock);
-
   if (fx_is_main(channel->app)) {
     fx_dispatch(on_notify_dispatch, (void *) channel);
   } else {
     uv_async_send(&channel->notify);
   }
 
+  uv_mutex_unlock(&channel->lock);
   return 0;
 }
 
