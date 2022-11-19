@@ -9,7 +9,6 @@
 static void
 on_message (fx_channel_t *channel) {
   fx_t *app = channel->app;
-  fx_message_t *message;
 
   for (;;) {
     fx_t *sender;
