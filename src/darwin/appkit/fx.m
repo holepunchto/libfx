@@ -5,7 +5,7 @@
 #import <AppKit/AppKit.h>
 
 #import "../../../include/fx.h"
-#import "../../message-queue.h"
+#import "../../channel.h"
 #import "fx.h"
 
 static fx_t *fx_main_app = NULL;
@@ -18,6 +18,12 @@ static fx_t *fx_main_app = NULL;
   if (app->on_launch != NULL) app->on_launch(app);
 }
 
+- (void)applicationWillTerminate:(NSNotification *)notification {
+  fx_t *app = ((FX *) notification.object).fxMainApp;
+
+  if (app->on_terminate != NULL) app->on_terminate(app);
+}
+
 @end
 
 @implementation FX
@@ -25,11 +31,11 @@ static fx_t *fx_main_app = NULL;
 @end
 
 static void
-on_message (fx_message_queue_t *queue) {
-  fx_t *app = queue->app;
+on_message (fx_channel_t *channel) {
+  fx_t *app = channel->app;
   fx_message_t *message;
 
-  while ((message = fx_message_queue_pop(queue))) {
+  while ((message = fx_channel_pop(channel))) {
     if (app->on_message) app->on_message(app, &message->buf, message->sender);
 
     free(message);
@@ -55,7 +61,7 @@ fx_init (uv_loop_t *loop, fx_t **result) {
 
   int err;
 
-  err = fx_message_queue_init(loop, app, &app->messages, 1024, on_message);
+  err = fx_channel_init(loop, app, &app->messages, 1024, on_message);
   assert(err == 0);
 
   if (fx_main_app == NULL) {
@@ -84,13 +90,6 @@ fx_run (fx_t *app) {
 }
 
 int
-fx_stop (fx_t *app) {
-  [app->native_app stop:app->native_app];
-
-  return 0;
-}
-
-int
 fx_terminate (fx_t *app) {
   [app->native_app terminate:app->native_app];
 
@@ -114,6 +113,13 @@ fx_dispatch (fx_dispatch_cb cb, void *data) {
 int
 fx_on_launch (fx_t *app, fx_launch_cb cb) {
   app->on_launch = cb;
+
+  return 0;
+}
+
+int
+fx_on_terminate (fx_t *app, fx_terminate_cb cb) {
+  app->on_terminate = cb;
 
   return 0;
 }

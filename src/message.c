@@ -2,7 +2,7 @@
 #include <uv.h>
 
 #include "../include/fx.h"
-#include "message-queue.h"
+#include "channel.h"
 #include "platform.h"
 
 typedef struct fx_listener_s fx_listener_t;
@@ -29,8 +29,6 @@ fx_broadcast (fx_t *sender, const uv_buf_t *buf) {
 
   uv_mutex_lock(&listeners_lock);
 
-  int err;
-
   fx_listener_t *listener = listeners;
 
   while (listener) {
@@ -39,7 +37,7 @@ fx_broadcast (fx_t *sender, const uv_buf_t *buf) {
 
     if (receiver == sender) continue;
 
-    fx_message_queue_t *messages = fx__get_message_queue(receiver);
+    fx_channel_t *messages = fx__get_channel(receiver);
 
     void *memory = malloc(sizeof(fx_message_t) + buf->len);
 
@@ -51,17 +49,12 @@ fx_broadcast (fx_t *sender, const uv_buf_t *buf) {
 
     memcpy(message->buf.base, buf->base, buf->len);
 
-    fx_message_queue_push(messages, message);
+    fx_channel_push(messages, message);
   }
 
   uv_mutex_unlock(&listeners_lock);
 
   return 0;
-
-err:
-  uv_mutex_unlock(&listeners_lock);
-
-  return err;
 }
 
 int
@@ -81,8 +74,8 @@ fx_read_start (fx_t *receiver, fx_message_cb cb) {
 
   fx__read_start(receiver, cb);
 
-  fx_message_queue_t *messages = fx__get_message_queue(receiver);
-  fx_message_queue_resume(messages);
+  fx_channel_t *messages = fx__get_channel(receiver);
+  fx_channel_resume(messages);
 
   return 0;
 }
@@ -113,8 +106,8 @@ fx_read_stop (fx_t *receiver) {
 
   fx__read_stop(receiver);
 
-  fx_message_queue_t *messages = fx__get_message_queue(receiver);
-  fx_message_queue_pause(messages);
+  fx_channel_t *messages = fx__get_channel(receiver);
+  fx_channel_pause(messages);
 
   return 0;
 }

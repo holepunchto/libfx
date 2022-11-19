@@ -44,9 +44,9 @@ target_sources(
     include/fx/web-view.h
     include/fx/window.h
   PRIVATE
+    src/channel.c
+    src/channel.h
     src/message.c
-    src/message-queue.c
-    src/message-queue.h
     src/platform.h
 )
 

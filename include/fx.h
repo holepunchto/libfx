@@ -12,6 +12,7 @@ typedef struct fx_s fx_t;
 
 typedef void (*fx_launch_cb)(fx_t *app);
 typedef void (*fx_dispatch_cb)(fx_t *receiver, void *data);
+typedef void (*fx_terminate_cb)(fx_t *app);
 
 int
 fx_init (uv_loop_t *loop, fx_t **result);
@@ -21,9 +22,6 @@ fx_destroy (fx_t *app);
 
 int
 fx_run (fx_t *app);
-
-int
-fx_stop (fx_t *app);
 
 int
 fx_terminate (fx_t *app);
@@ -36,6 +34,9 @@ fx_dispatch (fx_dispatch_cb cb, void *data);
 
 int
 fx_on_launch (fx_t *app, fx_launch_cb cb);
+
+int
+fx_on_terminate (fx_t *app, fx_terminate_cb cb);
 
 int
 fx_get_data (fx_t *app, void **result);

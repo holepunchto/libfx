@@ -2,10 +2,10 @@
 #define FX_PLATFORM_H
 
 #include "../include/fx.h"
-#include "message-queue.h"
+#include "channel.h"
 
-fx_message_queue_t *
-fx__get_message_queue (fx_t *app);
+fx_channel_t *
+fx__get_channel (fx_t *app);
 
 void
 fx__read_start (fx_t *receiver, fx_message_cb cb);

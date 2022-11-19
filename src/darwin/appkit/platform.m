@@ -1,8 +1,8 @@
 #include "../../platform.h"
 #include "fx.h"
 
-fx_message_queue_t *
-fx__get_message_queue (fx_t *app) {
+fx_channel_t *
+fx__get_channel (fx_t *app) {
   return &app->messages;
 }
 
