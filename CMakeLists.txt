@@ -44,10 +44,11 @@ target_sources(
     include/fx/web-view.h
     include/fx/window.h
   PRIVATE
-    src/channel.c
-    src/channel.h
-    src/message.c
-    src/platform.h
+    src/shared/channel.c
+    src/shared/channel.h
+    src/shared/fx.c
+    src/shared/fx.h
+    src/shared/platform.h
 )
 
 if(IOS)
@@ -71,7 +72,6 @@ elseif(APPLE)
       src/darwin/appkit/fx.m
       src/darwin/appkit/image.m
       src/darwin/appkit/node.m
-      src/darwin/appkit/platform.m
       src/darwin/appkit/screen.m
       src/darwin/appkit/text.m
       src/darwin/appkit/text-input.m

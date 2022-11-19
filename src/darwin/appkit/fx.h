@@ -3,7 +3,7 @@
 #import <AppKit/AppKit.h>
 
 #import "../../../include/fx.h"
-#import "../../channel.h"
+#import "../../shared/fx.h"
 
 @interface FXDelegate : NSObject <NSApplicationDelegate>
 
@@ -15,16 +15,6 @@
 
 @end
 
-struct fx_s {
+struct fx_platform_s {
   FX *native_app;
-
-  uv_loop_t *loop;
-
-  void *data;
-
-  fx_launch_cb on_launch;
-  fx_terminate_cb on_terminate;
-  fx_message_cb on_message;
-
-  fx_channel_t messages;
 };
