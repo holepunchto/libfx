@@ -1,6 +1,6 @@
 # libfx
 
-Low-level, cross-platform GUI library for desktop and mobile.
+Low-level, cross-platform GUI library for native desktop and mobile.
 
 ## API
 
