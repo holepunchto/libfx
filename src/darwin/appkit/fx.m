@@ -13,13 +13,13 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
   fx_t *app = ((FX *) notification.object).fxMainApp;
 
-  if (app->on_launch != NULL) app->on_launch(app);
+  if (app->platform->on_launch != NULL) app->platform->on_launch(app);
 }
 
 - (void)applicationWillTerminate:(NSNotification *)notification {
   fx_t *app = ((FX *) notification.object).fxMainApp;
 
-  if (app->on_terminate != NULL) app->on_terminate(app);
+  if (app->platform->on_terminate != NULL) app->platform->on_terminate(app);
 }
 
 @end
@@ -54,15 +54,19 @@ fx_platform_destroy (fx_platform_t *platform) {
 }
 
 int
-fx_run (fx_t *app) {
-  [app->platform->native_app run];
+fx_platform_run (fx_platform_t *platform, fx_launch_cb cb) {
+  platform->on_launch = cb;
+
+  [platform->native_app run];
 
   return 0;
 }
 
 int
-fx_terminate (fx_t *app) {
-  [app->platform->native_app terminate:app->platform->native_app];
+fx_platform_terminate (fx_platform_t *platform, fx_terminate_cb cb) {
+  platform->on_terminate = cb;
+
+  [platform->native_app terminate:platform->native_app];
 
   return 0;
 }

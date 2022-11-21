@@ -35,10 +35,8 @@ fx_channel_init (fx_t *app, fx_channel_t *channel, uint32_t capacity, fx_channel
   err = uv_mutex_init_recursive(&channel->lock);
   assert(err == 0);
 
-  if (!fx_is_main(app)) {
-    err = uv_async_init(app->loop, &channel->notify, on_notify);
-    assert(err == 0);
-  }
+  err = uv_async_init(app->loop, &channel->notify, on_notify);
+  assert(err == 0);
 
   channel->messages = calloc(capacity, sizeof(fx_message_t));
 
@@ -47,16 +45,18 @@ fx_channel_init (fx_t *app, fx_channel_t *channel, uint32_t capacity, fx_channel
 
 static void
 on_close (uv_handle_t *handle) {
-  // TODO
+  fx_channel_t *channel = (fx_channel_t *) handle->data;
+
+  if (channel->on_close) channel->on_close(channel);
 }
 
 int
-fx_channel_destroy (fx_channel_t *channel) {
+fx_channel_close (fx_channel_t *channel, fx_channel_close_cb cb) {
+  channel->on_close = cb;
+
   uv_mutex_destroy(&channel->lock);
 
-  if (!fx_is_main(channel->app)) {
-    uv_close((uv_handle_t *) &channel->notify, on_close);
-  }
+  uv_close((uv_handle_t *) &channel->notify, on_close);
 
   free(channel->messages);
 
@@ -64,7 +64,7 @@ fx_channel_destroy (fx_channel_t *channel) {
 }
 
 int
-fx_channel_pop (fx_channel_t *channel, fx_t **sender, uv_buf_t *message) {
+fx_channel_read (fx_channel_t *channel, fx_t **sender, uv_buf_t *message) {
   uv_mutex_lock(&channel->lock);
 
   if (channel->size == 0) {
@@ -88,7 +88,7 @@ fx_channel_pop (fx_channel_t *channel, fx_t **sender, uv_buf_t *message) {
 }
 
 int
-fx_channel_push (fx_channel_t *channel, fx_t *sender, const uv_buf_t *message) {
+fx_channel_write (fx_channel_t *channel, fx_t *sender, const uv_buf_t *message) {
   uv_mutex_lock(&channel->lock);
 
   if (channel->size >= channel->capacity) {

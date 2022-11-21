@@ -7,6 +7,43 @@
 #include "fx.h"
 
 static void
+fx_add_worker (fx_t *worker) {
+  uv_mutex_lock(&fx_main_app->lock);
+
+  fx_worker_t *node = malloc(sizeof(fx_worker_t));
+
+  node->worker = worker;
+  node->next = fx_main_app->workers;
+
+  fx_main_app->workers = node;
+
+  uv_mutex_unlock(&fx_main_app->lock);
+}
+
+static void
+fx_remove_worker (fx_t *worker) {
+  uv_mutex_lock(&fx_main_app->lock);
+
+  fx_worker_t *next = fx_main_app->workers;
+  fx_worker_t *previous = NULL;
+
+  while (next) {
+    if (worker == next->worker) {
+      if (previous) previous->next = next->next;
+      else fx_main_app->workers = next->next;
+
+      free(next);
+      break;
+    }
+
+    previous = next;
+    next = next->next;
+  }
+
+  uv_mutex_unlock(&fx_main_app->lock);
+}
+
+static void
 on_message (fx_channel_t *channel) {
   fx_t *app = channel->app;
 
@@ -14,7 +51,7 @@ on_message (fx_channel_t *channel) {
     fx_t *sender;
     uv_buf_t message;
 
-    int err = fx_channel_pop(channel, &sender, &message);
+    int err = fx_channel_read(channel, &sender, &message);
     if (err < 0) break;
 
     if (app->on_message) app->on_message(app, &message, sender);
@@ -27,11 +64,9 @@ int
 fx_init (uv_loop_t *loop, fx_t **result) {
   fx_t *app = malloc(sizeof(fx_t));
 
-  if (fx_main_app == NULL) fx_main_app = app;
-
   app->loop = loop;
-
   app->data = NULL;
+  app->workers = NULL;
 
   app->on_launch = NULL;
   app->on_message = NULL;
@@ -39,26 +74,70 @@ fx_init (uv_loop_t *loop, fx_t **result) {
 
   int err;
 
+  err = uv_mutex_init_recursive(&app->lock);
+  assert(err == 0);
+
   err = fx_channel_init(app, &app->messages, 1024, on_message);
   assert(err == 0);
 
   err = fx_platform_init(app, &app->platform);
   assert(err == 0);
 
+  if (fx_main_app == NULL) fx_main_app = app;
+  else fx_add_worker(app);
+
   *result = app;
 
   return 0;
 }
 
+static void
+on_close (fx_channel_t *channel) {
+  free(channel->app);
+}
+
 int
 fx_destroy (fx_t *app) {
-  if (fx_is_main(app)) fx_main_app = NULL;
+  if (fx_is_main(app)) {
+    fx_main_app = NULL;
+
+    fx_worker_t *next = app->workers;
+
+    while (next) {
+      fx_worker_t *worker = next;
+      next = next->next;
+
+      free(worker);
+    }
+  } else {
+    fx_remove_worker(app);
+  }
 
   fx_platform_destroy(app->platform);
 
-  free(app);
+  fx_channel_close(&app->messages, on_close);
 
   return 0;
+}
+
+static void
+on_launch (fx_t *app) {
+  if (app->on_launch) app->on_launch(app);
+}
+
+int
+fx_run (fx_t *app) {
+  return fx_platform_run(app->platform, on_launch);
+}
+
+static void
+on_terminate (fx_t *app) {
+  if (app->on_terminate) app->on_terminate(app);
+}
+
+int
+fx_terminate (fx_t *app) {
+  return fx_platform_terminate(app->platform, on_terminate);
 }
 
 bool
@@ -99,43 +178,26 @@ fx_set_data (fx_t *app, void *data) {
   return 0;
 }
 
-typedef struct fx_listener_s fx_listener_t;
-
-struct fx_listener_s {
-  fx_t *receiver;
-  fx_listener_t *next;
-};
-
-static fx_listener_t *listeners = NULL;
-
-static uv_mutex_t listeners_lock;
-
-static uv_once_t listeners_init = UV_ONCE_INIT;
-
-static void
-on_listeners_init () {
-  uv_mutex_init_recursive(&listeners_lock);
-}
-
 int
 fx_broadcast (fx_t *sender, const uv_buf_t *message) {
-  uv_once(&listeners_init, on_listeners_init);
+  uv_mutex_lock(&fx_main_app->lock);
 
-  uv_mutex_lock(&listeners_lock);
-
-  fx_listener_t *listener = listeners;
-
-  while (listener) {
-    fx_t *receiver = listener->receiver;
-    listener = listener->next;
-
-    if (receiver == sender) continue;
-
-    fx_channel_t *messages = &receiver->messages;
-    fx_channel_push(messages, sender, message);
+  if (fx_is_worker(sender)) {
+    fx_channel_write(&fx_main_app->messages, sender, message);
   }
 
-  uv_mutex_unlock(&listeners_lock);
+  fx_worker_t *next = sender->workers;
+
+  while (next) {
+    fx_t *receiver = next->worker;
+    next = next->next;
+
+    if (sender == receiver) continue;
+
+    fx_channel_write(&receiver->messages, sender, message);
+  }
+
+  uv_mutex_unlock(&fx_main_app->lock);
 
   return 0;
 }
@@ -144,21 +206,7 @@ int
 fx_read_start (fx_t *receiver, fx_message_cb cb) {
   receiver->on_message = cb;
 
-  uv_once(&listeners_init, on_listeners_init);
-
-  uv_mutex_lock(&listeners_lock);
-
-  fx_listener_t *listener = malloc(sizeof(fx_listener_t));
-
-  listener->receiver = receiver;
-  listener->next = listeners;
-
-  listeners = listener;
-
-  uv_mutex_unlock(&listeners_lock);
-
-  fx_channel_t *messages = &receiver->messages;
-  fx_channel_resume(messages);
+  fx_channel_resume(&receiver->messages);
 
   return 0;
 }
@@ -167,30 +215,7 @@ int
 fx_read_stop (fx_t *receiver) {
   receiver->on_message = NULL;
 
-  uv_once(&listeners_init, on_listeners_init);
-
-  uv_mutex_lock(&listeners_lock);
-
-  fx_listener_t *next = listeners;
-  fx_listener_t *previous = NULL;
-
-  while (next) {
-    if (receiver == next->receiver) {
-      if (previous) previous->next = next->next;
-      else listeners = next->next;
-
-      free(next);
-      break;
-    }
-
-    previous = next;
-    next = next->next;
-  }
-
-  uv_mutex_unlock(&listeners_lock);
-
-  fx_channel_t *messages = &receiver->messages;
-  fx_channel_pause(messages);
+  fx_channel_pause(&receiver->messages);
 
   return 0;
 }
