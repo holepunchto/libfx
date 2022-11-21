@@ -72,6 +72,9 @@ fx_init (uv_loop_t *loop, fx_t **result) {
   app->on_message = NULL;
   app->on_terminate = NULL;
 
+  if (fx_main_app == NULL) fx_main_app = app;
+  else fx_add_worker(app);
+
   int err;
 
   err = uv_mutex_init_recursive(&app->lock);
@@ -82,9 +85,6 @@ fx_init (uv_loop_t *loop, fx_t **result) {
 
   err = fx_platform_init(app, &app->platform);
   assert(err == 0);
-
-  if (fx_main_app == NULL) fx_main_app = app;
-  else fx_add_worker(app);
 
   *result = app;
 

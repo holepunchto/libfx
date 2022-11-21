@@ -33,3 +33,17 @@ fx_text_init (fx_t *app, const char *value, size_t len, double x, double y, doub
 
   return 0;
 }
+
+int
+fx_get_text_data (fx_text_t *text, void **result) {
+  *result = text->data;
+
+  return 0;
+}
+
+int
+fx_set_text_data (fx_text_t *text, void *data) {
+  text->data = data;
+
+  return 0;
+}

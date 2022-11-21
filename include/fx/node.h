@@ -20,9 +20,6 @@ struct fx_node_s {
   fx_node_type_t type;
 };
 
-fx_node_type_t
-fx_get_node_type (fx_node_t *node);
-
 int
 fx_set_child (fx_node_t *parent, fx_node_t *child, size_t index);
 

@@ -13,13 +13,13 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
   fx_t *app = ((FX *) notification.object).fxMainApp;
 
-  if (app->platform->on_launch != NULL) app->platform->on_launch(app);
+  if (app->platform->on_launch) app->platform->on_launch(app);
 }
 
 - (void)applicationWillTerminate:(NSNotification *)notification {
   fx_t *app = ((FX *) notification.object).fxMainApp;
 
-  if (app->platform->on_terminate != NULL) app->platform->on_terminate(app);
+  if (app->platform->on_terminate) app->platform->on_terminate(app);
 }
 
 @end
@@ -40,6 +40,9 @@ fx_platform_init (fx_t *app, fx_platform_t **result) {
   }
 
   platform->native_app = native_app;
+
+  platform->on_launch = NULL;
+  platform->on_terminate = NULL;
 
   *result = platform;
 
