@@ -2,3 +2,6 @@
 	path = vendor/libuv
 	url = git@github.com:libuv/libuv.git
 	shallow = true
+[submodule "vendor/libjson"]
+	path = vendor/libjson
+	url = git@github.com:holepunchto/libjson.git
