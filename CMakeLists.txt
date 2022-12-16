@@ -16,10 +16,6 @@ if(NOT TARGET uv)
   add_subdirectory(vendor/libuv EXCLUDE_FROM_ALL)
 endif()
 
-if(NOT TARGET json)
-  add_subdirectory(vendor/libjson EXCLUDE_FROM_ALL)
-endif()
-
 add_library(fx OBJECT)
 
 set_target_properties(
@@ -93,7 +89,6 @@ target_include_directories(
   PUBLIC
     include
     $<TARGET_PROPERTY:uv,INCLUDE_DIRECTORIES>
-    $<TARGET_PROPERTY:json,INCLUDE_DIRECTORIES>
 )
 
 add_library(fx_shared SHARED $<TARGET_OBJECTS:fx>)
@@ -108,7 +103,6 @@ target_link_libraries(
   fx_shared
   PUBLIC
     uv
-    json_shared
 )
 
 if(IOS)
@@ -145,7 +139,6 @@ target_link_libraries(
   fx_static
   PUBLIC
     uv
-    json_static
 )
 
 if(IOS)
