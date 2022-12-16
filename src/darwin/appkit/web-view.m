@@ -33,7 +33,6 @@ fx_web_view_init (fx_t *app, double x, double y, double width, double height, fx
   FXWebViewDelegate *delegate = [[FXWebViewDelegate alloc] init];
 
   [configuration.userContentController addScriptMessageHandler:delegate
-                                                  contentWorld:[WKContentWorld pageWorld]
                                                           name:@"bridge"];
 
   NSString *source = [[NSString alloc] initWithBytes:darwin_bridge_js
@@ -69,8 +68,22 @@ fx_web_view_init (fx_t *app, double x, double y, double width, double height, fx
 }
 
 int
-fx_web_view_on_message (fx_web_view_t *web_view, fx_web_view_message_cb cb) {
+fx_on_web_view_message (fx_web_view_t *web_view, fx_web_view_message_cb cb) {
   web_view->on_message = cb;
+
+  return 0;
+}
+
+int
+fx_get_web_view_data (fx_web_view_t *web_view, void **result) {
+  *result = web_view->data;
+
+  return 0;
+}
+
+int
+fx_set_web_view_data (fx_web_view_t *web_view, void *data) {
+  web_view->data = data;
 
   return 0;
 }
@@ -80,8 +93,6 @@ fx_web_view_post_message (fx_web_view_t *web_view, const char *message) {
   NSString *js = [[NSString alloc] initWithFormat:@"globalThis.bridge.dispatchMessage(%s)", message];
 
   [web_view->native_web_view evaluateJavaScript:js
-                                        inFrame:nil
-                                 inContentWorld:[WKContentWorld pageWorld]
                               completionHandler:nil];
 
   [js release];

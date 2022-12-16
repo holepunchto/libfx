@@ -11,7 +11,13 @@ int
 fx_web_view_init (fx_t *app, double x, double y, double width, double height, fx_web_view_t **result);
 
 int
-fx_web_view_on_message (fx_web_view_t *web_view, fx_web_view_message_cb cb);
+fx_on_web_view_message (fx_web_view_t *web_view, fx_web_view_message_cb cb);
+
+int
+fx_get_web_view_data (fx_web_view_t *web_view, void **result);
+
+int
+fx_set_web_view_data (fx_web_view_t *web_view, void *data);
 
 int
 fx_web_view_post_message (fx_web_view_t *web_view, const char *message);

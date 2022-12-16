@@ -18,7 +18,7 @@ main () {
   fx_web_view_t *web_view;
   fx_web_view_init(app, 0.0, 0.0, 1280.0, 720.0, &web_view);
 
-  fx_web_view_on_message(web_view, on_message);
+  fx_on_web_view_message(web_view, on_message);
 
   char *code =
     "<script>"
