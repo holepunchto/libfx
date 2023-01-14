@@ -12,4 +12,6 @@ struct fx_view_s {
   fx_node_t node;
 
   FXView *native_view;
+
+  void *data;
 };
