@@ -6,6 +6,9 @@
 typedef struct fx_screen_s fx_screen_t;
 
 int
+fx_screen_destroy (fx_screen_t *screen);
+
+int
 fx_get_main_screen (fx_t *app, fx_screen_t **result);
 
 int

@@ -68,6 +68,15 @@ fx_web_view_init (fx_t *app, double x, double y, double width, double height, fx
 }
 
 int
+fx_web_view_destroy (fx_web_view_t *web_view) {
+  [web_view->native_web_view release];
+
+  free(web_view);
+
+  return 0;
+}
+
+int
 fx_on_web_view_message (fx_web_view_t *web_view, fx_web_view_message_cb cb) {
   web_view->on_message = cb;
 

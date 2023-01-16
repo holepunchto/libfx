@@ -35,6 +35,15 @@ fx_text_init (fx_t *app, double x, double y, double width, double height, fx_tex
 }
 
 int
+fx_text_destroy (fx_text_t *text) {
+  [text->native_text release];
+
+  free(text);
+
+  return 0;
+}
+
+int
 fx_get_text_data (fx_text_t *text, void **result) {
   *result = text->data;
 

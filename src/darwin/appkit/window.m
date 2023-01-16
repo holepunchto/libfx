@@ -71,6 +71,15 @@ fx_window_init (fx_t *app, fx_view_t *view, double x, double y, double width, do
 }
 
 int
+fx_window_destroy (fx_window_t *window) {
+  [window->native_window release];
+
+  free(window);
+
+  return 0;
+}
+
+int
 fx_on_window_resize (fx_window_t *window, fx_window_resize_cb cb) {
   window->on_resize = cb;
 

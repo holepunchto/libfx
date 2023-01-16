@@ -11,6 +11,9 @@ int
 fx_web_view_init (fx_t *app, double x, double y, double width, double height, fx_web_view_t **result);
 
 int
+fx_web_view_destroy (fx_web_view_t *web_view);
+
+int
 fx_on_web_view_message (fx_web_view_t *web_view, fx_web_view_message_cb cb);
 
 int

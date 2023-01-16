@@ -29,6 +29,15 @@ fx_view_init (fx_t *app, double x, double y, double width, double height, fx_vie
 }
 
 int
+fx_view_destroy (fx_view_t *view) {
+  [view->native_view release];
+
+  free(view);
+
+  return 0;
+}
+
+int
 fx_get_view_data (fx_view_t *view, void **result) {
   *result = view->data;
 

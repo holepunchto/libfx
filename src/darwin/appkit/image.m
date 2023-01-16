@@ -31,6 +31,15 @@ fx_image_init (fx_t *app, const char *url, size_t len, double x, double y, doubl
 }
 
 int
+fx_image_destroy (fx_image_t *image) {
+  [image->native_image release];
+
+  free(image);
+
+  return 0;
+}
+
+int
 fx_get_image_data (fx_image_t *image, void **result) {
   *result = image->data;
 

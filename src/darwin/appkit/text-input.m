@@ -46,6 +46,15 @@ fx_text_input_init (fx_t *app, double x, double y, double width, double height, 
 }
 
 int
+fx_text_input_destroy (fx_text_input_t *text_input) {
+  [text_input->native_text_input release];
+
+  free(text_input);
+
+  return 0;
+}
+
+int
 fx_on_text_input_change (fx_text_input_t *text_input, fx_text_input_change_cb cb) {
   text_input->on_change = cb;
 

@@ -32,6 +32,15 @@ fx_video_init (fx_t *app, const char *url, size_t len, double x, double y, doubl
 }
 
 int
+fx_video_destroy (fx_video_t *video) {
+  [video->native_video release];
+
+  free(video);
+
+  return 0;
+}
+
+int
 fx_get_video_data (fx_video_t *video, void **result) {
   *result = video->data;
 
