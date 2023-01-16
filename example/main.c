@@ -17,7 +17,10 @@ main () {
   fx_view_init(app, x, y, width, height, &view);
 
   fx_text_t *text;
-  fx_text_init(app, "Hello world!", 12, 0.0, 0.0, 100.0, 12.0, &text);
+  fx_text_init(app, 0.0, 0.0, 100.0, 12.0, &text);
+
+  fx_text_span_t *span;
+  fx_add_text_span(text, "Hello world!", 12, &span);
 
   fx_set_child((fx_node_t *) view, (fx_node_t *) text, 0);
 

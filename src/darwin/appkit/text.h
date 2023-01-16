@@ -1,3 +1,5 @@
+#import <stdint.h>
+
 #import <AppKit/AppKit.h>
 
 #import "../../../include/fx.h"
@@ -14,4 +16,11 @@ struct fx_text_s {
   FXText *native_text;
 
   void *data;
+
+  NSMutableAttributedString *value;
+};
+
+struct fx_text_span_s {
+  uint32_t start;
+  uint32_t end;
 };
