@@ -89,6 +89,25 @@ fx_set_web_view_data (fx_web_view_t *web_view, void *data) {
 }
 
 int
+fx_get_web_view_bounds (fx_web_view_t *web_view, double *x, double *y, double *width, double *height) {
+  NSRect frame = web_view->native_web_view.frame;
+
+  if (x) *x = frame.origin.x;
+  if (y) *y = frame.origin.y;
+  if (width) *width = frame.size.width;
+  if (height) *height = frame.size.height;
+
+  return 0;
+}
+
+int
+fx_set_web_view_bounds (fx_web_view_t *web_view, double x, double y, double width, double height) {
+  web_view->native_web_view.frame = CGRectMake(x, y, width, height);
+
+  return 0;
+}
+
+int
 fx_web_view_post_message (fx_web_view_t *web_view, const char *message) {
   NSString *js = [[NSString alloc] initWithFormat:@"globalThis.bridge.dispatchMessage(%s)", message];
 

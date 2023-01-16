@@ -32,6 +32,39 @@ fx_video_init (fx_t *app, const char *url, size_t len, double x, double y, doubl
 }
 
 int
+fx_get_video_data (fx_video_t *video, void **result) {
+  *result = video->data;
+
+  return 0;
+}
+
+int
+fx_set_video_data (fx_video_t *video, void *data) {
+  video->data = data;
+
+  return 0;
+}
+
+int
+fx_get_video_bounds (fx_video_t *video, double *x, double *y, double *width, double *height) {
+  NSRect frame = video->native_video.frame;
+
+  if (x) *x = frame.origin.x;
+  if (y) *y = frame.origin.y;
+  if (width) *width = frame.size.width;
+  if (height) *height = frame.size.height;
+
+  return 0;
+}
+
+int
+fx_set_video_bounds (fx_video_t *video, double x, double y, double width, double height) {
+  video->native_video.frame = CGRectMake(x, y, width, height);
+
+  return 0;
+}
+
+int
 fx_play_video (fx_video_t *video) {
   [video->native_video.player play];
 

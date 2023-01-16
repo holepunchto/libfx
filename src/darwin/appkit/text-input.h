@@ -17,5 +17,7 @@ struct fx_text_input_s {
 
   FXTextInput *native_text_input;
 
+  void *data;
+
   fx_text_input_change_cb on_change;
 };

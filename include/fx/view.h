@@ -17,4 +17,10 @@ fx_get_view_data (fx_view_t *view, void **result);
 int
 fx_set_view_data (fx_view_t *view, void *data);
 
+int
+fx_get_view_bounds (fx_view_t *view, double *x, double *y, double *width, double *height);
+
+int
+fx_set_view_bounds (fx_view_t *view, double x, double y, double width, double height);
+
 #endif // FX_VIEW_H

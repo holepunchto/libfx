@@ -18,6 +18,18 @@ fx_text_input_destroy (fx_text_input_t *text_input);
 int
 fx_on_text_input_change (fx_text_input_t *text_input, fx_text_input_change_cb cb);
 
+int
+fx_get_text_input_data (fx_text_input_t *text_input, void **result);
+
+int
+fx_set_text_input_data (fx_text_input_t *text_input, void *data);
+
+int
+fx_get_text_input_bounds (fx_text_input_t *text_input, double *x, double *y, double *width, double *height);
+
+int
+fx_set_text_input_bounds (fx_text_input_t *text_input, double x, double y, double width, double height);
+
 char *
 fx_get_text_input_value (fx_text_input_t *text_input);
 

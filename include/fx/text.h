@@ -21,6 +21,12 @@ int
 fx_set_text_data (fx_text_t *text, void *data);
 
 int
+fx_get_text_bounds (fx_text_t *text, double *x, double *y, double *width, double *height);
+
+int
+fx_set_text_bounds (fx_text_t *text, double x, double y, double width, double height);
+
+int
 fx_append_text_span (fx_text_t *text, const char *value, size_t len, fx_text_span_t **result);
 
 #endif // FX_TEXT_H

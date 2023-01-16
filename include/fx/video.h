@@ -14,9 +14,21 @@ int
 fx_video_destroy (fx_video_t *video);
 
 int
-fx_play_video (fx_video_t *text);
+fx_get_video_data (fx_video_t *video, void **result);
 
 int
-fx_pause_video (fx_video_t *text);
+fx_set_video_data (fx_video_t *video, void *data);
+
+int
+fx_get_video_bounds (fx_video_t *video, double *x, double *y, double *width, double *height);
+
+int
+fx_set_video_bounds (fx_video_t *video, double x, double y, double width, double height);
+
+int
+fx_play_video (fx_video_t *video);
+
+int
+fx_pause_video (fx_video_t *video);
 
 #endif // FX_VIDEO_H

@@ -13,4 +13,6 @@ struct fx_video_s {
   fx_node_t node;
 
   FXVideo *native_video;
+
+  void *data;
 };

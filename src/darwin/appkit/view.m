@@ -41,3 +41,22 @@ fx_set_view_data (fx_view_t *view, void *data) {
 
   return 0;
 }
+
+int
+fx_get_view_bounds (fx_view_t *view, double *x, double *y, double *width, double *height) {
+  NSRect frame = view->native_view.frame;
+
+  if (x) *x = frame.origin.x;
+  if (y) *y = frame.origin.y;
+  if (width) *width = frame.size.width;
+  if (height) *height = frame.size.height;
+
+  return 0;
+}
+
+int
+fx_set_view_bounds (fx_view_t *view, double x, double y, double width, double height) {
+  view->native_view.frame = CGRectMake(x, y, width, height);
+
+  return 0;
+}

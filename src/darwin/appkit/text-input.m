@@ -52,6 +52,39 @@ fx_on_text_input_change (fx_text_input_t *text_input, fx_text_input_change_cb cb
   return 0;
 }
 
+int
+fx_get_text_input_data (fx_text_input_t *text_input, void **result) {
+  *result = text_input->data;
+
+  return 0;
+}
+
+int
+fx_set_text_input_data (fx_text_input_t *text_input, void *data) {
+  text_input->data = data;
+
+  return 0;
+}
+
+int
+fx_get_text_input_bounds (fx_text_input_t *text_input, double *x, double *y, double *width, double *height) {
+  NSRect frame = text_input->native_text_input.frame;
+
+  if (x) *x = frame.origin.x;
+  if (y) *y = frame.origin.y;
+  if (width) *width = frame.size.width;
+  if (height) *height = frame.size.height;
+
+  return 0;
+}
+
+int
+fx_set_text_input_bounds (fx_text_input_t *text_input, double x, double y, double width, double height) {
+  text_input->native_text_input.frame = CGRectMake(x, y, width, height);
+
+  return 0;
+}
+
 char *
 fx_get_text_input_value (fx_text_input_t *text_input) {
   const char *value = [text_input->native_text_input.stringValue cStringUsingEncoding:NSUTF8StringEncoding];
