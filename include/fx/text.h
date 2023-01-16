@@ -21,6 +21,6 @@ int
 fx_set_text_data (fx_text_t *text, void *data);
 
 int
-fx_add_text_span (fx_text_t *text, const char *value, size_t len, fx_text_span_t **result);
+fx_append_text_span (fx_text_t *text, const char *value, size_t len, fx_text_span_t **result);
 
 #endif // FX_TEXT_H
