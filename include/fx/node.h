@@ -9,6 +9,7 @@ typedef struct fx_node_s fx_node_t;
 
 typedef enum {
   fx_view_node,
+  fx_scroll_view_node,
   fx_text_node,
   fx_text_input_node,
   fx_image_node,

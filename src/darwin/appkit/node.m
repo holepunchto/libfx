@@ -2,6 +2,7 @@
 
 #import "../../../include/fx.h"
 #import "image.h"
+#import "scroll-view.h"
 #import "text-input.h"
 #import "text.h"
 #import "video.h"
@@ -25,6 +26,9 @@ fx_set_child (fx_node_t *parent, fx_node_t *child, size_t index) {
   switch (child->type) {
   case fx_view_node:
     child_view = ((fx_view_t *) child)->native_view;
+    break;
+  case fx_scroll_view_node:
+    child_view = ((fx_scroll_view_t *) child)->native_scroll_view;
     break;
   case fx_text_node:
     child_view = ((fx_text_t *) child)->native_text;

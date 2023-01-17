@@ -1,6 +1,7 @@
 list(APPEND tests
   image
   message
+  scroll-view
   text
   text-input
   video

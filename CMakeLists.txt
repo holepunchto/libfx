@@ -40,6 +40,7 @@ target_sources(
     include/fx/image.h
     include/fx/node.h
     include/fx/screen.h
+    include/fx/scroll-view.h
     include/fx/text.h
     include/fx/text-input.h
     include/fx/video.h
@@ -75,6 +76,7 @@ elseif(APPLE)
       src/darwin/appkit/image.m
       src/darwin/appkit/node.m
       src/darwin/appkit/screen.m
+      src/darwin/appkit/scroll-view.m
       src/darwin/appkit/text.m
       src/darwin/appkit/text-input.m
       src/darwin/appkit/video.m

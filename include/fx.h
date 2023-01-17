@@ -60,6 +60,7 @@ fx_read_stop (fx_t *receiver);
 #include "fx/image.h"
 #include "fx/node.h"
 #include "fx/screen.h"
+#include "fx/scroll-view.h"
 #include "fx/text-input.h"
 #include "fx/text.h"
 #include "fx/video.h"
