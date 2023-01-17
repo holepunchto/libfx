@@ -17,7 +17,6 @@ fx_text_init (fx_t *app, double x, double y, double width, double height, fx_tex
 
   native_text.drawsBackground = NO;
   native_text.editable = NO;
-  native_text.selectable = YES;
 
   fx_text_t *text = malloc(sizeof(fx_text_t));
 
