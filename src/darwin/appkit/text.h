@@ -4,7 +4,7 @@
 
 #import "../../../include/fx.h"
 
-@interface FXText : NSTextField
+@interface FXText : NSTextView
 
 @property(assign) fx_text_t *fxText;
 
@@ -16,8 +16,6 @@ struct fx_text_s {
   FXText *native_text;
 
   void *data;
-
-  NSMutableAttributedString *value;
 };
 
 struct fx_text_span_s {

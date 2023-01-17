@@ -15,7 +15,6 @@ int
 fx_text_init (fx_t *app, double x, double y, double width, double height, fx_text_t **result) {
   FXText *native_text = [[FXText alloc] initWithFrame:CGRectMake(x, y, width, height)];
 
-  native_text.bezeled = NO;
   native_text.drawsBackground = NO;
   native_text.editable = NO;
   native_text.selectable = YES;
@@ -25,8 +24,6 @@ fx_text_init (fx_t *app, double x, double y, double width, double height, fx_tex
   text->node.type = fx_text_node;
 
   text->native_text = native_text;
-
-  text->value = [[NSMutableAttributedString alloc] init];
 
   native_text.fxText = text;
 
@@ -79,12 +76,10 @@ fx_set_text_bounds (fx_text_t *text, double x, double y, double width, double he
 
 int
 fx_append_text_span (fx_text_t *text, const char *value, size_t len, fx_text_span_t **result) {
-  NSUInteger start = [text->value length];
+  NSUInteger start = [text->native_text.textStorage length];
   NSUInteger end = start + len;
 
-  [text->value appendAttributedString:[[NSAttributedString alloc] initWithString:[[NSString alloc] initWithBytes:value length:len encoding:NSUTF8StringEncoding]]];
-
-  [text->native_text setAttributedStringValue:text->value];
+  [text->native_text.textStorage appendAttributedString:[[NSAttributedString alloc] initWithString:[[NSString alloc] initWithBytes:value length:len encoding:NSUTF8StringEncoding]]];
 
   if (result) {
     fx_text_span_t *span = malloc(sizeof(fx_text_span_t));
