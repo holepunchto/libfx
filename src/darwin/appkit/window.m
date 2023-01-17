@@ -44,8 +44,6 @@ fx_window_init (fx_t *app, fx_view_t *view, double x, double y, double width, do
                 backing:NSBackingStoreBuffered
                   defer:NO];
 
-  [native_window setIsVisible:TRUE];
-
   native_window.delegate = [[FXWindowDelegate alloc] init];
 
   if (view) {
@@ -140,3 +138,21 @@ fx_get_window_bounds (fx_window_t *window, double *x, double *y, double *width, 
 
   return 0;
 }
+
+bool
+fx_is_window_visible (fx_window_t *window) {
+  return window->native_window.visible;
+}
+
+int
+fx_set_window_visible (fx_window_t *window, bool visible) {
+  [window->native_window setIsVisible:visible];
+
+  return 0;
+}
+
+extern int
+fx_show_window (fx_window_t *window);
+
+extern int
+fx_hide_window (fx_window_t *window);

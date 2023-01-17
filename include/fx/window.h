@@ -1,6 +1,8 @@
 #ifndef FX_WINDOW_H
 #define FX_WINDOW_H
 
+#include <stdbool.h>
+
 #include "../fx.h"
 #include "view.h"
 
@@ -44,5 +46,21 @@ fx_get_window_bounds (fx_window_t *window, double *x, double *y, double *width, 
 
 int
 fx_set_window_bounds (fx_window_t *window, double x, double y, double width, double height);
+
+bool
+fx_is_window_visible (fx_window_t *window);
+
+int
+fx_set_window_visible (fx_window_t *window, bool visible);
+
+inline int
+fx_show_window (fx_window_t *window) {
+  return fx_set_window_visible(window, true);
+}
+
+inline int
+fx_hide_window (fx_window_t *window) {
+  return fx_set_window_visible(window, false);
+}
 
 #endif // FX_WINDOW_H

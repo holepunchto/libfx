@@ -16,5 +16,7 @@ main () {
   fx_window_t *window;
   fx_window_init(app, view, 0.0, 0.0, 100.0, 100.0, &window);
 
+  fx_show_window(window);
+
   return fx_run(app);
 }
