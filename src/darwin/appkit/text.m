@@ -15,9 +15,10 @@ int
 fx_text_init (fx_t *app, double x, double y, double width, double height, fx_text_t **result) {
   FXText *native_text = [[FXText alloc] initWithFrame:CGRectMake(x, y, width, height)];
 
-  [native_text setBezeled:NO];
-  [native_text setDrawsBackground:NO];
-  [native_text setEditable:NO];
+  native_text.bezeled = NO;
+  native_text.drawsBackground = NO;
+  native_text.editable = NO;
+  native_text.selectable = YES;
 
   fx_text_t *text = malloc(sizeof(fx_text_t));
 
