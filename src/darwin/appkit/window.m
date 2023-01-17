@@ -62,6 +62,7 @@ fx_window_init (fx_t *app, fx_view_t *view, double x, double y, double width, do
   window->on_move = NULL;
   window->on_minimize = NULL;
   window->on_deminimize = NULL;
+  window->on_close = NULL;
 
   native_window.fxWindow = window;
 
