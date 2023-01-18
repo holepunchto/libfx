@@ -67,6 +67,19 @@ fx_get_text_bounds (fx_text_t *text, float *x, float *y, float *width, float *he
 }
 
 int
+fx_get_text_bounds_with_size (fx_text_t *text, float available_width, float available_height, float *x, float *y, float *width, float *height) {
+  NSRect bounds = [text->native_text.textStorage boundingRectWithSize:NSMakeSize(available_width, available_height)
+                                                              options:NSStringDrawingUsesLineFragmentOrigin];
+
+  if (x) *x = bounds.origin.x;
+  if (y) *y = bounds.origin.y;
+  if (width) *width = bounds.size.width;
+  if (height) *height = bounds.size.height;
+
+  return 0;
+}
+
+int
 fx_set_text_bounds (fx_text_t *text, float x, float y, float width, float height) {
   text->native_text.frame = CGRectMake(x, y, width, height);
 
