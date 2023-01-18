@@ -10,7 +10,7 @@ main () {
   fx_screen_t *screen;
   fx_get_main_screen(app, &screen);
 
-  double x, y, width, height;
+  float x, y, width, height;
   fx_get_screen_bounds(screen, &x, &y, &width, &height);
 
   fx_view_t *view;

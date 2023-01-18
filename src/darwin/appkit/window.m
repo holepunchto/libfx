@@ -37,7 +37,7 @@
 @end
 
 int
-fx_window_init (fx_t *app, fx_view_t *view, double x, double y, double width, double height, fx_window_t **result) {
+fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float height, fx_window_t **result) {
   FXWindow *native_window = [[FXWindow alloc]
     initWithContentRect:CGRectMake(x, y, width, height)
               styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable
@@ -128,7 +128,7 @@ fx_set_window_data (fx_window_t *window, void *data) {
 }
 
 int
-fx_get_window_bounds (fx_window_t *window, double *x, double *y, double *width, double *height) {
+fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, float *height) {
   NSRect frame = window->native_window.frame;
 
   if (x) *x = frame.origin.x;

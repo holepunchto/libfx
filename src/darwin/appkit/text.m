@@ -12,7 +12,7 @@
 @end
 
 int
-fx_text_init (fx_t *app, double x, double y, double width, double height, fx_text_t **result) {
+fx_text_init (fx_t *app, float x, float y, float width, float height, fx_text_t **result) {
   FXText *native_text = [[FXText alloc] initWithFrame:CGRectMake(x, y, width, height)];
 
   native_text.drawsBackground = NO;
@@ -55,7 +55,7 @@ fx_set_text_data (fx_text_t *text, void *data) {
 }
 
 int
-fx_get_text_bounds (fx_text_t *text, double *x, double *y, double *width, double *height) {
+fx_get_text_bounds (fx_text_t *text, float *x, float *y, float *width, float *height) {
   NSRect frame = text->native_text.frame;
 
   if (x) *x = frame.origin.x;
@@ -67,7 +67,7 @@ fx_get_text_bounds (fx_text_t *text, double *x, double *y, double *width, double
 }
 
 int
-fx_set_text_bounds (fx_text_t *text, double x, double y, double width, double height) {
+fx_set_text_bounds (fx_text_t *text, float x, float y, float width, float height) {
   text->native_text.frame = CGRectMake(x, y, width, height);
 
   return 0;

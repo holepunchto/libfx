@@ -8,7 +8,7 @@ typedef struct fx_web_view_s fx_web_view_t;
 typedef void (*fx_web_view_message_cb)(fx_web_view_t *web_view, const char *message);
 
 int
-fx_web_view_init (fx_t *app, double x, double y, double width, double height, fx_web_view_t **result);
+fx_web_view_init (fx_t *app, float x, float y, float width, float height, fx_web_view_t **result);
 
 int
 fx_web_view_destroy (fx_web_view_t *web_view);
@@ -23,10 +23,10 @@ int
 fx_set_web_view_data (fx_web_view_t *web_view, void *data);
 
 int
-fx_get_web_view_bounds (fx_web_view_t *web_view, double *x, double *y, double *width, double *height);
+fx_get_web_view_bounds (fx_web_view_t *web_view, float *x, float *y, float *width, float *height);
 
 int
-fx_set_web_view_bounds (fx_web_view_t *web_view, double x, double y, double width, double height);
+fx_set_web_view_bounds (fx_web_view_t *web_view, float x, float y, float width, float height);
 
 int
 fx_web_view_post_message (fx_web_view_t *web_view, const char *message);

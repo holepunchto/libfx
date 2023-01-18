@@ -26,7 +26,7 @@ fx_get_main_screen (fx_t *app, fx_screen_t **result) {
 }
 
 int
-fx_get_screen_bounds (fx_screen_t *screen, double *x, double *y, double *width, double *height) {
+fx_get_screen_bounds (fx_screen_t *screen, float *x, float *y, float *width, float *height) {
   NSRect frame = screen->native_screen.frame;
 
   if (x) *x = frame.origin.x;

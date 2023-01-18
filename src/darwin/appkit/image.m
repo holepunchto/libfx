@@ -12,7 +12,7 @@
 @end
 
 int
-fx_image_init (fx_t *app, const char *url, size_t len, double x, double y, double width, double height, fx_image_t **result) {
+fx_image_init (fx_t *app, const char *url, size_t len, float x, float y, float width, float height, fx_image_t **result) {
   FXImage *native_image = [[FXImage alloc] initWithFrame:CGRectMake(x, y, width, height)];
 
   native_image.image = [[NSImage alloc] initByReferencingURL:[[NSURL alloc] initWithString:[[NSString alloc] initWithBytes:url length:len encoding:NSUTF8StringEncoding]]];
@@ -54,7 +54,7 @@ fx_set_image_data (fx_image_t *image, void *data) {
 }
 
 int
-fx_get_image_bounds (fx_image_t *image, double *x, double *y, double *width, double *height) {
+fx_get_image_bounds (fx_image_t *image, float *x, float *y, float *width, float *height) {
   NSRect frame = image->native_image.frame;
 
   if (x) *x = frame.origin.x;
@@ -66,7 +66,7 @@ fx_get_image_bounds (fx_image_t *image, double *x, double *y, double *width, dou
 }
 
 int
-fx_set_image_bounds (fx_image_t *image, double x, double y, double width, double height) {
+fx_set_image_bounds (fx_image_t *image, float x, float y, float width, float height) {
   image->native_image.frame = CGRectMake(x, y, width, height);
 
   return 0;

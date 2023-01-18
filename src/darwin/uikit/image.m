@@ -8,7 +8,7 @@
 @end
 
 int
-fx_image_init (fx_t *app, const char *url, size_t len, double x, double y, double width, double height, fx_image_t **result) {
+fx_image_init (fx_t *app, const char *url, size_t len, float x, float y, float width, float height, fx_image_t **result) {
   FXImage *native_image = [[FXImage alloc] initWithFrame:CGRectMake(x, y, width, height)];
 
   NSData *image_data = [[NSData alloc] initWithContentsOfURL:[[NSURL alloc] initWithString:[[NSString alloc] initWithBytes:url length:len encoding:NSUTF8StringEncoding]]];

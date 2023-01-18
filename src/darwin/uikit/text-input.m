@@ -31,7 +31,7 @@
 @end
 
 int
-fx_text_input_init (fx_t *app, double x, double y, double width, double height, fx_text_input_t **result) {
+fx_text_input_init (fx_t *app, float x, float y, float width, float height, fx_text_input_t **result) {
   FXTextField *native_text_input = [[FXTextField alloc] initWithFrame:CGRectMake(x, y, width, height)];
 
   native_text_input.delegate = [[FXTextFieldDelegate alloc] init];

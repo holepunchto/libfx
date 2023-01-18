@@ -27,7 +27,7 @@
 @end
 
 int
-fx_text_input_init (fx_t *app, double x, double y, double width, double height, fx_text_input_t **result) {
+fx_text_input_init (fx_t *app, float x, float y, float width, float height, fx_text_input_t **result) {
   FXTextInput *native_text_input = [[FXTextInput alloc] initWithFrame:CGRectMake(x, y, width, height)];
 
   native_text_input.delegate = [[FXTextInputDelegate alloc] init];
@@ -76,7 +76,7 @@ fx_set_text_input_data (fx_text_input_t *text_input, void *data) {
 }
 
 int
-fx_get_text_input_bounds (fx_text_input_t *text_input, double *x, double *y, double *width, double *height) {
+fx_get_text_input_bounds (fx_text_input_t *text_input, float *x, float *y, float *width, float *height) {
   NSRect frame = text_input->native_text_input.frame;
 
   if (x) *x = frame.origin.x;
@@ -88,7 +88,7 @@ fx_get_text_input_bounds (fx_text_input_t *text_input, double *x, double *y, dou
 }
 
 int
-fx_set_text_input_bounds (fx_text_input_t *text_input, double x, double y, double width, double height) {
+fx_set_text_input_bounds (fx_text_input_t *text_input, float x, float y, float width, float height) {
   text_input->native_text_input.frame = CGRectMake(x, y, width, height);
 
   return 0;

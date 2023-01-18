@@ -9,7 +9,7 @@
 @end
 
 int
-fx_video_init (fx_t *app, const char *url, size_t len, double x, double y, double width, double height, fx_video_t **result) {
+fx_video_init (fx_t *app, const char *url, size_t len, float x, float y, float width, float height, fx_video_t **result) {
   FXVideo *native_video = [[FXVideo alloc] init];
 
   native_video.frame = CGRectMake(x, y, width, height);

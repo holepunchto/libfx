@@ -12,7 +12,7 @@
 @end
 
 int
-fx_view_init (fx_t *app, double x, double y, double width, double height, fx_view_t **result) {
+fx_view_init (fx_t *app, float x, float y, float width, float height, fx_view_t **result) {
   FXView *native_view = [[FXView alloc] initWithFrame:CGRectMake(x, y, width, height)];
 
   fx_view_t *view = malloc(sizeof(fx_view_t));
@@ -52,7 +52,7 @@ fx_set_view_data (fx_view_t *view, void *data) {
 }
 
 int
-fx_get_view_bounds (fx_view_t *view, double *x, double *y, double *width, double *height) {
+fx_get_view_bounds (fx_view_t *view, float *x, float *y, float *width, float *height) {
   NSRect frame = view->native_view.frame;
 
   if (x) *x = frame.origin.x;
@@ -64,7 +64,7 @@ fx_get_view_bounds (fx_view_t *view, double *x, double *y, double *width, double
 }
 
 int
-fx_set_view_bounds (fx_view_t *view, double x, double y, double width, double height) {
+fx_set_view_bounds (fx_view_t *view, float x, float y, float width, float height) {
   view->native_view.frame = CGRectMake(x, y, width, height);
 
   return 0;

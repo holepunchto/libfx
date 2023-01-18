@@ -8,7 +8,7 @@
 typedef struct fx_video_s fx_video_t;
 
 int
-fx_video_init (fx_t *app, const char *url, size_t len, double x, double y, double width, double height, fx_video_t **result);
+fx_video_init (fx_t *app, const char *url, size_t len, float x, float y, float width, float height, fx_video_t **result);
 
 int
 fx_video_destroy (fx_video_t *video);
@@ -20,10 +20,10 @@ int
 fx_set_video_data (fx_video_t *video, void *data);
 
 int
-fx_get_video_bounds (fx_video_t *video, double *x, double *y, double *width, double *height);
+fx_get_video_bounds (fx_video_t *video, float *x, float *y, float *width, float *height);
 
 int
-fx_set_video_bounds (fx_video_t *video, double x, double y, double width, double height);
+fx_set_video_bounds (fx_video_t *video, float x, float y, float width, float height);
 
 int
 fx_play_video (fx_video_t *video);

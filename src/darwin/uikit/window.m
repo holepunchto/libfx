@@ -13,7 +13,7 @@
 @end
 
 int
-fx_window_init (fx_t *app, fx_view_t *view, double x, double y, double width, double height, fx_window_t **result) {
+fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float height, fx_window_t **result) {
   FXWindow *native_window = [[FXWindow alloc] initWithFrame:CGRectMake(x, y, width, height)];
 
   native_window.rootViewController = [[FXWindowController alloc] init];

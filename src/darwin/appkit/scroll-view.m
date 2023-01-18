@@ -13,7 +13,7 @@
 @end
 
 int
-fx_scroll_view_init (fx_t *app, fx_view_t *view, double x, double y, double width, double height, fx_scroll_view_t **result) {
+fx_scroll_view_init (fx_t *app, fx_view_t *view, float x, float y, float width, float height, fx_scroll_view_t **result) {
   FXScrollView *native_scroll_view = [[FXScrollView alloc] initWithFrame:CGRectMake(x, y, width, height)];
 
   native_scroll_view.drawsBackground = NO;
@@ -59,7 +59,7 @@ fx_set_scroll_view_data (fx_scroll_view_t *scroll_view, void *data) {
 }
 
 int
-fx_get_scroll_view_bounds (fx_scroll_view_t *scroll_view, double *x, double *y, double *width, double *height) {
+fx_get_scroll_view_bounds (fx_scroll_view_t *scroll_view, float *x, float *y, float *width, float *height) {
   NSRect frame = scroll_view->native_scroll_view.frame;
 
   if (x) *x = frame.origin.x;
@@ -71,7 +71,7 @@ fx_get_scroll_view_bounds (fx_scroll_view_t *scroll_view, double *x, double *y, 
 }
 
 int
-fx_set_scroll_view_bounds (fx_scroll_view_t *scroll_view, double x, double y, double width, double height) {
+fx_set_scroll_view_bounds (fx_scroll_view_t *scroll_view, float x, float y, float width, float height) {
   scroll_view->native_scroll_view.frame = CGRectMake(x, y, width, height);
 
   return 0;

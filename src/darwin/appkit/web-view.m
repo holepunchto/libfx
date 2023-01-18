@@ -27,7 +27,7 @@
 @end
 
 int
-fx_web_view_init (fx_t *app, double x, double y, double width, double height, fx_web_view_t **result) {
+fx_web_view_init (fx_t *app, float x, float y, float width, float height, fx_web_view_t **result) {
   WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
 
   FXWebViewDelegate *delegate = [[FXWebViewDelegate alloc] init];
@@ -98,7 +98,7 @@ fx_set_web_view_data (fx_web_view_t *web_view, void *data) {
 }
 
 int
-fx_get_web_view_bounds (fx_web_view_t *web_view, double *x, double *y, double *width, double *height) {
+fx_get_web_view_bounds (fx_web_view_t *web_view, float *x, float *y, float *width, float *height) {
   NSRect frame = web_view->native_web_view.frame;
 
   if (x) *x = frame.origin.x;
@@ -110,7 +110,7 @@ fx_get_web_view_bounds (fx_web_view_t *web_view, double *x, double *y, double *w
 }
 
 int
-fx_set_web_view_bounds (fx_web_view_t *web_view, double x, double y, double width, double height) {
+fx_set_web_view_bounds (fx_web_view_t *web_view, float x, float y, float width, float height) {
   web_view->native_web_view.frame = CGRectMake(x, y, width, height);
 
   return 0;

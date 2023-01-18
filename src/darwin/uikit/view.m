@@ -8,7 +8,7 @@
 @end
 
 int
-fx_view_init (fx_t *app, double x, double y, double width, double height, fx_view_t **result) {
+fx_view_init (fx_t *app, float x, float y, float width, float height, fx_view_t **result) {
   FXView *native_view = [[FXView alloc] initWithFrame:CGRectMake(x, y, width, height)];
 
   fx_view_t *view = malloc(sizeof(fx_view_t));
