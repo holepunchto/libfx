@@ -24,7 +24,7 @@ int
 fx_get_text_bounds (fx_text_t *text, float *x, float *y, float *width, float *height);
 
 int
-fx_get_text_bounds_with_size (fx_text_t *text, float available_width, float available_height, float *x, float *y, float *width, float *height);
+fx_get_text_bounds_used (fx_text_t *text, float *x, float *y, float *width, float *height);
 
 int
 fx_set_text_bounds (fx_text_t *text, float x, float y, float width, float height);

@@ -67,9 +67,13 @@ fx_get_text_bounds (fx_text_t *text, float *x, float *y, float *width, float *he
 }
 
 int
-fx_get_text_bounds_with_size (fx_text_t *text, float available_width, float available_height, float *x, float *y, float *width, float *height) {
-  NSRect bounds = [text->native_text.textStorage boundingRectWithSize:NSMakeSize(available_width, available_height)
-                                                              options:NSStringDrawingUsesLineFragmentOrigin];
+fx_get_text_bounds_used (fx_text_t *text, float *x, float *y, float *width, float *height) {
+  NSLayoutManager *layout = [text->native_text layoutManager];
+  NSTextContainer *container = [text->native_text textContainer];
+
+  [layout ensureLayoutForTextContainer:container];
+
+  CGRect bounds = [layout usedRectForTextContainer:container];
 
   if (x) *x = bounds.origin.x;
   if (y) *y = bounds.origin.y;
