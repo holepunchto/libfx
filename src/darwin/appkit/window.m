@@ -129,7 +129,7 @@ fx_set_window_data (fx_window_t *window, void *data) {
 
 int
 fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, float *height) {
-  NSRect frame = window->native_window.frame;
+  NSRect frame = window->native_window.contentView.frame;
 
   if (x) *x = frame.origin.x;
   if (y) *y = frame.origin.y;
