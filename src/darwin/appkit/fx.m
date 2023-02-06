@@ -1,4 +1,3 @@
-#import <assert.h>
 #import <stdbool.h>
 #import <uv.h>
 

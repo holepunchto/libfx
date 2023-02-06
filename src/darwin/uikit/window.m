@@ -18,8 +18,6 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 
   native_window.rootViewController = [[FXWindowController alloc] init];
 
-  [native_window makeKeyAndVisible];
-
   if (view) {
     [native_window addSubview:view->native_view];
   }
@@ -41,3 +39,21 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 
   return 0;
 }
+
+bool
+fx_is_window_visible (fx_window_t *window) {
+  return !window->native_window.hidden;
+}
+
+int
+fx_set_window_visible (fx_window_t *window, bool visible) {
+  window->native_window.hidden = !visible;
+
+  return 0;
+}
+
+extern int
+fx_show_window (fx_window_t *window);
+
+extern int
+fx_hide_window (fx_window_t *window);

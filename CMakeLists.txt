@@ -22,7 +22,7 @@ set_target_properties(
   fx
   PROPERTIES
   C_STANDARD 99
-  POSITION_INDEPENDENT_CODE 1
+  POSITION_INDEPENDENT_CODE ON
 )
 
 if(APPLE)
@@ -58,30 +58,52 @@ if(IOS)
   target_sources(
     fx
     PRIVATE
+      src/darwin/uikit/fx.h
       src/darwin/uikit/fx.m
+      src/darwin/uikit/image.h
       src/darwin/uikit/image.m
       src/darwin/uikit/node.m
+      src/darwin/uikit/screen.h
       src/darwin/uikit/screen.m
+      src/darwin/uikit/scroll-view.h
+      src/darwin/uikit/scroll-view.m
+      src/darwin/uikit/text.h
       src/darwin/uikit/text.m
+      src/darwin/uikit/text-input.h
       src/darwin/uikit/text-input.m
+      src/darwin/uikit/video.h
       src/darwin/uikit/video.m
+      src/darwin/uikit/view.h
       src/darwin/uikit/view.m
+      src/darwin/uikit/web-view.h
+      src/darwin/uikit/web-view.m
+      src/darwin/uikit/window.h
       src/darwin/uikit/window.m
   )
 elseif(APPLE)
   target_sources(
     fx
     PRIVATE
+      src/darwin/appkit/fx.h
       src/darwin/appkit/fx.m
+      src/darwin/appkit/image.h
       src/darwin/appkit/image.m
       src/darwin/appkit/node.m
+      src/darwin/appkit/screen.h
       src/darwin/appkit/screen.m
+      src/darwin/appkit/scroll-view.h
       src/darwin/appkit/scroll-view.m
+      src/darwin/appkit/text.h
       src/darwin/appkit/text.m
+      src/darwin/appkit/text-input.h
       src/darwin/appkit/text-input.m
+      src/darwin/appkit/video.h
       src/darwin/appkit/video.m
+      src/darwin/appkit/view.h
       src/darwin/appkit/view.m
+      src/darwin/appkit/web-view.h
       src/darwin/appkit/web-view.m
+      src/darwin/appkit/window.h
       src/darwin/appkit/window.m
   )
 endif()
@@ -90,7 +112,7 @@ target_include_directories(
   fx
   PUBLIC
     include
-    $<TARGET_PROPERTY:uv,INCLUDE_DIRECTORIES>
+    $<TARGET_PROPERTY:uv,INTERFACE_INCLUDE_DIRECTORIES>
 )
 
 add_library(fx_shared SHARED $<TARGET_OBJECTS:fx>)
@@ -140,7 +162,7 @@ set_target_properties(
 target_link_libraries(
   fx_static
   PUBLIC
-    uv
+    uv_a
 )
 
 if(IOS)
