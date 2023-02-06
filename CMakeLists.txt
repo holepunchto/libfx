@@ -115,7 +115,30 @@ target_include_directories(
     $<TARGET_PROPERTY:uv,INTERFACE_INCLUDE_DIRECTORIES>
 )
 
-add_library(fx_shared SHARED $<TARGET_OBJECTS:fx>)
+if(IOS)
+  target_link_libraries(
+    fx
+    PUBLIC
+      "-framework Foundation"
+      "-framework UIKit"
+      "-framework AVFoundation"
+      "-framework AVKit"
+      "-framework WebKit"
+  )
+elseif(APPLE)
+  target_link_libraries(
+    fx
+    PUBLIC
+      "-framework Foundation"
+      "-framework AppKit"
+      "-framework AVFoundation"
+      "-framework AVKit"
+      "-framework WebKit"
+  )
+endif()
+
+
+add_library(fx_shared SHARED)
 
 set_target_properties(
   fx_shared
@@ -127,31 +150,10 @@ target_link_libraries(
   fx_shared
   PUBLIC
     uv
+    fx
 )
 
-if(IOS)
-  target_link_libraries(
-    fx_shared
-    PUBLIC
-      "-framework Foundation"
-      "-framework UIKit"
-      "-framework AVFoundation"
-      "-framework AVKit"
-      "-framework WebKit"
-  )
-elseif(APPLE)
-  target_link_libraries(
-    fx_shared
-    PUBLIC
-      "-framework Foundation"
-      "-framework AppKit"
-      "-framework AVFoundation"
-      "-framework AVKit"
-      "-framework WebKit"
-  )
-endif()
-
-add_library(fx_static STATIC $<TARGET_OBJECTS:fx>)
+add_library(fx_static STATIC)
 
 set_target_properties(
   fx_static
@@ -163,29 +165,8 @@ target_link_libraries(
   fx_static
   PUBLIC
     uv_a
+    fx
 )
-
-if(IOS)
-  target_link_libraries(
-    fx_static
-    PUBLIC
-      "-framework Foundation"
-      "-framework UIKit"
-      "-framework AVFoundation"
-      "-framework AVKit"
-      "-framework WebKit"
-  )
-elseif(APPLE)
-  target_link_libraries(
-    fx_static
-    PUBLIC
-      "-framework Foundation"
-      "-framework AppKit"
-      "-framework AVFoundation"
-      "-framework AVKit"
-      "-framework WebKit"
-  )
-endif()
 
 install(TARGETS fx_shared fx_static)
 
