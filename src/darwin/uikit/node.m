@@ -9,8 +9,8 @@
 #import "view.h"
 #import "web-view.h"
 
-int
-fx_set_child (fx_node_t *parent, fx_node_t *child, size_t index) {
+static inline int
+fx_get_parent_view (fx_node_t *parent, UIView **result) {
   UIView *parent_view;
 
   switch (parent->type) {
@@ -21,6 +21,13 @@ fx_set_child (fx_node_t *parent, fx_node_t *child, size_t index) {
     return -1;
   }
 
+  *result = parent_view;
+
+  return 0;
+}
+
+static inline int
+fx_get_child_view (fx_node_t *child, UIView **result) {
   UIView *child_view;
 
   switch (child->type) {
@@ -47,7 +54,38 @@ fx_set_child (fx_node_t *parent, fx_node_t *child, size_t index) {
     break;
   }
 
+  *result = child_view;
+
+  return 0;
+}
+
+int
+fx_set_child (fx_node_t *parent, fx_node_t *child, size_t index) {
+  int err;
+
+  UIView *parent_view;
+
+  err = fx_get_parent_view(parent, &parent_view);
+  if (err < 0) return err;
+
+  UIView *child_view;
+
+  err = fx_get_child_view(child, &child_view);
+  if (err < 0) return err;
+
   [parent_view addSubview:child_view];
+
+  return 0;
+}
+
+int
+fx_unset_child (fx_node_t *parent, fx_node_t *child, size_t index) {
+  UIView *child_view;
+
+  int err = fx_get_child_view(child, &child_view);
+  if (err < 0) return err;
+
+  [child_view removeFromSuperview];
 
   return 0;
 }

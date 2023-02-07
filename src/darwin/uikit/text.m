@@ -48,6 +48,42 @@ fx_set_text_data (fx_text_t *text, void *data) {
 }
 
 int
+fx_get_text_bounds (fx_text_t *text, float *x, float *y, float *width, float *height) {
+  CGRect frame = text->native_text.frame;
+
+  if (x) *x = frame.origin.x;
+  if (y) *y = frame.origin.y;
+  if (width) *width = frame.size.width;
+  if (height) *height = frame.size.height;
+
+  return 0;
+}
+
+int
+fx_get_text_bounds_used (fx_text_t *text, float *x, float *y, float *width, float *height) {
+  NSLayoutManager *layout = [text->native_text layoutManager];
+  NSTextContainer *container = [text->native_text textContainer];
+
+  [layout ensureLayoutForTextContainer:container];
+
+  CGRect bounds = [layout usedRectForTextContainer:container];
+
+  if (x) *x = bounds.origin.x;
+  if (y) *y = bounds.origin.y;
+  if (width) *width = bounds.size.width;
+  if (height) *height = bounds.size.height;
+
+  return 0;
+}
+
+int
+fx_set_text_bounds (fx_text_t *text, float x, float y, float width, float height) {
+  text->native_text.frame = CGRectMake(x, y, width, height);
+
+  return 0;
+}
+
+int
 fx_append_text_span (fx_text_t *text, const char *value, size_t len, fx_text_span_t **result) {
   NSUInteger start = [text->native_text.textStorage length];
   NSUInteger end = start + len;

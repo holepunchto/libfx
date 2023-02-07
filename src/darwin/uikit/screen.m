@@ -4,10 +4,21 @@
 #import "screen.h"
 
 int
+fx_screen_destroy (fx_screen_t *screen) {
+  [screen->native_screen release];
+
+  free(screen);
+
+  return 0;
+}
+
+int
 fx_get_main_screen (fx_t *app, fx_screen_t **result) {
   fx_screen_t *screen = malloc(sizeof(fx_screen_t));
 
   screen->native_screen = [UIScreen mainScreen];
+
+  [screen->native_screen retain];
 
   *result = screen;
 
