@@ -6,6 +6,8 @@
 #include "../../include/fx.h"
 #include "fx.h"
 
+fx_t *fx_main_app = NULL;
+
 static void
 fx_add_worker (fx_t *worker) {
   uv_mutex_lock(&fx_main_app->lock);

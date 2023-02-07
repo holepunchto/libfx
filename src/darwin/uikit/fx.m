@@ -7,8 +7,6 @@
 #import "../../shared/fx.h"
 #import "fx.h"
 
-static fx_t *fx_main_app = NULL;
-
 @implementation FXDelegate
 
 - (BOOL)application:(FX *)native_app didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {

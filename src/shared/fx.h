@@ -9,7 +9,7 @@
 
 typedef struct fx_worker_s fx_worker_t;
 
-static fx_t *fx_main_app;
+extern fx_t *fx_main_app;
 
 struct fx_s {
   uv_loop_t *loop;
