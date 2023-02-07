@@ -9,12 +9,30 @@
 
 @implementation FXDelegate
 
-- (BOOL)application:(FX *)native_app didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  fx_t *app = native_app.fxMainApp;
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  fx_t *app = fx_main_app;
 
   if (app->platform->on_launch) app->platform->on_launch(app);
 
   return YES;
+}
+
+- (void)applicationWillTerminate:(UIApplication *)application {
+  fx_t *app = fx_main_app;
+
+  if (app->platform->on_terminate) app->platform->on_terminate(app);
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+  fx_t *app = fx_main_app;
+
+  if (app->platform->on_suspend) app->platform->on_suspend(app);
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application {
+  fx_t *app = fx_main_app;
+
+  if (app->platform->on_resume) app->platform->on_resume(app);
 }
 
 @end
@@ -29,14 +47,10 @@ fx_platform_init (fx_t *app, fx_platform_t **result) {
 
   FX *native_app = (FX *) [FX sharedApplication];
 
-  if (fx_is_main(app)) {
-    native_app.fxMainApp = app;
-  }
-
   platform->native_app = native_app;
 
   platform->on_launch = NULL;
-  platform->on_message = NULL;
+  platform->on_terminate = NULL;
 
   *result = platform;
 
@@ -51,17 +65,43 @@ fx_platform_destroy (fx_platform_t *platform) {
 }
 
 int
-fx_platform_run (fx_platform_t *platform, fx_launch_cb cb) {
+fx_on_platform_launch (fx_platform_t *platform, fx_launch_cb cb) {
   platform->on_launch = cb;
 
+  return 0;
+}
+
+int
+fx_on_platform_terminate (fx_platform_t *platform, fx_terminate_cb cb) {
+  platform->on_terminate = cb;
+
+  return 0;
+}
+
+int
+fx_on_platform_suspend (fx_platform_t *platform, fx_suspend_cb cb) {
+  platform->on_suspend = cb;
+
+  return 0;
+}
+
+int
+fx_on_platform_resume (fx_platform_t *platform, fx_resume_cb cb) {
+  platform->on_resume = cb;
+
+  return 0;
+}
+
+int
+fx_platform_run (fx_platform_t *platform) {
   UIApplicationMain(0, (char *[]){}, @"FX", @"FXDelegate");
 
   return 0;
 }
 
 int
-fx_platform_terminate (fx_platform_t *platform, fx_terminate_cb cb) {
-  return 0;
+fx_platform_terminate (fx_platform_t *platform) {
+  return -1;
 }
 
 int

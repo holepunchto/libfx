@@ -11,8 +11,6 @@
 
 @interface FX : NSApplication
 
-@property(assign) fx_t *fxMainApp;
-
 @end
 
 struct fx_platform_s {

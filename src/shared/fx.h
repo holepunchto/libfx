@@ -17,8 +17,6 @@ struct fx_s {
 
   void *data;
 
-  fx_launch_cb on_launch;
-  fx_terminate_cb on_terminate;
   fx_message_cb on_message;
 
   fx_channel_t messages;

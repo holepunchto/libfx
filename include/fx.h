@@ -10,9 +10,11 @@ extern "C" {
 
 typedef struct fx_s fx_t;
 
-typedef void (*fx_launch_cb)(fx_t *app);
 typedef void (*fx_dispatch_cb)(fx_t *receiver, void *data);
+typedef void (*fx_launch_cb)(fx_t *app);
 typedef void (*fx_terminate_cb)(fx_t *app);
+typedef void (*fx_suspend_cb)(fx_t *app);
+typedef void (*fx_resume_cb)(fx_t *app);
 typedef void (*fx_message_cb)(fx_t *receiver, const uv_buf_t *message, fx_t *sender);
 
 int
@@ -41,6 +43,12 @@ fx_on_launch (fx_t *app, fx_launch_cb cb);
 
 int
 fx_on_terminate (fx_t *app, fx_terminate_cb cb);
+
+int
+fx_on_suspend (fx_t *app, fx_suspend_cb cb);
+
+int
+fx_on_resume (fx_t *app, fx_resume_cb cb);
 
 int
 fx_get_data (fx_t *app, void **result);

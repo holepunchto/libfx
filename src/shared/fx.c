@@ -70,9 +70,7 @@ fx_init (uv_loop_t *loop, fx_t **result) {
   app->data = NULL;
   app->workers = NULL;
 
-  app->on_launch = NULL;
   app->on_message = NULL;
-  app->on_terminate = NULL;
 
   if (fx_main_app == NULL) fx_main_app = app;
   else fx_add_worker(app);
@@ -122,24 +120,14 @@ fx_destroy (fx_t *app) {
   return 0;
 }
 
-static void
-on_launch (fx_t *app) {
-  if (app->on_launch) app->on_launch(app);
-}
-
 int
 fx_run (fx_t *app) {
-  return fx_platform_run(app->platform, on_launch);
-}
-
-static void
-on_terminate (fx_t *app) {
-  if (app->on_terminate) app->on_terminate(app);
+  return fx_platform_run(app->platform);
 }
 
 int
 fx_terminate (fx_t *app) {
-  return fx_platform_terminate(app->platform, on_terminate);
+  return fx_platform_terminate(app->platform);
 }
 
 bool
@@ -154,16 +142,22 @@ fx_is_worker (fx_t *app) {
 
 int
 fx_on_launch (fx_t *app, fx_launch_cb cb) {
-  app->on_launch = cb;
-
-  return 0;
+  return fx_on_platform_launch(app->platform, cb);
 }
 
 int
 fx_on_terminate (fx_t *app, fx_terminate_cb cb) {
-  app->on_terminate = cb;
+  return fx_on_platform_terminate(app->platform, cb);
+}
 
-  return 0;
+int
+fx_on_suspend (fx_t *app, fx_suspend_cb cb) {
+  return fx_on_platform_suspend(app->platform, cb);
+}
+
+int
+fx_on_resume (fx_t *app, fx_resume_cb cb) {
+  return fx_on_platform_resume(app->platform, cb);
 }
 
 int
