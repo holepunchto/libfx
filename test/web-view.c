@@ -1,10 +1,7 @@
 #include "../include/fx.h"
 
-int
-main () {
-  fx_t *app;
-  fx_init(uv_default_loop(), &app);
-
+static void
+on_launch (fx_t *app) {
   fx_view_t *view;
   fx_view_init(app, 0.0, 0.0, 1280.0, 720.0, &view);
 
@@ -19,6 +16,14 @@ main () {
   fx_window_init(app, view, 0.0, 0.0, 1280.0, 720.0, &window);
 
   fx_show_window(window);
+}
+
+int
+main () {
+  fx_t *app;
+  fx_init(uv_default_loop(), &app);
+
+  fx_on_launch(app, on_launch);
 
   return fx_run(app);
 }
