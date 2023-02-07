@@ -119,6 +119,10 @@ int
 fx_set_window_visible (fx_window_t *window, bool visible) {
   window->native_window.hidden = !visible;
 
+  if (visible) {
+    [window->native_window makeKeyWindow];
+  }
+
   return 0;
 }
 
