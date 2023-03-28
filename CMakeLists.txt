@@ -154,6 +154,7 @@ set_target_properties(
   fx_static
   PROPERTIES
   OUTPUT_NAME fx
+  PREFIX lib
 )
 
 target_link_libraries(
@@ -170,7 +171,5 @@ install(FILES include/fx.h DESTINATION include)
 if(PROJECT_IS_TOP_LEVEL)
   enable_testing()
   add_subdirectory(test)
-
-  add_subdirectory(example/ios EXCLUDE_FROM_ALL)
-  add_subdirectory(example/macos EXCLUDE_FROM_ALL)
+  add_subdirectory(example)
 endif()
