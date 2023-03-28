@@ -1,6 +1,8 @@
 #include "../../include/fx.h"
 
 struct fx_window_s {
+  HWND handle;
+
   void *data;
 
   fx_window_resize_cb on_resize;

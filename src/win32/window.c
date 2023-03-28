@@ -1,9 +1,62 @@
-#include "window.h"
+#include <assert.h>
+#include <uv.h>
+
 #include "../../include/fx.h"
+#include "window.h"
+
+static uv_once_t fx_window_class_init = UV_ONCE_INIT;
+
+static ATOM fx_window_class;
+
+static LRESULT CALLBACK
+on_window_message (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+  // TODO: Hook into message and forward to handlers.
+
+  return DefWindowProc(hwnd, uMsg, wParam, lParam);
+}
+
+static void
+on_window_class_init () {
+  HINSTANCE instance = GetModuleHandle(NULL);
+
+  WNDCLASSEX window_class = {
+    .cbSize = sizeof(WNDCLASSEX),
+    .lpfnWndProc = on_window_message,
+    .hInstance = instance,
+    .lpszClassName = "FX Window",
+  };
+
+  fx_window_class = RegisterClassEx(&window_class);
+
+  assert(fx_window_class);
+}
 
 int
 fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float height, fx_window_t **result) {
+  uv_once(&fx_window_class_init, on_window_class_init);
+
+  HINSTANCE instance = GetModuleHandle(NULL);
+
+  HWND handle = CreateWindowEx(
+    0,
+    MAKEINTATOM(fx_window_class),
+    NULL,
+    WS_OVERLAPPEDWINDOW,
+    (int) x,
+    (int) y,
+    (int) width,
+    (int) height,
+    NULL,
+    NULL,
+    instance,
+    NULL
+  );
+
+  if (handle == NULL) return -1;
+
   fx_window_t *window = malloc(sizeof(fx_window_t));
+
+  window->handle = handle;
 
   window->data = NULL;
 
@@ -85,11 +138,13 @@ fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, flo
 
 bool
 fx_is_window_visible (fx_window_t *window) {
-  return false;
+  return IsWindowVisible(window->handle);
 }
 
 int
 fx_set_window_visible (fx_window_t *window, bool visible) {
+  ShowWindow(window->handle, visible ? SW_SHOW : SW_HIDE);
+
   return 0;
 }
 

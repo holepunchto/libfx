@@ -47,11 +47,27 @@ fx_on_platform_resume (fx_platform_t *platform, fx_resume_cb cb) {
 
 int
 fx_platform_run (fx_platform_t *platform) {
+  if (platform->on_launch) platform->on_launch(fx_main_app);
+
+  MSG msg;
+  BOOL success;
+
+  while (success = GetMessage(&msg, NULL, 0, 0), success != 0) {
+    if (success == -1) {
+      // TODO: Figure out error handling.
+    } else {
+      TranslateMessage(&msg);
+      DispatchMessage(&msg);
+    }
+  }
+
   return 0;
 }
 
 int
 fx_platform_terminate (fx_platform_t *platform) {
+  PostQuitMessage(0);
+
   return 0;
 }
 
