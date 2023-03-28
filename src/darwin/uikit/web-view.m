@@ -56,6 +56,10 @@ fx_web_view_init (fx_t *app, float x, float y, float width, float height, fx_web
 
   web_view->native_web_view = native_web_view;
 
+  web_view->data = NULL;
+
+  web_view->on_message = NULL;
+
   native_web_view.fxWebView = web_view;
 
   *result = web_view;

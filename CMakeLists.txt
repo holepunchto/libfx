@@ -100,6 +100,30 @@ elseif(APPLE)
       src/darwin/appkit/window.h
       src/darwin/appkit/window.m
   )
+elseif(WIN32)
+  target_sources(
+    fx
+    PRIVATE
+      src/win32/fx.c
+      src/win32/fx.h
+      src/win32/image.c
+      src/win32/image.h
+      src/win32/node.c
+      src/win32/scroll-view.c
+      src/win32/scroll-view.h
+      src/win32/text.c
+      src/win32/text.h
+      src/win32/text-input.c
+      src/win32/text-input.h
+      src/win32/video.c
+      src/win32/video.h
+      src/win32/view.c
+      src/win32/view.h
+      src/win32/web-view.c
+      src/win32/web-view.h
+      src/win32/window.c
+      src/win32/window.h
+  )
 endif()
 
 target_include_directories(
@@ -132,7 +156,7 @@ elseif(APPLE)
 endif()
 
 
-add_library(fx_shared SHARED)
+add_library(fx_shared SHARED $<TARGET_OBJECTS:fx>)
 
 set_target_properties(
   fx_shared
@@ -145,10 +169,9 @@ target_link_libraries(
   fx_shared
   PUBLIC
     uv
-    fx
 )
 
-add_library(fx_static STATIC)
+add_library(fx_static STATIC $<TARGET_OBJECTS:fx>)
 
 set_target_properties(
   fx_static
@@ -161,7 +184,6 @@ target_link_libraries(
   fx_static
   PUBLIC
     uv_a
-    fx
 )
 
 install(TARGETS fx_shared fx_static)
