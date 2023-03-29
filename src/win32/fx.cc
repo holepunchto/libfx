@@ -47,6 +47,10 @@ fx_on_platform_resume (fx_platform_t *platform, fx_resume_cb cb) {
 
 extern "C" int
 fx_platform_run (fx_platform_t *platform) {
+  HRESULT res = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+
+  if (FAILED(res)) return -1;
+
   if (platform->on_launch) platform->on_launch(fx_main_app);
 
   MSG msg;

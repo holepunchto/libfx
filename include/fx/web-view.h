@@ -5,6 +5,7 @@
 
 typedef struct fx_web_view_s fx_web_view_t;
 
+typedef void (*fx_web_view_ready_cb)(fx_web_view_t *web_view, int status);
 typedef void (*fx_web_view_message_cb)(fx_web_view_t *web_view, const char *message);
 
 int
@@ -12,6 +13,9 @@ fx_web_view_init (fx_t *app, float x, float y, float width, float height, fx_web
 
 int
 fx_web_view_destroy (fx_web_view_t *web_view);
+
+int
+fx_on_web_view_ready (fx_web_view_t *web_view, fx_web_view_ready_cb cb);
 
 int
 fx_on_web_view_message (fx_web_view_t *web_view, fx_web_view_message_cb cb);
