@@ -6,6 +6,10 @@ if(APPLE)
   enable_language(OBJC)
 endif()
 
+if(WIN32)
+  enable_language(CXX)
+endif()
+
 if(NOT TARGET uv)
   add_subdirectory(vendor/libuv EXCLUDE_FROM_ALL)
 endif()
@@ -24,6 +28,14 @@ if(APPLE)
     fx
     PROPERTIES
     OBJC_STANDARD 99
+  )
+endif()
+
+if(WIN32)
+  set_target_properties(
+    fx
+    PROPERTIES
+    CXX_STANDARD 20
   )
 endif()
 
@@ -106,24 +118,24 @@ if(WIN32)
   target_sources(
     fx
     PRIVATE
-      src/win32/fx.c
+      src/win32/fx.cc
       src/win32/fx.h
-      src/win32/image.c
+      src/win32/image.cc
       src/win32/image.h
-      src/win32/node.c
-      src/win32/scroll-view.c
+      src/win32/node.cc
+      src/win32/scroll-view.cc
       src/win32/scroll-view.h
-      src/win32/text.c
+      src/win32/text.cc
       src/win32/text.h
-      src/win32/text-input.c
+      src/win32/text-input.cc
       src/win32/text-input.h
-      src/win32/video.c
+      src/win32/video.cc
       src/win32/video.h
-      src/win32/view.c
+      src/win32/view.cc
       src/win32/view.h
-      src/win32/web-view.c
+      src/win32/web-view.cc
       src/win32/web-view.h
-      src/win32/window.c
+      src/win32/window.cc
       src/win32/window.h
   )
 endif()
@@ -134,6 +146,20 @@ target_include_directories(
     include
     $<TARGET_PROPERTY:uv,INTERFACE_INCLUDE_DIRECTORIES>
 )
+
+if(WIN32)
+  target_include_directories(
+    fx
+    PUBLIC
+      src/win32/webview2/include
+  )
+
+  target_link_directories(
+    fx
+    PUBLIC
+      src/win32/webview2/${CMAKE_LIBRARY_ARCHITECTURE}
+  )
+endif()
 
 if(IOS)
   target_link_libraries(
@@ -157,6 +183,13 @@ elseif(APPLE)
   )
 endif()
 
+if(WIN32)
+  target_link_libraries(
+    fx
+    PUBLIC
+      WebView2LoaderStatic
+  )
+endif()
 
 add_library(fx_shared SHARED $<TARGET_OBJECTS:fx>)
 
@@ -171,6 +204,13 @@ target_link_libraries(
   fx_shared
   PUBLIC
     uv
+    $<TARGET_PROPERTY:fx,INTERFACE_LINK_LIBRARIES>
+)
+
+target_link_directories(
+  fx_shared
+  PUBLIC
+    $<TARGET_PROPERTY:fx,INTERFACE_LINK_DIRECTORIES>
 )
 
 add_library(fx_static STATIC $<TARGET_OBJECTS:fx>)
@@ -186,6 +226,13 @@ target_link_libraries(
   fx_static
   PUBLIC
     uv_a
+    $<TARGET_PROPERTY:fx,INTERFACE_LINK_LIBRARIES>
+)
+
+target_link_directories(
+  fx_static
+  PUBLIC
+    $<TARGET_PROPERTY:fx,INTERFACE_LINK_DIRECTORIES>
 )
 
 install(TARGETS fx_shared fx_static)

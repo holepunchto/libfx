@@ -2,9 +2,9 @@
 #include "../shared/fx.h"
 #include "fx.h"
 
-int
+extern "C" int
 fx_platform_init (fx_t *app, fx_platform_t **result) {
-  fx_platform_t *platform = malloc(sizeof(fx_platform_t));
+  fx_platform_t *platform = new fx_platform_t();
 
   platform->on_launch = NULL;
   platform->on_terminate = NULL;
@@ -14,38 +14,38 @@ fx_platform_init (fx_t *app, fx_platform_t **result) {
   return 0;
 }
 
-int
+extern "C" int
 fx_platform_destroy (fx_platform_t *platform) {
-  free(platform);
+  delete platform;
 
   return 0;
 }
 
-int
+extern "C" int
 fx_on_platform_launch (fx_platform_t *platform, fx_launch_cb cb) {
   platform->on_launch = cb;
 
   return 0;
 }
 
-int
+extern "C" int
 fx_on_platform_terminate (fx_platform_t *platform, fx_terminate_cb cb) {
   platform->on_terminate = cb;
 
   return 0;
 }
 
-int
+extern "C" int
 fx_on_platform_suspend (fx_platform_t *platform, fx_suspend_cb cb) {
   return 0;
 }
 
-int
+extern "C" int
 fx_on_platform_resume (fx_platform_t *platform, fx_resume_cb cb) {
   return 0;
 }
 
-int
+extern "C" int
 fx_platform_run (fx_platform_t *platform) {
   if (platform->on_launch) platform->on_launch(fx_main_app);
 
@@ -64,14 +64,14 @@ fx_platform_run (fx_platform_t *platform) {
   return 0;
 }
 
-int
+extern "C" int
 fx_platform_terminate (fx_platform_t *platform) {
   PostQuitMessage(0);
 
   return 0;
 }
 
-int
+extern "C" int
 fx_dispatch (fx_dispatch_cb cb, void *data) {
   return 0;
 }

@@ -1,6 +1,10 @@
 #ifndef FX_SHARED_H
 #define FX_SHARED_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <uv.h>
 
 #include "../../include/fx.h"
@@ -29,5 +33,9 @@ struct fx_worker_s {
   fx_t *worker;
   fx_worker_t *next;
 };
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // FX_SHARED_H

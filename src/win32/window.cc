@@ -59,7 +59,7 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
     if (SetParent(view->handle, handle) == NULL) return -1;
   }
 
-  fx_window_t *window = malloc(sizeof(fx_window_t));
+  fx_window_t *window = new fx_window_t();
 
   window->handle = handle;
 
@@ -77,7 +77,7 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 
 int
 fx_window_destroy (fx_window_t *window) {
-  free(window);
+  delete window;
 
   return 0;
 }

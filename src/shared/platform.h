@@ -2,7 +2,6 @@
 #define FX_PLATFORM_H
 
 #include "../../include/fx.h"
-#include "fx.h"
 
 typedef struct fx_platform_s fx_platform_t;
 
