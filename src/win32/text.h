@@ -3,6 +3,8 @@
 struct fx_text_s {
   fx_node_t node;
 
+  HWND handle;
+
   void *data;
 };
 

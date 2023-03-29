@@ -100,7 +100,9 @@ elseif(APPLE)
       src/darwin/appkit/window.h
       src/darwin/appkit/window.m
   )
-elseif(WIN32)
+endif()
+
+if(WIN32)
   target_sources(
     fx
     PRIVATE

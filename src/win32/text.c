@@ -1,11 +1,34 @@
 #include "text.h"
 #include "../../include/fx.h"
 
+static const char *fx_text_class = "EDIT";
+
 int
 fx_text_init (fx_t *app, float x, float y, float width, float height, fx_text_t **result) {
+  HINSTANCE instance = GetModuleHandle(NULL);
+
+  HWND handle = CreateWindowEx(
+    0,
+    fx_text_class,
+    NULL,
+    WS_VISIBLE | WS_CHILD | ES_READONLY | ES_MULTILINE,
+    (int) x,
+    (int) y,
+    (int) width,
+    (int) height,
+    HWND_MESSAGE,
+    NULL,
+    instance,
+    NULL
+  );
+
+  if (handle == NULL) return -1;
+
   fx_text_t *text = malloc(sizeof(fx_text_t));
 
   text->node.type = fx_text_node;
+
+  text->handle = handle;
 
   *result = text;
 

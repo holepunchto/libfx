@@ -2,6 +2,7 @@
 #include <uv.h>
 
 #include "../../include/fx.h"
+#include "view.h"
 #include "window.h"
 
 static uv_once_t fx_window_class_init = UV_ONCE_INIT;
@@ -53,6 +54,10 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
   );
 
   if (handle == NULL) return -1;
+
+  if (view) {
+    if (SetParent(view->handle, handle) == NULL) return -1;
+  }
 
   fx_window_t *window = malloc(sizeof(fx_window_t));
 

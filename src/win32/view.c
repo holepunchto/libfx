@@ -1,11 +1,34 @@
 #include "view.h"
 #include "../../include/fx.h"
 
+static const char *fx_view_class = "STATIC";
+
 int
 fx_view_init (fx_t *app, float x, float y, float width, float height, fx_view_t **result) {
+  HINSTANCE instance = GetModuleHandle(NULL);
+
+  HWND handle = CreateWindowEx(
+    0,
+    fx_view_class,
+    NULL,
+    WS_VISIBLE | WS_CHILD,
+    (int) x,
+    (int) y,
+    (int) width,
+    (int) height,
+    HWND_MESSAGE,
+    NULL,
+    instance,
+    NULL
+  );
+
+  if (handle == NULL) return -1;
+
   fx_view_t *view = malloc(sizeof(fx_view_t));
 
   view->node.type = fx_view_node;
+
+  view->handle = handle;
 
   *result = view;
 
