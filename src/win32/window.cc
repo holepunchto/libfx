@@ -20,12 +20,12 @@ static void
 on_window_class_init () {
   HINSTANCE instance = GetModuleHandle(NULL);
 
-  WNDCLASSEX window_class = {
-    .cbSize = sizeof(WNDCLASSEX),
-    .lpfnWndProc = on_window_message,
-    .hInstance = instance,
-    .lpszClassName = "FX Window",
-  };
+  WNDCLASSEX window_class;
+
+  window_class.cbSize = sizeof(WNDCLASSEX);
+  window_class.lpfnWndProc = on_window_message;
+  window_class.hInstance = instance;
+  window_class.lpszClassName = "FX Window";
 
   fx_window_class = RegisterClassEx(&window_class);
 

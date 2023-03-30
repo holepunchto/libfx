@@ -1,4 +1,4 @@
-#include "../include/fx.h"
+#include "../../include/fx.h"
 
 struct fx_text_s {
   fx_node_t node;

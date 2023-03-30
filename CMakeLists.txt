@@ -35,7 +35,7 @@ if(WIN32)
   set_target_properties(
     fx
     PROPERTIES
-    CXX_STANDARD 20
+    CXX_STANDARD 17
   )
 endif()
 
