@@ -9,7 +9,6 @@ struct fx_web_view_s {
 
   HWND handle;
 
-  ICoreWebView2Environment *environment;
   ICoreWebView2Controller *controller;
 
   void *data;

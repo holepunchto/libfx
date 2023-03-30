@@ -46,8 +46,6 @@ fx_web_view_prepare (fx_web_view_t *web_view) {
   CreateCoreWebView2Environment(
     Callback<ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler>(
       [=] (HRESULT res, ICoreWebView2Environment *env) noexcept -> HRESULT {
-        env->AddRef();
-
         env->CreateCoreWebView2Controller(
           web_view->handle,
           Callback<ICoreWebView2CreateCoreWebView2ControllerCompletedHandler>(
@@ -59,7 +57,6 @@ fx_web_view_prepare (fx_web_view_t *web_view) {
 
               ctl->put_Bounds(bounds);
 
-              web_view->environment = env;
               web_view->controller = ctl;
 
               ICoreWebView2 *native_web_view;
@@ -158,6 +155,8 @@ fx_web_view_init (fx_t *app, float x, float y, float width, float height, fx_web
 
   web_view->handle = handle;
 
+  web_view->controller = NULL;
+
   web_view->data = NULL;
 
   web_view->on_ready = NULL;
@@ -172,6 +171,10 @@ fx_web_view_init (fx_t *app, float x, float y, float width, float height, fx_web
 
 extern "C" int
 fx_web_view_destroy (fx_web_view_t *web_view) {
+  web_view->controller->Close();
+
+  web_view->controller->Release();
+
   delete web_view;
 
   return 0;
