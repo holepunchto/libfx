@@ -1,6 +1,8 @@
 all: \
+	edge/bridge.h \
 	webkit/bridge.h
 
+edge/bridge.h: bridge.mjs
 webkit/bridge.h: bridge.mjs
 
 %.h: %.js
