@@ -1,7 +1,7 @@
 all: \
-	darwin/bridge.h
+	webkit/bridge.h
 
-darwin/bridge.h: bridge.mjs
+webkit/bridge.h: bridge.mjs
 
 %.h: %.js
 	xxd -i $*.js > $@

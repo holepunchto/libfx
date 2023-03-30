@@ -2,7 +2,7 @@
 #import <WebKit/WebKit.h>
 
 #import "../../include/fx.h"
-#import "../shared/bridge/darwin/bridge.h"
+#import "../shared/bridge/webkit/bridge.h"
 #import "web-view.h"
 
 @implementation FXWebViewDelegate
@@ -31,8 +31,8 @@ fx_web_view_init (fx_t *app, float x, float y, float width, float height, fx_web
   [configuration.userContentController addScriptMessageHandler:delegate
                                                           name:@"bridge"];
 
-  NSString *source = [[NSString alloc] initWithBytes:darwin_bridge_js
-                                              length:darwin_bridge_js_len
+  NSString *source = [[NSString alloc] initWithBytes:webkit_bridge_js
+                                              length:webkit_bridge_js_len
                                             encoding:NSUTF8StringEncoding];
 
   WKUserScript *script = [[WKUserScript alloc] initWithSource:source
