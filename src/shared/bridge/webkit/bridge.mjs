@@ -2,10 +2,10 @@
 
 import { Bridge } from '../bridge.mjs'
 
-class DarwinBridge extends Bridge {
+class WebKitBridge extends Bridge {
   postMessage (message) {
     webkit.messageHandlers.bridge.postMessage(JSON.stringify(message))
   }
 }
 
-globalThis.bridge = new DarwinBridge()
+globalThis.bridge = new WebKitBridge()
