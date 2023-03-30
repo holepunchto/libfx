@@ -64,53 +64,53 @@ if(IOS)
   target_sources(
     fx
     PRIVATE
-      src/darwin/uikit/fx.h
-      src/darwin/uikit/fx.m
-      src/darwin/uikit/image.h
-      src/darwin/uikit/image.m
-      src/darwin/uikit/node.m
-      src/darwin/uikit/screen.h
-      src/darwin/uikit/screen.m
-      src/darwin/uikit/scroll-view.h
-      src/darwin/uikit/scroll-view.m
-      src/darwin/uikit/text.h
-      src/darwin/uikit/text.m
-      src/darwin/uikit/text-input.h
-      src/darwin/uikit/text-input.m
-      src/darwin/uikit/video.h
-      src/darwin/uikit/video.m
-      src/darwin/uikit/view.h
-      src/darwin/uikit/view.m
-      src/darwin/uikit/web-view.h
-      src/darwin/uikit/web-view.m
-      src/darwin/uikit/window.h
-      src/darwin/uikit/window.m
+      src/ios/fx.h
+      src/ios/fx.m
+      src/ios/image.h
+      src/ios/image.m
+      src/ios/node.m
+      src/ios/screen.h
+      src/ios/screen.m
+      src/ios/scroll-view.h
+      src/ios/scroll-view.m
+      src/ios/text.h
+      src/ios/text.m
+      src/ios/text-input.h
+      src/ios/text-input.m
+      src/ios/video.h
+      src/ios/video.m
+      src/ios/view.h
+      src/ios/view.m
+      src/ios/web-view.h
+      src/ios/web-view.m
+      src/ios/window.h
+      src/ios/window.m
   )
 elseif(APPLE)
   target_sources(
     fx
     PRIVATE
-      src/darwin/appkit/fx.h
-      src/darwin/appkit/fx.m
-      src/darwin/appkit/image.h
-      src/darwin/appkit/image.m
-      src/darwin/appkit/node.m
-      src/darwin/appkit/screen.h
-      src/darwin/appkit/screen.m
-      src/darwin/appkit/scroll-view.h
-      src/darwin/appkit/scroll-view.m
-      src/darwin/appkit/text.h
-      src/darwin/appkit/text.m
-      src/darwin/appkit/text-input.h
-      src/darwin/appkit/text-input.m
-      src/darwin/appkit/video.h
-      src/darwin/appkit/video.m
-      src/darwin/appkit/view.h
-      src/darwin/appkit/view.m
-      src/darwin/appkit/web-view.h
-      src/darwin/appkit/web-view.m
-      src/darwin/appkit/window.h
-      src/darwin/appkit/window.m
+      src/darwin/fx.h
+      src/darwin/fx.m
+      src/darwin/image.h
+      src/darwin/image.m
+      src/darwin/node.m
+      src/darwin/screen.h
+      src/darwin/screen.m
+      src/darwin/scroll-view.h
+      src/darwin/scroll-view.m
+      src/darwin/text.h
+      src/darwin/text.m
+      src/darwin/text-input.h
+      src/darwin/text-input.m
+      src/darwin/video.h
+      src/darwin/video.m
+      src/darwin/view.h
+      src/darwin/view.m
+      src/darwin/web-view.h
+      src/darwin/web-view.m
+      src/darwin/window.h
+      src/darwin/window.m
   )
 endif()
 
