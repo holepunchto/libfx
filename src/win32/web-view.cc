@@ -222,7 +222,26 @@ fx_set_web_view_bounds (fx_web_view_t *web_view, float x, float y, float width, 
 
 extern "C" int
 fx_web_view_post_message (fx_web_view_t *web_view, const char *message) {
-  return 0;
+  ICoreWebView2 *view;
+
+  web_view->controller->get_CoreWebView2(&view);
+
+  int str_len = fx_to_wstring(message, -1, NULL, 0);
+  if (str_len < 0) return str_len;
+
+  PWCHAR str = new WCHAR[str_len];
+
+  int err = fx_to_wstring(message, -1, str, str_len);
+  if (err < 0) {
+    delete[] str;
+    return err;
+  }
+
+  HRESULT res = view->PostWebMessageAsJson(str);
+
+  delete[] str;
+
+  return FAILED(res) ? -1 : 0;
 }
 
 extern "C" int
@@ -242,11 +261,11 @@ fx_web_view_load_url (fx_web_view_t *web_view, const char *url, size_t len) {
     return err;
   }
 
-  view->Navigate(str);
+  HRESULT res = view->Navigate(str);
 
   delete[] str;
 
-  return 0;
+  return FAILED(res) ? -1 : 0;
 }
 
 extern "C" int
@@ -266,9 +285,9 @@ fx_web_view_load_html (fx_web_view_t *web_view, const char *html, size_t len) {
     return err;
   }
 
-  view->NavigateToString(str);
+  HRESULT res = view->NavigateToString(str);
 
   delete[] str;
 
-  return 0;
+  return FAILED(res) ? -1 : 0;
 }
