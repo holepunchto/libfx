@@ -65,6 +65,10 @@ fx_web_view_init (fx_t *app, float x, float y, float width, float height, fx_web
 
   *result = web_view;
 
+  dispatch_async(dispatch_get_main_queue(), ^{
+    if (web_view->on_ready) web_view->on_ready(web_view, 0);
+  });
+
   return 0;
 }
 
