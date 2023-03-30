@@ -8,4 +8,4 @@ See [`include/fx.h`](include/fx.h) for the public API.
 
 ## License
 
-ISC
+Apache-2.0
