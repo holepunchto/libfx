@@ -13,5 +13,5 @@ export class Bridge extends EventTarget {
 }
 
 function clone (value) {
-  return JSON.parse(JSON.stringify(value));
+  return JSON.parse(JSON.stringify(value))
 }
