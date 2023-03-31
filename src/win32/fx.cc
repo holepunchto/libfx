@@ -89,16 +89,16 @@ fx_platform_run (fx_platform_t *platform) {
     }
   }
 
-  CoUninitialize();
-
-  if (platform->on_terminate) platform->on_terminate(fx_main_app);
-
   return 0;
 }
 
 extern "C" int
 fx_platform_terminate (fx_platform_t *platform) {
-  PostQuitMessage(0);
+  CoUninitialize();
+
+  if (platform->on_terminate) platform->on_terminate(fx_main_app);
+
+  ExitProcess(0);
 
   return 0;
 }
