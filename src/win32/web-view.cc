@@ -223,6 +223,21 @@ fx_get_web_view_bounds (fx_web_view_t *web_view, float *x, float *y, float *widt
 
 extern "C" int
 fx_set_web_view_bounds (fx_web_view_t *web_view, float x, float y, float width, float height) {
+  BOOL success = SetWindowPos(web_view->handle, NULL, (int) x, (int) y, (int) width, (int) height, 0);
+
+  if (!success) return -1;
+
+  if (web_view->controller) {
+    RECT rect = {};
+
+    rect.top = x;
+    rect.left = y;
+    rect.right = x + width;
+    rect.bottom = y + height;
+
+    web_view->controller->put_Bounds(rect);
+  }
+
   return 0;
 }
 

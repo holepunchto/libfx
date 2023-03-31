@@ -3,6 +3,8 @@
 struct fx_window_s {
   HWND handle;
 
+  fx_view_t *view;
+
   void *data;
 
   fx_window_resize_cb on_resize;

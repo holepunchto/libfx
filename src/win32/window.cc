@@ -27,6 +27,23 @@ on_window_message (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
   case WM_CLOSE:
     if (window->on_close) window->on_close(window);
     break;
+
+  case WM_PAINT:
+    if (window->view) {
+      RECT rect;
+
+      if (GetClientRect(window->handle, &rect)) {
+        SetWindowPos(
+          window->view->handle,
+          NULL,
+          rect.left,
+          rect.top,
+          rect.right - rect.left,
+          rect.bottom - rect.top,
+          0
+        );
+      }
+    }
   }
 
   return res;
@@ -90,6 +107,8 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
   fx_window_t *window = new fx_window_t();
 
   window->handle = handle;
+
+  window->view = view;
 
   window->data = NULL;
 
