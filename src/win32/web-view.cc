@@ -129,7 +129,7 @@ fx_web_view_prepare (fx_web_view_t *web_view) {
 }
 
 extern "C" int
-fx_web_view_init (fx_t *app, float x, float y, float width, float height, fx_web_view_t **result) {
+fx_web_view_init (fx_t *app, float x, float y, float width, float height, fx_web_view_ready_cb cb, fx_web_view_t **result) {
   HINSTANCE instance = GetModuleHandle(NULL);
 
   HWND handle = CreateWindowEx(
@@ -159,7 +159,7 @@ fx_web_view_init (fx_t *app, float x, float y, float width, float height, fx_web
 
   web_view->data = NULL;
 
-  web_view->on_ready = NULL;
+  web_view->on_ready = cb;
   web_view->on_message = NULL;
 
   *result = web_view;
@@ -176,13 +176,6 @@ fx_web_view_destroy (fx_web_view_t *web_view) {
   web_view->controller->Release();
 
   delete web_view;
-
-  return 0;
-}
-
-extern "C" int
-fx_on_web_view_ready (fx_web_view_t *web_view, fx_web_view_ready_cb cb) {
-  web_view->on_ready = cb;
 
   return 0;
 }

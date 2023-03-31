@@ -30,9 +30,7 @@ on_launch (fx_t *app) {
   fx_view_init(app, 0.0, 0.0, 1280.0, 720.0, &view);
 
   fx_web_view_t *web_view;
-  fx_web_view_init(app, 0.0, 0.0, 1280.0, 720.0, &web_view);
-
-  fx_on_web_view_ready(web_view, on_ready);
+  fx_web_view_init(app, 0.0, 0.0, 1280.0, 720.0, on_ready, &web_view);
 
   fx_set_child((fx_node_t *) view, (fx_node_t *) web_view, 0);
 
