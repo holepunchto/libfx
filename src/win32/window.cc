@@ -166,10 +166,16 @@ fx_set_window_data (fx_window_t *window, void *data) {
 
 int
 fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, float *height) {
-  if (x) *x = 0;
-  if (y) *y = 0;
-  if (width) *width = 0;
-  if (height) *height = 0;
+  RECT rect;
+
+  BOOL success = GetWindowRect(window->handle, &rect);
+
+  if (!success) return -1;
+
+  if (x) *x = rect.left;
+  if (y) *y = rect.top;
+  if (width) *width = rect.right - rect.left;
+  if (height) *height = rect.bottom - rect.top;
 
   return 0;
 }
