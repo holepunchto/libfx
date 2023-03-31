@@ -11,9 +11,25 @@ static ATOM fx_window_class;
 
 static LRESULT CALLBACK
 on_window_message (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-  // TODO: Hook into message and forward to handlers.
+  fx_window_t *window = (fx_window_t *) GetWindowLongPtr(hwnd, GWLP_USERDATA);
 
-  return DefWindowProc(hwnd, uMsg, wParam, lParam);
+  LRESULT res = DefWindowProc(hwnd, uMsg, wParam, lParam);
+
+  switch (uMsg) {
+  case WM_SIZING:
+    if (window->on_resize) window->on_resize(window);
+    break;
+
+  case WM_MOVING:
+    if (window->on_move) window->on_move(window);
+    break;
+
+  case WM_CLOSE:
+    if (window->on_close) window->on_close(window);
+    break;
+  }
+
+  return res;
 }
 
 static void
@@ -81,14 +97,19 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
   window->on_move = NULL;
   window->on_minimize = NULL;
   window->on_deminimize = NULL;
+  window->on_close = NULL;
 
   *result = window;
+
+  SetWindowLongPtr(handle, GWLP_USERDATA, (LONG_PTR) window);
 
   return 0;
 }
 
 int
 fx_window_destroy (fx_window_t *window) {
+  DestroyWindow(window->handle);
+
   delete window;
 
   return 0;
