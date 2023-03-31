@@ -57,6 +57,18 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 
   if (view) {
     if (SetParent(view->handle, handle) == NULL) return -1;
+
+    BOOL success = SetWindowPos(
+      view->handle,
+      NULL,
+      (int) x,
+      (int) y,
+      (int) width,
+      (int) height,
+      0
+    );
+
+    if (!success) return -1;
   }
 
   fx_window_t *window = new fx_window_t();
