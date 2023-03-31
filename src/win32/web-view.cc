@@ -183,6 +183,8 @@ fx_web_view_destroy (fx_web_view_t *web_view) {
 
   web_view->controller->Release();
 
+  DestroyWindow(web_view->handle);
+
   delete web_view;
 
   return 0;

@@ -37,6 +37,8 @@ fx_view_init (fx_t *app, float x, float y, float width, float height, fx_view_t 
 
 extern "C" int
 fx_view_destroy (fx_view_t *view) {
+  DestroyWindow(view->handle);
+
   delete view;
 
   return 0;

@@ -37,6 +37,8 @@ fx_text_init (fx_t *app, float x, float y, float width, float height, fx_text_t 
 
 extern "C" int
 fx_text_destroy (fx_text_t *text) {
+  DestroyWindow(text->handle);
+
   delete text;
 
   return 0;
