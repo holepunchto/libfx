@@ -20,7 +20,7 @@ static void
 on_window_class_init () {
   HINSTANCE instance = GetModuleHandle(NULL);
 
-  WNDCLASSEX window_class;
+  WNDCLASSEX window_class = {};
 
   window_class.cbSize = sizeof(WNDCLASSEX);
   window_class.lpfnWndProc = on_window_message;
