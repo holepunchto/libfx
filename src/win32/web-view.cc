@@ -42,8 +42,16 @@ fx_to_string (PCWCHAR wstr, int wstr_len, char *str, int str_len) {
 }
 
 static inline void
-fx_web_view_prepare (fx_web_view_t *web_view) {
-  CreateCoreWebView2Environment(
+fx_web_view_prepare (fx_web_view_t *web_view, const char *data_directory) {
+  WCHAR wdata_directory[MAX_PATH];
+
+  int err = fx_to_wstring(data_directory, -1, wdata_directory, MAX_PATH);
+  assert(err >= 0);
+
+  CreateCoreWebView2EnvironmentWithOptions(
+    NULL,
+    wdata_directory,
+    NULL,
     Callback<ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler>(
       [=] (HRESULT res, ICoreWebView2Environment *env) noexcept -> HRESULT {
         env->CreateCoreWebView2Controller(
@@ -129,7 +137,7 @@ fx_web_view_prepare (fx_web_view_t *web_view) {
 }
 
 extern "C" int
-fx_web_view_init (fx_t *app, float x, float y, float width, float height, fx_web_view_ready_cb cb, fx_web_view_t **result) {
+fx_web_view_init (fx_t *app, float x, float y, float width, float height, const char *data_directory, fx_web_view_ready_cb cb, fx_web_view_t **result) {
   HINSTANCE instance = GetModuleHandle(NULL);
 
   HWND handle = CreateWindowEx(
@@ -164,7 +172,7 @@ fx_web_view_init (fx_t *app, float x, float y, float width, float height, fx_web
 
   *result = web_view;
 
-  fx_web_view_prepare(web_view);
+  fx_web_view_prepare(web_view, data_directory);
 
   return 0;
 }
