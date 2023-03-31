@@ -40,7 +40,7 @@ fx_channel_init (fx_t *app, fx_channel_t *channel, uint32_t capacity, fx_channel
 
   channel->messages = calloc(capacity, sizeof(fx_message_t));
 
-  return 0;
+  return err;
 }
 
 static void

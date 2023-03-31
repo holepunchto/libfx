@@ -88,7 +88,7 @@ fx_init (uv_loop_t *loop, fx_t **result) {
 
   *result = app;
 
-  return 0;
+  return err;
 }
 
 static void
