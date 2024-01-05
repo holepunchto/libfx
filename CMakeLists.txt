@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.25)
 
 project(fx C)
 
@@ -191,7 +191,7 @@ if(WIN32)
   )
 endif()
 
-add_library(fx_shared SHARED $<TARGET_OBJECTS:fx>)
+add_library(fx_shared SHARED)
 
 set_target_properties(
   fx_shared
@@ -203,17 +203,11 @@ set_target_properties(
 target_link_libraries(
   fx_shared
   PUBLIC
+    fx
     uv
-    $<TARGET_PROPERTY:fx,INTERFACE_LINK_LIBRARIES>
 )
 
-target_link_directories(
-  fx_shared
-  PUBLIC
-    $<TARGET_PROPERTY:fx,INTERFACE_LINK_DIRECTORIES>
-)
-
-add_library(fx_static STATIC $<TARGET_OBJECTS:fx>)
+add_library(fx_static STATIC)
 
 set_target_properties(
   fx_static
@@ -225,22 +219,19 @@ set_target_properties(
 target_link_libraries(
   fx_static
   PUBLIC
+    fx
     uv_a
-    $<TARGET_PROPERTY:fx,INTERFACE_LINK_LIBRARIES>
-)
-
-target_link_directories(
-  fx_static
-  PUBLIC
-    $<TARGET_PROPERTY:fx,INTERFACE_LINK_DIRECTORIES>
 )
 
 install(TARGETS fx_shared fx_static)
 
 install(FILES include/fx.h DESTINATION include)
 
+install(DIRECTORY include/fx DESTINATION include)
+
 if(PROJECT_IS_TOP_LEVEL)
   enable_testing()
+
   add_subdirectory(test)
   add_subdirectory(example)
 endif()
