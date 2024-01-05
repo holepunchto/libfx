@@ -150,13 +150,13 @@ target_include_directories(
 if(WIN32)
   target_include_directories(
     fx
-    PRIVATE
+    PUBLIC
       src/win32/webview2/include
   )
 
   target_link_directories(
     fx
-    PRIVATE
+    PUBLIC
       src/win32/webview2/${CMAKE_LIBRARY_ARCHITECTURE}
   )
 endif()
@@ -186,7 +186,7 @@ endif()
 if(WIN32)
   target_link_libraries(
     fx
-    PRIVATE
+    PUBLIC
       WebView2LoaderStatic
   )
 endif()
