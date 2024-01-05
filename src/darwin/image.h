@@ -13,5 +13,7 @@ struct fx_image_s {
 
   FXImage *native_image;
 
+  NSSize size;
+
   void *data;
 };

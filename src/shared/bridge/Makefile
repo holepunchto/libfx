@@ -1,12 +1,10 @@
-all: \
-	edge/bridge.h \
-	webkit/bridge.h
+all: edge/bridge.h webkit/bridge.h
 
 edge/bridge.h: bridge.mjs
 webkit/bridge.h: bridge.mjs
 
 %.h: %.js
-	xxd -i $*.js > $@
+	xxd -i $< > $@
 
 %.js: %.mjs
-	npx esbuild $*.mjs --bundle --log-level=error --outfile=$@
+	npx esbuild $< --bundle --log-level=error --outfile=$@
