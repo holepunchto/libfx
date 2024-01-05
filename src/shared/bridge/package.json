@@ -1,6 +1,6 @@
 {
-  "devDependencies": {
-    "esbuild": "^0.16.7",
+  "dependencies": {
+    "esbuild": "^0.19.11",
     "standard": "^17.0.0"
   }
 }
