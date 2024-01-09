@@ -3,7 +3,7 @@
 
 extern "C" int
 fx_video_init (fx_t *app, const char *url, size_t len, float x, float y, float width, float height, fx_video_t **result) {
-  fx_video_t *video = new fx_video_t();
+  auto video = new fx_video_t();
 
   video->node.type = fx_video_node;
 

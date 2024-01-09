@@ -11,9 +11,9 @@ static ATOM fx_window_class;
 
 static LRESULT CALLBACK
 on_window_message (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-  fx_window_t *window = (fx_window_t *) GetWindowLongPtr(hwnd, GWLP_USERDATA);
+  auto window = reinterpret_cast<fx_window_t *>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
-  LRESULT res = DefWindowProc(hwnd, uMsg, wParam, lParam);
+  auto res = DefWindowProc(hwnd, uMsg, wParam, lParam);
 
   switch (uMsg) {
   case WM_SIZING:
@@ -51,9 +51,11 @@ on_window_message (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 static void
 on_window_class_init () {
-  HINSTANCE instance = GetModuleHandle(NULL);
+  auto instance = GetModuleHandle(NULL);
 
-  WNDCLASSEX window_class = {};
+  WNDCLASSEX window_class;
+
+  ZeroMemory(&window_class, sizeof(WNDCLASSEX));
 
   window_class.cbSize = sizeof(WNDCLASSEX);
   window_class.lpfnWndProc = on_window_message;
@@ -69,17 +71,26 @@ int
 fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float height, fx_window_t **result) {
   uv_once(&fx_window_class_init, on_window_class_init);
 
-  HINSTANCE instance = GetModuleHandle(NULL);
+  RECT rect;
 
-  HWND handle = CreateWindowEx(
+  rect.top = 0;
+  rect.left = 0;
+  rect.right = width;
+  rect.bottom = height;
+
+  AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, FALSE);
+
+  auto instance = GetModuleHandle(NULL);
+
+  auto handle = CreateWindowEx(
     0,
     MAKEINTATOM(fx_window_class),
     NULL,
     WS_OVERLAPPEDWINDOW,
     (int) x,
     (int) y,
-    (int) width,
-    (int) height,
+    (int) rect.right - rect.left,
+    (int) rect.bottom - rect.top,
     NULL,
     NULL,
     instance,
@@ -91,7 +102,7 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
   if (view) {
     if (SetParent(view->handle, handle) == NULL) return -1;
 
-    BOOL success = SetWindowPos(
+    auto success = SetWindowPos(
       view->handle,
       NULL,
       (int) x,
@@ -104,7 +115,7 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
     if (!success) return -1;
   }
 
-  fx_window_t *window = new fx_window_t();
+  auto window = new fx_window_t();
 
   window->handle = handle;
 
@@ -187,7 +198,7 @@ int
 fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, float *height) {
   RECT rect;
 
-  BOOL success = GetWindowRect(window->handle, &rect);
+  auto success = GetWindowRect(window->handle, &rect);
 
   if (!success) return -1;
 

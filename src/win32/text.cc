@@ -5,9 +5,9 @@ static const char *fx_text_class = "EDIT";
 
 extern "C" int
 fx_text_init (fx_t *app, float x, float y, float width, float height, fx_text_t **result) {
-  HINSTANCE instance = GetModuleHandle(NULL);
+  auto instance = GetModuleHandle(NULL);
 
-  HWND handle = CreateWindowEx(
+  auto handle = CreateWindowEx(
     0,
     fx_text_class,
     NULL,
@@ -24,7 +24,7 @@ fx_text_init (fx_t *app, float x, float y, float width, float height, fx_text_t 
 
   if (handle == NULL) return -1;
 
-  fx_text_t *text = new fx_text_t();
+  auto text = new fx_text_t();
 
   text->node.type = fx_text_node;
 
@@ -86,7 +86,7 @@ fx_set_text_bounds (fx_text_t *text, float x, float y, float width, float height
 extern "C" int
 fx_append_text_span (fx_text_t *text, const char *value, size_t len, fx_text_span_t **result) {
   if (result) {
-    fx_text_span_t *span = new fx_text_span_t();
+    auto span = new fx_text_span_t();
 
     span->start = 0;
     span->end = 0;

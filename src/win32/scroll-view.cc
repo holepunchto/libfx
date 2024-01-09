@@ -3,7 +3,7 @@
 
 extern "C" int
 fx_scroll_view_init (fx_t *app, fx_view_t *view, float x, float y, float width, float height, fx_scroll_view_t **result) {
-  fx_scroll_view_t *scroll_view = new fx_scroll_view_t();
+  auto scroll_view = new fx_scroll_view_t();
 
   scroll_view->node.type = fx_scroll_view_node;
 

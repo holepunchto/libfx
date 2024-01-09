@@ -43,9 +43,11 @@ fx_to_string (PCWCHAR wstr, int wstr_len, char *str, int str_len) {
 
 static inline void
 fx_web_view_prepare (fx_web_view_t *web_view, const char *data_directory) {
+  int err;
+
   WCHAR wdata_directory[MAX_PATH];
 
-  int err = fx_to_wstring(data_directory, -1, wdata_directory, MAX_PATH);
+  err = fx_to_wstring(data_directory, -1, wdata_directory, MAX_PATH);
   assert(err >= 0);
 
   CreateCoreWebView2EnvironmentWithOptions(
@@ -103,7 +105,7 @@ fx_web_view_prepare (fx_web_view_t *web_view, const char *data_directory) {
                     int str_len = fx_to_string(message, -1, NULL, 0);
                     assert(str_len > 0);
 
-                    char *str = new char[str_len];
+                    auto str = new char[str_len];
 
                     int err = fx_to_string(message, -1, str, str_len);
                     assert(err > 0);
@@ -138,9 +140,9 @@ fx_web_view_prepare (fx_web_view_t *web_view, const char *data_directory) {
 
 extern "C" int
 fx_web_view_init (fx_t *app, const char *data_directory, float x, float y, float width, float height, fx_web_view_ready_cb cb, fx_web_view_t **result) {
-  HINSTANCE instance = GetModuleHandle(NULL);
+  auto instance = GetModuleHandle(NULL);
 
-  HWND handle = CreateWindowEx(
+  auto handle = CreateWindowEx(
     0,
     fx_web_view_class,
     NULL,
@@ -157,7 +159,7 @@ fx_web_view_init (fx_t *app, const char *data_directory, float x, float y, float
 
   if (handle == NULL) return -1;
 
-  fx_web_view_t *web_view = new fx_web_view_t();
+  auto web_view = new fx_web_view_t();
 
   web_view->node.type = fx_web_view_node;
 
@@ -223,12 +225,12 @@ fx_get_web_view_bounds (fx_web_view_t *web_view, float *x, float *y, float *widt
 
 extern "C" int
 fx_set_web_view_bounds (fx_web_view_t *web_view, float x, float y, float width, float height) {
-  BOOL success = SetWindowPos(web_view->handle, NULL, (int) x, (int) y, (int) width, (int) height, 0);
+  auto success = SetWindowPos(web_view->handle, NULL, (int) x, (int) y, (int) width, (int) height, 0);
 
   if (!success) return -1;
 
   if (web_view->controller) {
-    RECT rect = {};
+    RECT rect;
 
     rect.top = x;
     rect.left = y;
@@ -250,7 +252,7 @@ fx_web_view_post_message (fx_web_view_t *web_view, const char *message) {
   int str_len = fx_to_wstring(message, -1, NULL, 0);
   if (str_len < 0) return str_len;
 
-  PWCHAR str = new WCHAR[str_len];
+  auto str = new WCHAR[str_len];
 
   int err = fx_to_wstring(message, -1, str, str_len);
   if (err < 0) {
@@ -258,7 +260,7 @@ fx_web_view_post_message (fx_web_view_t *web_view, const char *message) {
     return err;
   }
 
-  HRESULT res = view->PostWebMessageAsJson(str);
+  auto res = view->PostWebMessageAsJson(str);
 
   delete[] str;
 
@@ -274,7 +276,7 @@ fx_web_view_load_url (fx_web_view_t *web_view, const char *url, size_t len) {
   int str_len = fx_to_wstring(url, len, NULL, 0);
   if (str_len < 0) return str_len;
 
-  PWCHAR str = new WCHAR[str_len];
+  auto str = new WCHAR[str_len];
 
   int err = fx_to_wstring(url, len, str, str_len);
   if (err < 0) {
@@ -282,7 +284,7 @@ fx_web_view_load_url (fx_web_view_t *web_view, const char *url, size_t len) {
     return err;
   }
 
-  HRESULT res = view->Navigate(str);
+  auto res = view->Navigate(str);
 
   delete[] str;
 
@@ -298,7 +300,7 @@ fx_web_view_load_html (fx_web_view_t *web_view, const char *html, size_t len) {
   int str_len = fx_to_wstring(html, len, NULL, 0);
   if (str_len < 0) return str_len;
 
-  PWCHAR str = new WCHAR[str_len];
+  auto str = new WCHAR[str_len];
 
   int err = fx_to_wstring(html, len, str, str_len);
   if (err < 0) {
@@ -306,7 +308,7 @@ fx_web_view_load_html (fx_web_view_t *web_view, const char *html, size_t len) {
     return err;
   }
 
-  HRESULT res = view->NavigateToString(str);
+  auto res = view->NavigateToString(str);
 
   delete[] str;
 

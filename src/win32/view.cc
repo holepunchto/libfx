@@ -5,9 +5,9 @@ static const char *fx_view_class = "STATIC";
 
 extern "C" int
 fx_view_init (fx_t *app, float x, float y, float width, float height, fx_view_t **result) {
-  HINSTANCE instance = GetModuleHandle(NULL);
+  auto instance = GetModuleHandle(NULL);
 
-  HWND handle = CreateWindowEx(
+  auto handle = CreateWindowEx(
     0,
     fx_view_class,
     NULL,
@@ -24,7 +24,7 @@ fx_view_init (fx_t *app, float x, float y, float width, float height, fx_view_t 
 
   if (handle == NULL) return -1;
 
-  fx_view_t *view = new fx_view_t();
+  auto view = new fx_view_t();
 
   view->node.type = fx_view_node;
 

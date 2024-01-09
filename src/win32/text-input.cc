@@ -3,7 +3,7 @@
 
 extern "C" int
 fx_text_input_init (fx_t *app, float x, float y, float width, float height, fx_text_input_t **result) {
-  fx_text_input_t *text_input = new fx_text_input_t();
+  auto text_input = new fx_text_input_t();
 
   text_input->node.type = fx_text_input_node;
 

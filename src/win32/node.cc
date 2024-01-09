@@ -78,9 +78,11 @@ fx_set_child (fx_node_t *parent, fx_node_t *child, size_t index) {
 
 extern "C" int
 fx_unset_child (fx_node_t *parent, fx_node_t *child, size_t index) {
+  int err;
+
   HWND child_window;
 
-  int err = fx_get_child_window(child, &child_window);
+  err = fx_get_child_window(child, &child_window);
   if (err < 0) return err;
 
   if (SetParent(child_window, HWND_MESSAGE) == NULL) return -1;

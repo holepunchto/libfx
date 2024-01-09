@@ -12,15 +12,15 @@ static DWORD fx_main_thread_id = 0;
 
 static inline void
 on_dispatch (MSG msg) {
-  fx_dispatch_cb cb = (fx_dispatch_cb) msg.wParam;
-  void *data = (void *) msg.lParam;
+  auto cb = reinterpret_cast<fx_dispatch_cb>(msg.wParam);
+  auto data = reinterpret_cast<void *>(msg.lParam);
 
   cb(fx_main_app, data);
 }
 
 extern "C" int
 fx_platform_init (fx_t *app, fx_platform_t **result) {
-  fx_platform_t *platform = new fx_platform_t();
+  auto platform = new fx_platform_t();
 
   platform->on_launch = NULL;
   platform->on_terminate = NULL;
@@ -63,7 +63,7 @@ fx_on_platform_resume (fx_platform_t *platform, fx_resume_cb cb) {
 
 extern "C" int
 fx_platform_run (fx_platform_t *platform) {
-  HRESULT res = CoInitialize(NULL);
+  auto res = CoInitialize(NULL);
 
   if (FAILED(res)) return -1;
 
@@ -107,7 +107,7 @@ extern "C" int
 fx_dispatch (fx_dispatch_cb cb, void *data) {
   assert(fx_main_thread_id);
 
-  BOOL success = PostThreadMessage(fx_main_thread_id, fx_msg_dispatch, (WPARAM) cb, (LPARAM) data);
+  auto success = PostThreadMessage(fx_main_thread_id, fx_msg_dispatch, (WPARAM) cb, (LPARAM) data);
 
   return success ? 0 : -1;
 }

@@ -5,5 +5,7 @@ struct fx_image_s {
 
   HWND handle;
 
+  HBITMAP bitmap;
+
   void *data;
 };
