@@ -25,8 +25,20 @@ on_image_message (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
       BITMAP bitmap;
 
-      if (GetObject(image->bitmap, sizeof(BITMAP), &bitmap)) {
-        BitBlt(hdc, 0, 0, bitmap.bmWidth, bitmap.bmHeight, hdc_compatible, 0, 0, SRCCOPY);
+      auto success = GetObject(image->bitmap, sizeof(BITMAP), &bitmap);
+
+      if (success) {
+        BitBlt(
+          hdc,
+          0,
+          0,
+          bitmap.bmWidth,
+          bitmap.bmHeight,
+          hdc_compatible,
+          0,
+          0,
+          SRCCOPY
+        );
       }
 
       DeleteDC(hdc_compatible);
@@ -116,10 +128,6 @@ fx_image_load (fx_image_t *image, const uint8_t *pixels, int width, int height, 
 
   auto hdc = CreateCompatibleDC(hdc_window);
 
-  image->bitmap = CreateCompatibleBitmap(hdc, width, height);
-
-  SetBitmapBits(image->bitmap, stride * height, pixels);
-
   BITMAPINFO bmi;
 
   ZeroMemory(&bmi, sizeof(BITMAPINFO));
@@ -133,7 +141,11 @@ fx_image_load (fx_image_t *image, const uint8_t *pixels, int width, int height, 
 
   uint8_t *data;
 
-  image->bitmap = CreateDIBSection(hdc, &bmi, DIB_RGB_COLORS, reinterpret_cast<void **>(&data), NULL, 0);
+  auto bitmap = CreateDIBSection(hdc, &bmi, DIB_RGB_COLORS, reinterpret_cast<void **>(&data), NULL, 0);
+
+  if (bitmap == NULL) goto err;
+
+  image->bitmap = bitmap;
 
   for (int y = 0; y < height; y++) {
     for (int x = 0; x < width * 4; x += 4) {
@@ -159,6 +171,13 @@ fx_image_load (fx_image_t *image, const uint8_t *pixels, int width, int height, 
   ReleaseDC(image->handle, hdc_window);
 
   return 0;
+
+err:
+  DeleteDC(hdc);
+
+  ReleaseDC(image->handle, hdc_window);
+
+  return -1;
 }
 
 extern "C" int
