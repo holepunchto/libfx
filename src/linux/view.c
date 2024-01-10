@@ -16,7 +16,18 @@ fx_view_init (fx_t *app, float x, float y, float width, float height, fx_view_t 
 
   view->handle = GTK_FIXED(handle);
 
+  view->parent = NULL;
+
+  view->bounds.x = x;
+  view->bounds.y = y;
+  view->bounds.width = width;
+  view->bounds.height = height;
+
   *result = view;
+
+  gtk_widget_set_visible(handle, true);
+
+  gtk_widget_set_size_request(handle, width, height);
 
   return 0;
 }
@@ -44,15 +55,20 @@ fx_set_view_data (fx_view_t *view, void *data) {
 
 int
 fx_get_view_bounds (fx_view_t *view, float *x, float *y, float *width, float *height) {
-  if (x) *x = 0;
-  if (y) *y = 0;
-  if (width) *width = 0;
-  if (height) *height = 0;
+  if (x) *x = view->bounds.x;
+  if (y) *y = view->bounds.y;
+  if (width) *width = view->bounds.width;
+  if (height) *height = view->bounds.height;
 
   return 0;
 }
 
 int
 fx_set_view_bounds (fx_view_t *view, float x, float y, float width, float height) {
+  view->bounds.x = x;
+  view->bounds.y = y;
+  view->bounds.width = width;
+  view->bounds.height = height;
+
   return 0;
 }

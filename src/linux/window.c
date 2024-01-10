@@ -17,15 +17,7 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 
   window->handle = GTK_WINDOW(handle);
 
-  gtk_application_add_window(app->platform->app, window->handle);
-
-  gtk_window_set_default_size(window->handle, width, height);
-
   window->view = view;
-
-  if (view) {
-    gtk_window_set_child(window->handle, GTK_WIDGET(view->handle));
-  }
 
   window->data = NULL;
 
@@ -36,6 +28,12 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
   window->on_close = NULL;
 
   *result = window;
+
+  gtk_application_add_window(app->platform->app, window->handle);
+
+  if (view) {
+    gtk_window_set_child(window->handle, GTK_WIDGET(view->handle));
+  }
 
   return 0;
 }

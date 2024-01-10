@@ -7,5 +7,14 @@ struct fx_view_s {
 
   GtkFixed *handle;
 
+  GtkWidget *parent;
+
+  struct {
+    float x;
+    float y;
+    float width;
+    float height;
+  } bounds;
+
   void *data;
 };
