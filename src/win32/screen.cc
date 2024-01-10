@@ -1,5 +1,5 @@
-#include "../../include/fx.h"
 #include "screen.h"
+#include "../../include/fx.h"
 
 int
 fx_screen_destroy (fx_screen_t *screen) {

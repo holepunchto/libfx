@@ -5,7 +5,7 @@
 
 int
 fx_image_init (fx_t *app, float x, float y, float width, float height, fx_image_t **result) {
-  fx_image_t* image = malloc(sizeof(fx_image_t));
+  fx_image_t *image = malloc(sizeof(fx_image_t));
 
   image->node.type = fx_image_node;
 
