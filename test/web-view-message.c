@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "../include/fx.h"
 
 static void

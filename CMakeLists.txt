@@ -140,6 +140,32 @@ if(WIN32)
   )
 endif()
 
+if(LINUX)
+  target_sources(
+    fx
+    PRIVATE
+      src/linux/fx.c
+      src/linux/fx.h
+      src/linux/image.c
+      src/linux/image.h
+      src/linux/node.c
+      src/linux/scroll-view.c
+      src/linux/scroll-view.h
+      src/linux/text.c
+      src/linux/text.h
+      src/linux/text-input.c
+      src/linux/text-input.h
+      src/linux/video.c
+      src/linux/video.h
+      src/linux/view.c
+      src/linux/view.h
+      src/linux/web-view.c
+      src/linux/web-view.h
+      src/linux/window.c
+      src/linux/window.h
+  )
+endif()
+
 target_include_directories(
   fx
   PUBLIC
@@ -188,6 +214,18 @@ if(WIN32)
     fx
     PUBLIC
       WebView2LoaderStatic
+  )
+endif()
+
+if(LINUX)
+  find_package(PkgConfig REQUIRED)
+
+  pkg_check_modules(GTK4 REQUIRED IMPORTED_TARGET gtk4)
+
+  target_link_libraries(
+    fx
+    PUBLIC
+      PkgConfig::GTK4
   )
 endif()
 

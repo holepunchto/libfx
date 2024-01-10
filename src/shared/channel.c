@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <uv.h>
+#include <string.h>
 
 #include "../../include/fx.h"
 #include "channel.h"

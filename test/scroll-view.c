@@ -1,3 +1,4 @@
+#include <string.h>
 #include <uv.h>
 
 #include "../include/fx.h"

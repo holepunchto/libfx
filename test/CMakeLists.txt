@@ -7,6 +7,7 @@ list(APPEND tests
   video
   web-view
   web-view-message
+  window
 )
 
 foreach(test IN LISTS tests)
