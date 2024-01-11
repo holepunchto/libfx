@@ -11,9 +11,7 @@
       didReceiveScriptMessage:(WKScriptMessage *)message {
   fx_web_view_t *web_view = ((FXWebView *) message.webView).fxWebView;
 
-  if (web_view->on_message != NULL) {
-    web_view->on_message(web_view, [message.body UTF8String]);
-  }
+  if (web_view->on_message != NULL) web_view->on_message(web_view, [message.body UTF8String]);
 }
 
 @end
@@ -58,7 +56,7 @@ fx_web_view_init (fx_t *app, const char *data_directory, float x, float y, float
 
   web_view->node.type = fx_web_view_node;
 
-  web_view->native_web_view = native_web_view;
+  web_view->handle = native_web_view;
 
   web_view->data = NULL;
 
@@ -78,7 +76,7 @@ fx_web_view_init (fx_t *app, const char *data_directory, float x, float y, float
 
 int
 fx_web_view_destroy (fx_web_view_t *web_view) {
-  [web_view->native_web_view release];
+  [web_view->handle release];
 
   free(web_view);
 
@@ -108,7 +106,7 @@ fx_set_web_view_data (fx_web_view_t *web_view, void *data) {
 
 int
 fx_get_web_view_bounds (fx_web_view_t *web_view, float *x, float *y, float *width, float *height) {
-  NSRect frame = web_view->native_web_view.frame;
+  NSRect frame = web_view->handle.frame;
 
   if (x) *x = frame.origin.x;
   if (y) *y = frame.origin.y;
@@ -120,7 +118,7 @@ fx_get_web_view_bounds (fx_web_view_t *web_view, float *x, float *y, float *widt
 
 int
 fx_set_web_view_bounds (fx_web_view_t *web_view, float x, float y, float width, float height) {
-  web_view->native_web_view.frame = CGRectMake(x, y, width, height);
+  web_view->handle.frame = CGRectMake(x, y, width, height);
 
   return 0;
 }
@@ -129,8 +127,8 @@ int
 fx_web_view_post_message (fx_web_view_t *web_view, const char *message) {
   NSString *js = [[NSString alloc] initWithFormat:@"globalThis.bridge.dispatchMessage(%s)", message];
 
-  [web_view->native_web_view evaluateJavaScript:js
-                              completionHandler:nil];
+  [web_view->handle evaluateJavaScript:js
+                     completionHandler:nil];
 
   [js release];
 
@@ -139,14 +137,14 @@ fx_web_view_post_message (fx_web_view_t *web_view, const char *message) {
 
 int
 fx_web_view_load_url (fx_web_view_t *web_view, const char *url, size_t len) {
-  [web_view->native_web_view loadRequest:[[NSURLRequest alloc] initWithURL:[[NSURL alloc] initWithString:[[NSString alloc] initWithBytes:url length:len encoding:NSUTF8StringEncoding]]]];
+  [web_view->handle loadRequest:[[NSURLRequest alloc] initWithURL:[[NSURL alloc] initWithString:[[NSString alloc] initWithBytes:url length:len encoding:NSUTF8StringEncoding]]]];
 
   return 0;
 }
 
 int
 fx_web_view_load_html (fx_web_view_t *web_view, const char *html, size_t len) {
-  [web_view->native_web_view loadHTMLString:[[NSString alloc] initWithBytes:html length:len encoding:NSUTF8StringEncoding] baseURL:NULL];
+  [web_view->handle loadHTMLString:[[NSString alloc] initWithBytes:html length:len encoding:NSUTF8StringEncoding] baseURL:NULL];
 
   return 0;
 }

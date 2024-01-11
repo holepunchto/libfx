@@ -11,9 +11,7 @@
 - (void)textDidChange:(NSNotification *)notification {
   fx_text_input_t *text_input = ((FXTextInput *) notification.object).fxTextInput;
 
-  if (text_input->on_change != NULL) {
-    text_input->on_change(text_input);
-  }
+  if (text_input->on_change != NULL) text_input->on_change(text_input);
 }
 
 @end
@@ -36,7 +34,7 @@ fx_text_input_init (fx_t *app, float x, float y, float width, float height, fx_t
 
   text_input->node.type = fx_text_input_node;
 
-  text_input->native_text_input = native_text_input;
+  text_input->handle = native_text_input;
 
   native_text_input.fxTextInput = text_input;
 
@@ -47,7 +45,7 @@ fx_text_input_init (fx_t *app, float x, float y, float width, float height, fx_t
 
 int
 fx_text_input_destroy (fx_text_input_t *text_input) {
-  [text_input->native_text_input release];
+  [text_input->handle release];
 
   free(text_input);
 
@@ -77,7 +75,7 @@ fx_set_text_input_data (fx_text_input_t *text_input, void *data) {
 
 int
 fx_get_text_input_bounds (fx_text_input_t *text_input, float *x, float *y, float *width, float *height) {
-  NSRect frame = text_input->native_text_input.frame;
+  NSRect frame = text_input->handle.frame;
 
   if (x) *x = frame.origin.x;
   if (y) *y = frame.origin.y;
@@ -89,57 +87,57 @@ fx_get_text_input_bounds (fx_text_input_t *text_input, float *x, float *y, float
 
 int
 fx_set_text_input_bounds (fx_text_input_t *text_input, float x, float y, float width, float height) {
-  text_input->native_text_input.frame = CGRectMake(x, y, width, height);
+  text_input->handle.frame = CGRectMake(x, y, width, height);
 
   return 0;
 }
 
 char *
 fx_get_text_input_value (fx_text_input_t *text_input) {
-  const char *value = [text_input->native_text_input.stringValue cStringUsingEncoding:NSUTF8StringEncoding];
+  const char *value = [text_input->handle.stringValue cStringUsingEncoding:NSUTF8StringEncoding];
 
   return strdup(value);
 }
 
 int
 fx_set_text_input_value (fx_text_input_t *text_input, const char *value, size_t len) {
-  [text_input->native_text_input setStringValue:[[NSString alloc] initWithBytes:value length:len encoding:NSUTF8StringEncoding]];
+  [text_input->handle setStringValue:[[NSString alloc] initWithBytes:value length:len encoding:NSUTF8StringEncoding]];
 
   return 0;
 }
 
 bool
 fx_is_text_input_enabled (fx_text_input_t *text_input) {
-  return text_input->native_text_input.enabled;
+  return text_input->handle.enabled;
 }
 
 int
 fx_set_text_input_enabled (fx_text_input_t *text_input, bool enabled) {
-  text_input->native_text_input.enabled = enabled;
+  text_input->handle.enabled = enabled;
 
   return 0;
 }
 
 bool
 fx_is_text_input_selectable (fx_text_input_t *text_input) {
-  return text_input->native_text_input.selectable;
+  return text_input->handle.selectable;
 }
 
 int
 fx_set_text_input_selectable (fx_text_input_t *text_input, bool selectable) {
-  text_input->native_text_input.selectable = selectable;
+  text_input->handle.selectable = selectable;
 
   return 0;
 }
 
 bool
 fx_is_text_input_editable (fx_text_input_t *text_input) {
-  return text_input->native_text_input.editable;
+  return text_input->handle.editable;
 }
 
 int
 fx_set_text_input_editable (fx_text_input_t *text_input, bool editable) {
-  text_input->native_text_input.editable = editable;
+  text_input->handle.editable = editable;
 
   return 0;
 }

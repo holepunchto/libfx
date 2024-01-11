@@ -11,7 +11,7 @@
 struct fx_view_s {
   fx_node_t node;
 
-  FXView *native_view;
+  __unsafe_unretained FXView *handle;
 
   void *data;
 };

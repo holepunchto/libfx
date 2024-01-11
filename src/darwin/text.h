@@ -13,7 +13,7 @@
 struct fx_text_s {
   fx_node_t node;
 
-  FXText *native_text;
+  __unsafe_unretained FXText *handle;
 
   void *data;
 };

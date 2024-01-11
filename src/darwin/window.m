@@ -9,25 +9,19 @@
 - (void)windowDidResize:(NSNotification *)notification {
   fx_window_t *window = ((FXWindow *) notification.object).fxWindow;
 
-  if (window->on_resize != NULL) {
-    window->on_resize(window);
-  }
+  if (window->on_resize != NULL) window->on_resize(window);
 }
 
 - (void)windowDidMove:(NSNotification *)notification {
   fx_window_t *window = ((FXWindow *) notification.object).fxWindow;
 
-  if (window->on_move != NULL) {
-    window->on_move(window);
-  }
+  if (window->on_move != NULL) window->on_move(window);
 }
 
 - (void)windowWillClose:(NSNotification *)notification {
   fx_window_t *window = ((FXWindow *) notification.object).fxWindow;
 
-  if (window->on_close != NULL) {
-    window->on_close(window);
-  }
+  if (window->on_close != NULL) window->on_close(window);
 }
 
 @end
@@ -47,7 +41,7 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
   native_window.delegate = [[FXWindowDelegate alloc] init];
 
   if (view) {
-    native_window.contentView = view->native_view;
+    native_window.contentView = view->handle;
   }
 
   fx_window_t *window = malloc(sizeof(fx_window_t));
@@ -71,6 +65,7 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 
 int
 fx_window_destroy (fx_window_t *window) {
+  [window->native_window.delegate release];
   [window->native_window release];
 
   free(window);

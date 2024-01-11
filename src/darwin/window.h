@@ -13,7 +13,7 @@
 @end
 
 struct fx_window_s {
-  FXWindow *native_window;
+  __unsafe_unretained FXWindow *native_window;
 
   void *data;
 

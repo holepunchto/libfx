@@ -24,7 +24,7 @@ fx_video_init (fx_t *app, const char *url, size_t len, float x, float y, float w
 
   video->node.type = fx_video_node;
 
-  video->native_video = native_video;
+  video->handle = native_video;
 
   native_video.fxVideo = video;
 
@@ -33,7 +33,8 @@ fx_video_init (fx_t *app, const char *url, size_t len, float x, float y, float w
 
 int
 fx_video_destroy (fx_video_t *video) {
-  [video->native_video release];
+  [video->handle.player release];
+  [video->handle release];
 
   free(video);
 
@@ -56,7 +57,7 @@ fx_set_video_data (fx_video_t *video, void *data) {
 
 int
 fx_get_video_bounds (fx_video_t *video, float *x, float *y, float *width, float *height) {
-  NSRect frame = video->native_video.frame;
+  NSRect frame = video->handle.frame;
 
   if (x) *x = frame.origin.x;
   if (y) *y = frame.origin.y;
@@ -68,21 +69,21 @@ fx_get_video_bounds (fx_video_t *video, float *x, float *y, float *width, float 
 
 int
 fx_set_video_bounds (fx_video_t *video, float x, float y, float width, float height) {
-  video->native_video.frame = CGRectMake(x, y, width, height);
+  video->handle.frame = CGRectMake(x, y, width, height);
 
   return 0;
 }
 
 int
 fx_play_video (fx_video_t *video) {
-  [video->native_video.player play];
+  [video->handle.player play];
 
   return 0;
 }
 
 int
 fx_pause_video (fx_video_t *video) {
-  [video->native_video.player pause];
+  [video->handle.player pause];
 
   return 0;
 }

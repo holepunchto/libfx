@@ -11,7 +11,7 @@
 struct fx_scroll_view_s {
   fx_node_t node;
 
-  FXScrollView *native_scroll_view;
+  FXScrollView *handle;
 
   void *data;
 };

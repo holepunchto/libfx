@@ -22,7 +22,7 @@ fx_text_init (fx_t *app, float x, float y, float width, float height, fx_text_t 
 
   text->node.type = fx_text_node;
 
-  text->native_text = native_text;
+  text->handle = native_text;
 
   native_text.fxText = text;
 
@@ -33,7 +33,7 @@ fx_text_init (fx_t *app, float x, float y, float width, float height, fx_text_t 
 
 int
 fx_text_destroy (fx_text_t *text) {
-  [text->native_text release];
+  [text->handle release];
 
   free(text);
 
@@ -56,7 +56,7 @@ fx_set_text_data (fx_text_t *text, void *data) {
 
 int
 fx_get_text_bounds (fx_text_t *text, float *x, float *y, float *width, float *height) {
-  NSRect frame = text->native_text.frame;
+  NSRect frame = text->handle.frame;
 
   if (x) *x = frame.origin.x;
   if (y) *y = frame.origin.y;
@@ -68,8 +68,8 @@ fx_get_text_bounds (fx_text_t *text, float *x, float *y, float *width, float *he
 
 int
 fx_get_text_bounds_used (fx_text_t *text, float *x, float *y, float *width, float *height) {
-  NSLayoutManager *layout = [text->native_text layoutManager];
-  NSTextContainer *container = [text->native_text textContainer];
+  NSLayoutManager *layout = [text->handle layoutManager];
+  NSTextContainer *container = [text->handle textContainer];
 
   [layout ensureLayoutForTextContainer:container];
 
@@ -85,17 +85,17 @@ fx_get_text_bounds_used (fx_text_t *text, float *x, float *y, float *width, floa
 
 int
 fx_set_text_bounds (fx_text_t *text, float x, float y, float width, float height) {
-  text->native_text.frame = CGRectMake(x, y, width, height);
+  text->handle.frame = CGRectMake(x, y, width, height);
 
   return 0;
 }
 
 int
 fx_append_text_span (fx_text_t *text, const char *value, size_t len, fx_text_span_t **result) {
-  NSUInteger start = [text->native_text.textStorage length];
+  NSUInteger start = [text->handle.textStorage length];
   NSUInteger end = start + len;
 
-  [text->native_text.textStorage appendAttributedString:[[NSAttributedString alloc] initWithString:[[NSString alloc] initWithBytes:value length:len encoding:NSUTF8StringEncoding]]];
+  [text->handle.textStorage appendAttributedString:[[NSAttributedString alloc] initWithString:[[NSString alloc] initWithBytes:value length:len encoding:NSUTF8StringEncoding]]];
 
   if (result) {
     fx_text_span_t *span = malloc(sizeof(fx_text_span_t));

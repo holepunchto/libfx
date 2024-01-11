@@ -20,7 +20,7 @@ fx_image_init (fx_t *app, float x, float y, float width, float height, fx_image_
 
   image->node.type = fx_image_node;
 
-  image->native_image = native_image;
+  image->handle = native_image;
 
   image->size = NSMakeSize(width, height);
 
@@ -33,8 +33,9 @@ fx_image_init (fx_t *app, float x, float y, float width, float height, fx_image_
 
 int
 fx_image_destroy (fx_image_t *image) {
-  [image->native_image.image release];
-  [image->native_image release];
+  if (image->handle.image) [image->handle.image release];
+
+  [image->handle release];
 
   free(image);
 
@@ -63,7 +64,7 @@ fx_image_load (fx_image_t *image, const uint8_t *pixels, int width, int height, 
     kCGRenderingIntentDefault
   );
 
-  image->native_image.image = [[NSImage alloc] initWithCGImage:ref size:image->size];
+  image->handle.image = [[NSImage alloc] initWithCGImage:ref size:image->size];
 
   CGColorSpaceRelease(color_space);
 
@@ -90,7 +91,7 @@ fx_set_image_data (fx_image_t *image, void *data) {
 
 int
 fx_get_image_bounds (fx_image_t *image, float *x, float *y, float *width, float *height) {
-  NSRect frame = image->native_image.frame;
+  NSRect frame = image->handle.frame;
 
   if (x) *x = frame.origin.x;
   if (y) *y = frame.origin.y;
@@ -102,7 +103,7 @@ fx_get_image_bounds (fx_image_t *image, float *x, float *y, float *width, float 
 
 int
 fx_set_image_bounds (fx_image_t *image, float x, float y, float width, float height) {
-  image->native_image.frame = CGRectMake(x, y, width, height);
+  image->handle.frame = CGRectMake(x, y, width, height);
 
   return 0;
 }

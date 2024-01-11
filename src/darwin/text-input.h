@@ -15,7 +15,7 @@
 struct fx_text_input_s {
   fx_node_t node;
 
-  FXTextInput *native_text_input;
+  FXTextInput *handle;
 
   void *data;
 

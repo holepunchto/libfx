@@ -35,6 +35,8 @@ fx_platform_init (fx_t *app, fx_platform_t **result) {
 
   if (fx_is_main(app)) {
     native_app.delegate = [[FXDelegate alloc] init];
+  } else {
+    [native_app.delegate retain];
   }
 
   platform->native_app = native_app;
@@ -49,6 +51,8 @@ fx_platform_init (fx_t *app, fx_platform_t **result) {
 
 int
 fx_platform_destroy (fx_platform_t *platform) {
+  [platform->native_app.delegate release];
+
   free(platform);
 
   return 0;

@@ -19,7 +19,7 @@ fx_view_init (fx_t *app, float x, float y, float width, float height, fx_view_t 
 
   view->node.type = fx_view_node;
 
-  view->native_view = native_view;
+  view->handle = native_view;
 
   native_view.fxView = view;
 
@@ -30,7 +30,7 @@ fx_view_init (fx_t *app, float x, float y, float width, float height, fx_view_t 
 
 int
 fx_view_destroy (fx_view_t *view) {
-  [view->native_view release];
+  [view->handle release];
 
   free(view);
 
@@ -53,7 +53,7 @@ fx_set_view_data (fx_view_t *view, void *data) {
 
 int
 fx_get_view_bounds (fx_view_t *view, float *x, float *y, float *width, float *height) {
-  NSRect frame = view->native_view.frame;
+  NSRect frame = view->handle.frame;
 
   if (x) *x = frame.origin.x;
   if (y) *y = frame.origin.y;
@@ -65,7 +65,7 @@ fx_get_view_bounds (fx_view_t *view, float *x, float *y, float *width, float *he
 
 int
 fx_set_view_bounds (fx_view_t *view, float x, float y, float width, float height) {
-  view->native_view.frame = CGRectMake(x, y, width, height);
+  view->handle.frame = CGRectMake(x, y, width, height);
 
   return 0;
 }

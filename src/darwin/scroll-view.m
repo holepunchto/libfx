@@ -19,14 +19,14 @@ fx_scroll_view_init (fx_t *app, fx_view_t *view, float x, float y, float width, 
   native_scroll_view.drawsBackground = NO;
 
   if (view) {
-    native_scroll_view.documentView = view->native_view;
+    native_scroll_view.documentView = view->handle;
   }
 
   fx_scroll_view_t *scroll_view = malloc(sizeof(fx_scroll_view_t));
 
   scroll_view->node.type = fx_scroll_view_node;
 
-  scroll_view->native_scroll_view = native_scroll_view;
+  scroll_view->handle = native_scroll_view;
 
   native_scroll_view.fxScrollView = scroll_view;
 
@@ -37,7 +37,7 @@ fx_scroll_view_init (fx_t *app, fx_view_t *view, float x, float y, float width, 
 
 int
 fx_scroll_view_destroy (fx_scroll_view_t *scroll_view) {
-  [scroll_view->native_scroll_view release];
+  [scroll_view->handle release];
 
   free(scroll_view);
 
@@ -60,7 +60,7 @@ fx_set_scroll_view_data (fx_scroll_view_t *scroll_view, void *data) {
 
 int
 fx_get_scroll_view_bounds (fx_scroll_view_t *scroll_view, float *x, float *y, float *width, float *height) {
-  NSRect frame = scroll_view->native_scroll_view.frame;
+  NSRect frame = scroll_view->handle.frame;
 
   if (x) *x = frame.origin.x;
   if (y) *y = frame.origin.y;
@@ -72,7 +72,7 @@ fx_get_scroll_view_bounds (fx_scroll_view_t *scroll_view, float *x, float *y, fl
 
 int
 fx_set_scroll_view_bounds (fx_scroll_view_t *scroll_view, float x, float y, float width, float height) {
-  scroll_view->native_scroll_view.frame = CGRectMake(x, y, width, height);
+  scroll_view->handle.frame = CGRectMake(x, y, width, height);
 
   return 0;
 }

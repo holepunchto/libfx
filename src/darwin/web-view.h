@@ -16,7 +16,7 @@
 struct fx_web_view_s {
   fx_node_t node;
 
-  FXWebView *native_web_view;
+  FXWebView *handle;
 
   void *data;
 
