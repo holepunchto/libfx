@@ -14,8 +14,12 @@ typedef void (*fx_window_minimize_cb)(fx_window_t *window);
 typedef void (*fx_window_deminimize_cb)(fx_window_t *window);
 typedef void (*fx_window_close_cb)(fx_window_t *window);
 
+enum {
+  fx_window_no_frame = 0x1
+};
+
 int
-fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float height, fx_window_t **result);
+fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float height, int flags, fx_window_t **result);
 
 int
 fx_window_destroy (fx_window_t *window);

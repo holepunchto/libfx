@@ -68,7 +68,7 @@ on_window_class_init () {
 }
 
 int
-fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float height, fx_window_t **result) {
+fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float height, int flags, fx_window_t **result) {
   uv_once(&fx_window_class_init, on_window_class_init);
 
   RECT rect;

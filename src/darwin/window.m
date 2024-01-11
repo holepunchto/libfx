@@ -31,12 +31,25 @@
 @end
 
 int
-fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float height, fx_window_t **result) {
+fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float height, int flags, fx_window_t **result) {
+  NSWindowStyleMask style;
+
+  if (flags & fx_window_no_frame) {
+    style = NSWindowStyleMaskTitled | NSWindowStyleMaskFullSizeContentView;
+  } else {
+    style = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable;
+  }
+
   FXWindow *native_window = [[FXWindow alloc]
     initWithContentRect:CGRectMake(x, y, width, height)
-              styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable
+              styleMask:style
                 backing:NSBackingStoreBuffered
                   defer:NO];
+
+  if (flags & fx_window_no_frame) {
+    native_window.titleVisibility = NSWindowTitleHidden;
+    native_window.titlebarAppearsTransparent = YES;
+  }
 
   native_window.delegate = [[FXWindowDelegate alloc] init];
 

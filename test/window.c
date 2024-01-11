@@ -6,7 +6,7 @@ on_launch (fx_t *app) {
   fx_view_init(app, 0.0, 0.0, 256.0, 256.0, &view);
 
   fx_window_t *window;
-  fx_window_init(app, view, 0.0, 0.0, 256.0, 256.0, &window);
+  fx_window_init(app, view, 0.0, 0.0, 256.0, 256.0, fx_window_no_frame, &window);
 
   fx_show_window(window);
 }
