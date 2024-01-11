@@ -2,8 +2,11 @@
 
 static void
 on_launch (fx_t *app) {
+  fx_view_t *view;
+  fx_view_init(app, 0.0, 0.0, 256.0, 256.0, &view);
+
   fx_window_t *window;
-  fx_window_init(app, NULL, 0.0, 0.0, 200.0, 200.0, &window);
+  fx_window_init(app, view, 0.0, 0.0, 256.0, 256.0, &window);
 
   fx_show_window(window);
 }
