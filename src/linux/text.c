@@ -16,6 +16,13 @@ fx_text_init (fx_t *app, float x, float y, float width, float height, fx_text_t 
 
   text->handle = GTK_LABEL(handle);
 
+  text->parent = NULL;
+
+  text->bounds.x = x;
+  text->bounds.y = y;
+  text->bounds.width = width;
+  text->bounds.height = height;
+
   *result = text;
 
   gtk_widget_set_visible(handle, true);
@@ -48,26 +55,31 @@ fx_set_text_data (fx_text_t *text, void *data) {
 
 int
 fx_get_text_bounds (fx_text_t *text, float *x, float *y, float *width, float *height) {
-  if (x) *x = 0;
-  if (y) *y = 0;
-  if (width) *width = 0;
-  if (height) *height = 0;
+  if (x) *x = text->bounds.x;
+  if (y) *y = text->bounds.y;
+  if (width) *width = text->bounds.width;
+  if (height) *height = text->bounds.height;
 
   return 0;
 }
 
 int
 fx_get_text_bounds_used (fx_text_t *text, float *x, float *y, float *width, float *height) {
-  if (x) *x = 0;
-  if (y) *y = 0;
-  if (width) *width = 0;
-  if (height) *height = 0;
+  if (x) *x = text->bounds.x;
+  if (y) *y = text->bounds.y;
+  if (width) *width = gtk_widget_get_allocated_width(GTK_WIDGET(text->handle));;
+  if (height) *height = gtk_widget_get_allocated_height(GTK_WIDGET(text->handle));
 
   return 0;
 }
 
 int
 fx_set_text_bounds (fx_text_t *text, float x, float y, float width, float height) {
+  text->bounds.x = x;
+  text->bounds.y = y;
+  text->bounds.width = width;
+  text->bounds.height = height;
+
   return 0;
 }
 

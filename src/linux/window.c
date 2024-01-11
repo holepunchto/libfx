@@ -36,11 +36,13 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 
   *result = window;
 
-  gtk_application_add_window(app->platform->app, window->handle);
+  gtk_window_set_default_size(window->handle, width, height);
 
   g_signal_connect(G_OBJECT(handle), "notify::default-width", G_CALLBACK(on_resize), window);
 
   g_signal_connect(G_OBJECT(handle), "notify::default-height", G_CALLBACK(on_resize), window);
+
+  gtk_application_add_window(app->platform->app, window->handle);
 
   if (view) {
     gtk_window_set_child(window->handle, GTK_WIDGET(view->handle));
