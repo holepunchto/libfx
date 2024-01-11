@@ -25,8 +25,15 @@ fx_get_child_widget (fx_node_t *child, float *x, float *y, GtkWidget **result) {
   }
   case fx_scroll_view_node:
     break;
-  case fx_text_node:
+  case fx_text_node: {
+    fx_text_t *text = (fx_text_t *) child;
+
+    *x = text->bounds.x;
+    *y = text->bounds.y;
+
+    child_widget = GTK_WIDGET(text->handle);
     break;
+  }
   case fx_text_input_node:
     break;
   case fx_image_node: {

@@ -1,3 +1,4 @@
+#include <gtk/gtk.h>
 #include <stdlib.h>
 
 #include "../../include/fx.h"
@@ -5,11 +6,21 @@
 
 int
 fx_text_init (fx_t *app, float x, float y, float width, float height, fx_text_t **result) {
+  GtkWidget *handle = gtk_label_new(NULL);
+
+  if (handle == NULL) return -1;
+
   fx_text_t *text = malloc(sizeof(fx_text_t));
 
   text->node.type = fx_text_node;
 
+  text->handle = GTK_LABEL(handle);
+
   *result = text;
+
+  gtk_widget_set_visible(handle, true);
+
+  gtk_widget_set_size_request(handle, width, height);
 
   return 0;
 }
@@ -62,6 +73,8 @@ fx_set_text_bounds (fx_text_t *text, float x, float y, float width, float height
 
 int
 fx_append_text_span (fx_text_t *text, const char *value, size_t len, fx_text_span_t **result) {
+  gtk_label_set_text(text->handle, value);
+
   if (result) {
     fx_text_span_t *span = malloc(sizeof(fx_text_span_t));
 
