@@ -7,6 +7,13 @@
 #include "view.h"
 #include "window.h"
 
+static void
+on_resize (GObject *object, GParamSpec *params, void *data) {
+  fx_window_t *window = (fx_window_t *) data;
+
+  if (window->on_resize) window->on_resize(window);
+}
+
 int
 fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float height, fx_window_t **result) {
   GtkWidget *handle = gtk_window_new();
@@ -30,6 +37,10 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
   *result = window;
 
   gtk_application_add_window(app->platform->app, window->handle);
+
+  g_signal_connect(G_OBJECT(handle), "notify::default-width", G_CALLBACK(on_resize), window);
+
+  g_signal_connect(G_OBJECT(handle), "notify::default-height", G_CALLBACK(on_resize), window);
 
   if (view) {
     gtk_window_set_child(window->handle, GTK_WIDGET(view->handle));
