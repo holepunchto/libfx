@@ -64,4 +64,10 @@ fx_hide_window (fx_window_t *window) {
   return fx_set_window_visible(window, false);
 }
 
+bool
+fx_is_window_resizable (fx_window_t *window);
+
+int
+fx_set_window_resizable (fx_window_t *window, bool resizable);
+
 #endif // FX_WINDOW_H

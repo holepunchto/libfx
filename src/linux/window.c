@@ -38,6 +38,12 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 
   gtk_window_set_default_size(window->handle, width, height);
 
+  if (flags & fx_window_no_frame) {
+    GtkWidget *title = gtk_center_box_new();
+
+    gtk_window_set_titlebar(window->handle, title);
+  }
+
   g_signal_connect(G_OBJECT(handle), "notify::default-width", G_CALLBACK(on_resize), window);
 
   g_signal_connect(G_OBJECT(handle), "notify::default-height", G_CALLBACK(on_resize), window);
@@ -136,3 +142,15 @@ fx_show_window (fx_window_t *window);
 
 extern int
 fx_hide_window (fx_window_t *window);
+
+bool
+fx_is_window_resizable (fx_window_t *window) {
+  return gtk_window_get_resizable(window->handle);
+}
+
+int
+fx_set_window_resizable (fx_window_t *window, bool resizable) {
+  gtk_window_set_resizable(window->handle, resizable);
+
+  return 0;
+}
