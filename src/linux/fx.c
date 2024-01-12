@@ -103,6 +103,9 @@ int
 fx_dispatch (fx_dispatch_cb cb, void *data) {
   fx_dispatch_t *dispatch = malloc(sizeof(fx_dispatch_t));
 
+  dispatch->cb = cb;
+  dispatch->data = data;
+
   g_idle_add(on_dispatch, dispatch);
 
   return 0;
