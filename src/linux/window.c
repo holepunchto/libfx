@@ -42,6 +42,8 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
     GtkWidget *title = gtk_center_box_new();
 
     gtk_window_set_titlebar(window->handle, title);
+
+    gtk_window_set_resizable(window->handle, false);
   }
 
   g_signal_connect(G_OBJECT(handle), "notify::default-width", G_CALLBACK(on_resize), window);
