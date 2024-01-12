@@ -59,7 +59,7 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 
   fx_window_t *window = malloc(sizeof(fx_window_t));
 
-  window->native_window = native_window;
+  window->handle = native_window;
 
   window->data = NULL;
 
@@ -78,8 +78,8 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 
 int
 fx_window_destroy (fx_window_t *window) {
-  [window->native_window.delegate release];
-  [window->native_window release];
+  [window->handle.delegate release];
+  [window->handle release];
 
   free(window);
 
@@ -137,7 +137,7 @@ fx_set_window_data (fx_window_t *window, void *data) {
 
 int
 fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, float *height) {
-  NSRect frame = window->native_window.frame;
+  NSRect frame = window->handle.frame;
 
   if (x) *x = frame.origin.x;
   if (y) *y = frame.origin.y;
@@ -149,12 +149,12 @@ fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, flo
 
 bool
 fx_is_window_visible (fx_window_t *window) {
-  return window->native_window.visible;
+  return window->handle.visible;
 }
 
 int
 fx_set_window_visible (fx_window_t *window, bool visible) {
-  [window->native_window setIsVisible:visible];
+  [window->handle setIsVisible:visible];
 
   return 0;
 }
@@ -164,3 +164,23 @@ fx_show_window (fx_window_t *window);
 
 extern int
 fx_hide_window (fx_window_t *window);
+
+bool
+fx_is_window_resizable (fx_window_t *window) {
+  return (window->handle.styleMask & NSWindowStyleMaskResizable) != 0;
+}
+
+int
+fx_set_window_resizable (fx_window_t *window, bool resizable) {
+  NSWindowStyleMask style = window->handle.styleMask;
+
+  if (resizable) {
+    style |= NSWindowStyleMaskResizable;
+  } else {
+    style &= ~NSWindowStyleMaskResizable;
+  }
+
+  [window->handle setStyleMask:style];
+
+  return 0;
+}
