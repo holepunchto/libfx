@@ -71,6 +71,14 @@ int
 fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float height, int flags, fx_window_t **result) {
   uv_once(&fx_window_class_init, on_window_class_init);
 
+  DWORD style;
+
+  if (flags & fx_window_no_frame) {
+    style = WS_POPUPWINDOW;
+  } else {
+    style = WS_OVERLAPPEDWINDOW;
+  }
+
   RECT rect;
 
   rect.top = 0;
@@ -78,7 +86,7 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
   rect.right = width;
   rect.bottom = height;
 
-  AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, FALSE);
+  AdjustWindowRect(&rect, style, FALSE);
 
   auto instance = GetModuleHandle(NULL);
 
@@ -86,7 +94,7 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
     0,
     MAKEINTATOM(fx_window_class),
     NULL,
-    WS_OVERLAPPEDWINDOW,
+    style,
     (int) x,
     (int) y,
     (int) rect.right - rect.left,

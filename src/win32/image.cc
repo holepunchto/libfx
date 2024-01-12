@@ -16,32 +16,35 @@ on_image_message (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
   case WM_PAINT: {
     PAINTSTRUCT ps;
 
-    HDC hdc = BeginPaint(hwnd, &ps);
+    HDC device_context = BeginPaint(hwnd, &ps);
+
+    RECT rect;
+    GetClientRect(hwnd, &rect);
 
     if (image->bitmap) {
-      HDC hdc_compatible = CreateCompatibleDC(hdc);
-
-      SelectObject(hdc_compatible, image->bitmap);
+      SelectObject(image->device_context, image->bitmap);
 
       BITMAP bitmap;
 
       auto success = GetObject(image->bitmap, sizeof(BITMAP), &bitmap);
 
       if (success) {
-        BitBlt(
-          hdc,
+        SetStretchBltMode(device_context, HALFTONE);
+
+        StretchBlt(
+          device_context,
+          rect.left,
+          rect.top,
+          rect.right - rect.left,
+          rect.bottom - rect.top,
+          image->device_context,
           0,
           0,
           bitmap.bmWidth,
           bitmap.bmHeight,
-          hdc_compatible,
-          0,
-          0,
           SRCCOPY
         );
       }
-
-      DeleteDC(hdc_compatible);
     }
 
     EndPaint(hwnd, &ps);
@@ -100,6 +103,12 @@ fx_image_init (fx_t *app, float x, float y, float width, float height, fx_image_
 
   image->handle = handle;
 
+  auto hdc = GetDC(image->handle);
+
+  image->device_context = CreateCompatibleDC(hdc);
+
+  ReleaseDC(image->handle, hdc);
+
   image->bitmap = NULL;
 
   *result = image;
@@ -113,6 +122,8 @@ extern "C" int
 fx_image_destroy (fx_image_t *image) {
   DestroyWindow(image->handle);
 
+  DeleteDC(image->device_context);
+
   if (image->bitmap) DeleteObject(image->bitmap);
 
   delete image;
@@ -123,10 +134,6 @@ fx_image_destroy (fx_image_t *image) {
 int
 fx_image_load (fx_image_t *image, const uint8_t *pixels, int width, int height, int stride) {
   if (stride == -1) stride = width * 4;
-
-  auto hdc_window = GetDC(image->handle);
-
-  auto hdc = CreateCompatibleDC(hdc_window);
 
   BITMAPINFO bmi;
 
@@ -141,9 +148,9 @@ fx_image_load (fx_image_t *image, const uint8_t *pixels, int width, int height, 
 
   uint8_t *data;
 
-  auto bitmap = CreateDIBSection(hdc, &bmi, DIB_RGB_COLORS, reinterpret_cast<void **>(&data), NULL, 0);
+  auto bitmap = CreateDIBSection(image->device_context, &bmi, DIB_RGB_COLORS, reinterpret_cast<void **>(&data), NULL, 0);
 
-  if (bitmap == NULL) goto err;
+  if (bitmap == NULL) return -1;
 
   image->bitmap = bitmap;
 
@@ -166,18 +173,7 @@ fx_image_load (fx_image_t *image, const uint8_t *pixels, int width, int height, 
     data += width * 4;
   }
 
-  DeleteDC(hdc);
-
-  ReleaseDC(image->handle, hdc_window);
-
   return 0;
-
-err:
-  DeleteDC(hdc);
-
-  ReleaseDC(image->handle, hdc_window);
-
-  return -1;
 }
 
 extern "C" int

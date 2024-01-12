@@ -5,6 +5,8 @@ struct fx_image_s {
 
   HWND handle;
 
+  HDC device_context;
+
   HBITMAP bitmap;
 
   void *data;
