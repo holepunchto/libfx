@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <uv.h>
 
 #include "../include/fx.h"
@@ -11,45 +12,65 @@ static uv_buf_t buf;
 
 static void
 on_parent_message (fx_t *receiver, const uv_buf_t *buf, fx_t *sender) {
+  int e;
+
   printf("message to parent\n");
 
-  fx_broadcast(parent, buf);
+  e = fx_broadcast(parent, buf);
+  assert(e == 0);
 
-  fx_read_stop(parent);
+  e = fx_read_stop(parent);
+  assert(e == 0);
 }
 
 static void
 on_child_message (fx_t *receiver, const uv_buf_t *buf, fx_t *sender) {
+  int e;
+
   printf("message to child\n");
 
-  fx_read_stop(child);
+  e = fx_read_stop(child);
+  assert(e == 0);
 }
 
 static void
 on_thread (void *data) {
+  int e;
+
   uv_loop_t loop;
-  uv_loop_init(&loop);
+  e = uv_loop_init(&loop);
+  assert(e == 0);
 
-  fx_init(&loop, &child);
+  e = fx_init(&loop, &child);
+  assert(e == 0);
 
-  fx_read_start(child, on_child_message);
+  e = fx_read_start(child, on_child_message);
+  assert(e == 0);
 
-  fx_broadcast(child, &buf);
+  e = fx_broadcast(child, &buf);
+  assert(e == 0);
 
-  uv_run(&loop, UV_RUN_DEFAULT);
+  e = uv_run(&loop, UV_RUN_DEFAULT);
+  assert(e == 0);
 
-  fx_terminate(parent);
+  e = fx_terminate(parent);
+  assert(e == 0);
 }
 
 int
 main () {
-  fx_init(uv_default_loop(), &parent);
+  int e;
 
-  fx_read_start(parent, on_parent_message);
+  e = fx_init(uv_default_loop(), &parent);
+  assert(e == 0);
+
+  e = fx_read_start(parent, on_parent_message);
+  assert(e == 0);
 
   buf = uv_buf_init("hello world", 11);
 
-  uv_thread_create(&thread, on_thread, NULL);
+  e = uv_thread_create(&thread, on_thread, NULL);
+  assert(e == 0);
 
   return fx_run(parent);
 }
