@@ -74,9 +74,9 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
   DWORD style;
 
   if (flags & fx_window_no_frame) {
-    style = WS_POPUPWINDOW;
+    style = WS_POPUP | WS_BORDER;
   } else {
-    style = WS_OVERLAPPEDWINDOW;
+    style = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
   }
 
   RECT rect;
@@ -214,6 +214,28 @@ fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, flo
   if (y) *y = rect.top;
   if (width) *width = rect.right - rect.left;
   if (height) *height = rect.bottom - rect.top;
+
+  return 0;
+}
+
+int
+fx_set_window_title (fx_window_t *window, const char *title) {
+  auto success = SetWindowText(window->handle, title);
+
+  return success ? 0 : -1;
+}
+
+int
+fx_get_window_title (fx_window_t *window, char *title, size_t len, size_t *result) {
+  if (title == NULL) {
+    *result = GetWindowTextLength(window->handle);
+  } else if (len != 0) {
+    int written = GetWindowText(window->handle, title, len);
+
+    if (written < len) result[written] = '\0';
+
+    if (result) *result = written;
+  } else if (result) *result = 0;
 
   return 0;
 }

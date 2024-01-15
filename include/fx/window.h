@@ -48,6 +48,12 @@ fx_set_window_data (fx_window_t *window, void *data);
 int
 fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, float *height);
 
+int
+fx_set_window_title (fx_window_t *window, const char *title);
+
+int
+fx_get_window_title (fx_window_t *window, char *title, size_t len, size_t *result);
+
 bool
 fx_is_window_visible (fx_window_t *window);
 
