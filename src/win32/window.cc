@@ -71,6 +71,29 @@ int
 fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float height, int flags, fx_window_t **result) {
   uv_once(&fx_window_class_init, on_window_class_init);
 
+  int screen_width = GetSystemMetrics(SM_CXSCREEN);
+  int screen_height = GetSystemMetrics(SM_CYSCREEN);
+
+  if (x < 0) {
+    if (x == fx_screen_center) x = (screen_width - width) / 2;
+    else return -1;
+  }
+
+  if (y < 0) {
+    if (y == fx_screen_center) y = (screen_height - height) / 2;
+    else return -1;
+  }
+
+  if (width < 0) {
+    if (width == fx_screen_size) width = screen_width;
+    else return -1;
+  }
+
+  if (height < 0) {
+    if (height == fx_screen_size) height = screen_height;
+    else return -1;
+  }
+
   DWORD style;
 
   if (flags & fx_window_no_frame) {
