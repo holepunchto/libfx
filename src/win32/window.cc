@@ -2,6 +2,8 @@
 #include <uv.h>
 
 #include "../../include/fx.h"
+#include "../shared/fx.h"
+#include "fx.h"
 #include "view.h"
 #include "window.h"
 
@@ -26,6 +28,12 @@ on_window_message (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
   case WM_CLOSE:
     if (window->on_close) window->on_close(window);
+    break;
+
+  case WM_DESTROY:
+    if (--fx_main_app->platform->active_windows) return res;
+
+    PostQuitMessage(0);
     break;
 
   case WM_PAINT:
@@ -129,6 +137,8 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
   );
 
   if (handle == NULL) return -1;
+
+  fx_main_app->platform->active_windows++;
 
   if (view) {
     if (SetParent(view->handle, handle) == NULL) return -1;

@@ -22,6 +22,8 @@ extern "C" int
 fx_platform_init (fx_t *app, fx_platform_t **result) {
   auto platform = new fx_platform_t();
 
+  platform->active_windows = 0;
+
   platform->on_launch = NULL;
   platform->on_terminate = NULL;
 
