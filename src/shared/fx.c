@@ -125,11 +125,6 @@ fx_run (fx_t *app) {
   return fx_platform_run(app->platform);
 }
 
-int
-fx_terminate (fx_t *app) {
-  return fx_platform_terminate(app->platform);
-}
-
 bool
 fx_is_main (fx_t *app) {
   return app == fx_main_app;

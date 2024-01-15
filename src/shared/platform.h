@@ -26,7 +26,4 @@ fx_on_platform_resume (fx_platform_t *platform, fx_resume_cb cb);
 int
 fx_platform_run (fx_platform_t *platform);
 
-int
-fx_platform_terminate (fx_platform_t *platform);
-
 #endif // FX_PLATFORM_H

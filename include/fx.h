@@ -26,9 +26,6 @@ fx_destroy (fx_t *app);
 int
 fx_run (fx_t *app);
 
-int
-fx_terminate (fx_t *app);
-
 bool
 fx_is_main (fx_t *app);
 

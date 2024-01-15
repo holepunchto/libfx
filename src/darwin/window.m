@@ -79,9 +79,7 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 
   handle.delegate = [[FXWindowDelegate alloc] init];
 
-  if (view) {
-    handle.contentView = view->handle;
-  }
+  if (view) handle.contentView = view->handle;
 
   fx_window_t *window = malloc(sizeof(fx_window_t));
 

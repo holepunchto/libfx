@@ -52,9 +52,6 @@ on_thread (void *data) {
 
   e = uv_run(&loop, UV_RUN_DEFAULT);
   assert(e == 0);
-
-  e = fx_terminate(parent);
-  assert(e == 0);
 }
 
 int

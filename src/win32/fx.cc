@@ -63,13 +63,6 @@ fx_on_platform_resume (fx_platform_t *platform, fx_resume_cb cb) {
   return 0;
 }
 
-static inline void
-on_terminate (fx_platform_t *platform) {
-  CoUninitialize();
-
-  if (platform->on_terminate) platform->on_terminate(fx_main_app);
-}
-
 extern "C" int
 fx_platform_run (fx_platform_t *platform) {
   auto res = CoInitialize(NULL);
@@ -98,16 +91,11 @@ fx_platform_run (fx_platform_t *platform) {
     }
   }
 
-  on_terminate(platform);
+  CoUninitialize();
+
+  if (platform->on_terminate) platform->on_terminate(fx_main_app);
 
   return 0;
-}
-
-extern "C" int
-fx_platform_terminate (fx_platform_t *platform) {
-  on_terminate(platform);
-
-  ExitProcess(0);
 }
 
 extern "C" int

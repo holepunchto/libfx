@@ -81,13 +81,6 @@ fx_platform_run (fx_platform_t *platform) {
   return 0;
 }
 
-int
-fx_platform_terminate (fx_platform_t *platform) {
-  g_application_quit(G_APPLICATION(platform->app));
-
-  return 0;
-}
-
 static int
 on_dispatch (void *data) {
   fx_dispatch_t *dispatch = (fx_dispatch_t *) data;

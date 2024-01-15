@@ -100,11 +100,6 @@ fx_platform_run (fx_platform_t *platform) {
 }
 
 int
-fx_platform_terminate (fx_platform_t *platform) {
-  return -1;
-}
-
-int
 fx_dispatch (fx_dispatch_cb cb, void *data) {
   dispatch_async(dispatch_get_main_queue(), ^{
     cb(fx_main_app, data);
