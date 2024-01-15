@@ -1,11 +1,14 @@
 #include <gtk/gtk.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "../../include/fx.h"
 #include "../shared/fx.h"
 #include "fx.h"
 #include "view.h"
 #include "window.h"
+
+static const char *fx_default_window_title = "";
 
 static void
 on_resize (GObject *object, GParamSpec *params, void *data) {
@@ -35,6 +38,8 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
   window->on_close = NULL;
 
   *result = window;
+
+  gtk_window_set_title(window->handle, fx_default_window_title);
 
   gtk_window_set_default_size(window->handle, width, height);
 
@@ -123,6 +128,34 @@ fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, flo
   if (y) *y = 0;
   if (width) *width = 0;
   if (height) *height = 0;
+
+  return 0;
+}
+
+int
+fx_set_window_title (fx_window_t *window, const char *title) {
+  gtk_window_set_title(window->handle, title);
+
+  return 0;
+}
+
+int
+fx_get_window_title (fx_window_t *window, char *title, size_t len, size_t *result) {
+  const char *bytes = gtk_window_get_title(window->handle);
+
+  if (title == NULL) {
+    *result = strlen(bytes);
+  } else if (len != 0) {
+    size_t bytes_len = strlen(bytes);
+
+    size_t written = len < bytes_len ? len : bytes_len;
+
+    strncpy(title, bytes, written);
+
+    if (written < len) title[written] = '\0';
+
+    if (result) *result = written;
+  } else if (result) *result = 0;
 
   return 0;
 }
