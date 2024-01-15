@@ -19,6 +19,10 @@ on_resize (GObject *object, GParamSpec *params, void *data) {
 
 int
 fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float height, int flags, fx_window_t **result) {
+  if (width < 0 && width != fx_screen_size) return -1;
+
+  if (height < 0 && width != fx_screen_size) return -1;
+
   GtkWidget *handle = gtk_window_new();
 
   if (handle == NULL) return -1;
@@ -41,7 +45,14 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 
   gtk_window_set_title(window->handle, fx_default_window_title);
 
-  gtk_window_set_default_size(window->handle, width, height);
+  if (width == fx_screen_size && height == fx_screen_size) {
+    gtk_window_maximize(window->handle);
+  } else {
+    if (width < 0) width = 0;
+    if (height < 0) height = 0;
+
+    gtk_window_set_default_size(window->handle, width, height);
+  }
 
   if (flags & fx_window_no_frame) {
     GtkWidget *title = gtk_center_box_new();
@@ -57,9 +68,7 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 
   gtk_application_add_window(app->platform->app, window->handle);
 
-  if (view) {
-    gtk_window_set_child(window->handle, GTK_WIDGET(view->handle));
-  }
+  if (view)  gtk_window_set_child(window->handle, GTK_WIDGET(view->handle));
 
   return 0;
 }
