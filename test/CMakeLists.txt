@@ -8,6 +8,8 @@ list(APPEND tests
   web-view
   web-view-message
   window
+  window-no-frame
+  window-title
 )
 
 foreach(test IN LISTS tests)

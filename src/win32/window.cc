@@ -232,7 +232,7 @@ fx_get_window_title (fx_window_t *window, char *title, size_t len, size_t *resul
   } else if (len != 0) {
     int written = GetWindowText(window->handle, title, len);
 
-    if (written < len) result[written] = '\0';
+    if (written < len) title[written] = '\0';
 
     if (result) *result = written;
   } else if (result) *result = 0;
