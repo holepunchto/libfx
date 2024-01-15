@@ -64,26 +64,28 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
     style = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable;
   }
 
-  FXWindow *native_window = [[FXWindow alloc]
+  FXWindow *handle = [[FXWindow alloc]
     initWithContentRect:CGRectMake(x, y, width, height)
               styleMask:style
                 backing:NSBackingStoreBuffered
                   defer:NO];
 
+  handle.releasedWhenClosed = NO;
+
   if (flags & fx_window_no_frame) {
-    native_window.titleVisibility = NSWindowTitleHidden;
-    native_window.titlebarAppearsTransparent = YES;
+    handle.titleVisibility = NSWindowTitleHidden;
+    handle.titlebarAppearsTransparent = YES;
   }
 
-  native_window.delegate = [[FXWindowDelegate alloc] init];
+  handle.delegate = [[FXWindowDelegate alloc] init];
 
   if (view) {
-    native_window.contentView = view->handle;
+    handle.contentView = view->handle;
   }
 
   fx_window_t *window = malloc(sizeof(fx_window_t));
 
-  window->handle = native_window;
+  window->handle = handle;
 
   window->data = NULL;
 
@@ -93,7 +95,7 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
   window->on_deminimize = NULL;
   window->on_close = NULL;
 
-  native_window.fxWindow = window;
+  handle.fxWindow = window;
 
   *result = window;
 

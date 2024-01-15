@@ -8,6 +8,7 @@ list(APPEND tests
   web-view
   web-view-message
   window
+  window-destroy-on-close
   window-no-frame
   window-screen-center
   window-screen-size

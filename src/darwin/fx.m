@@ -21,6 +21,10 @@
   if (app->platform->on_terminate) app->platform->on_terminate(app);
 }
 
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
+  return YES;
+}
+
 @end
 
 @implementation FX
