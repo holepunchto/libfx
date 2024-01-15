@@ -9,6 +9,8 @@ list(APPEND tests
   web-view-message
   window
   window-no-frame
+  window-screen-center
+  window-screen-size
   window-title
 )
 
