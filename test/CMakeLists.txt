@@ -20,6 +20,7 @@ list(APPEND tests
 
   window/basic
   window/destroy-on-close
+  window/multiple
   window/no-frame
   window/screen-center
   window/screen-size
