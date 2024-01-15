@@ -1,37 +1,50 @@
 list(APPEND tests
-  image
+  # Core
+
   message
-  scroll-view
-  text
-  text-input
-  video
-  web-view
-  web-view-message
-  window
-  window-destroy-on-close
-  window-no-frame
-  window-screen-center
-  window-screen-size
-  window-title
+
+  # Components
+
+  image/basic
+
+  scroll-view/basic
+
+  text/basic
+
+  text-input/basic
+
+  video/basic
+
+  web-view/basic
+  web-view/message
+
+  window/basic
+  window/destroy-on-close
+  window/no-frame
+  window/screen-center
+  window/screen-size
+  window/title
 )
 
 foreach(test IN LISTS tests)
-  add_executable(${test} ${test}.c)
+  string(REPLACE "/" "_" name ${test})
+
+  add_executable(${name} ${test}.c)
 
   target_link_libraries(
-    ${test}
+    ${name}
     PRIVATE
       fx_static
   )
 
   add_test(
-    NAME ${test}
-    COMMAND ${test}
+    NAME ${name}
+    COMMAND ${name}
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
   )
 
   set_tests_properties(
-    ${test}
+    ${name}
     PROPERTIES
     TIMEOUT 30000
   )

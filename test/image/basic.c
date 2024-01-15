@@ -2,7 +2,8 @@
 #include <uv.h>
 
 #include "../include/fx.h"
-#include "fixtures/images/image1.h"
+
+#include "../fixtures/images/image1.h"
 
 static void
 on_launch (fx_t *app) {
