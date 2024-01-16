@@ -7,6 +7,8 @@
 
 @property(assign) fx_video_t *fxVideo;
 
+@property(assign) AVPlayerLooper *looper;
+
 @end
 
 struct fx_video_s {

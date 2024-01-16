@@ -2,6 +2,7 @@
 #import <AppKit/AppKit.h>
 
 #import "../../include/fx.h"
+#import "shared.h"
 #import "video.h"
 
 @implementation FXVideo
@@ -13,20 +14,26 @@
 @end
 
 int
-fx_video_init (fx_t *app, const char *url, size_t len, float x, float y, float width, float height, fx_video_t **result) {
-  FXVideo *native_video = [[FXVideo alloc] init];
+fx_video_init (fx_t *app, const char *url, size_t len, float x, float y, float width, float height, int flags, fx_video_t **result) {
+  FXVideo *handle = [[FXVideo alloc] init];
 
-  native_video.frame = CGRectMake(x, y, width, height);
+  handle.frame = CGRectMake(x, y, width, height);
 
-  native_video.player = [[AVPlayer alloc] initWithURL:[[NSURL alloc] initWithString:[[NSString alloc] initWithBytes:url length:len encoding:NSUTF8StringEncoding]]];
+  handle.player = [[AVQueuePlayer alloc] initWithPlayerItem:[[AVPlayerItem alloc] initWithURL:fx__url(url, len)]];
+
+  handle.looper = NULL;
+
+  if (flags & fx_video_no_controls) handle.controlsStyle = AVPlayerViewControlsStyleNone;
 
   fx_video_t *video = malloc(sizeof(fx_video_t));
 
   video->node.type = fx_video_node;
 
-  video->handle = native_video;
+  video->handle = handle;
 
-  native_video.fxVideo = video;
+  handle.fxVideo = video;
+
+  *result = video;
 
   return 0;
 }
@@ -70,6 +77,32 @@ fx_get_video_bounds (fx_video_t *video, float *x, float *y, float *width, float 
 int
 fx_set_video_bounds (fx_video_t *video, float x, float y, float width, float height) {
   video->handle.frame = CGRectMake(x, y, width, height);
+
+  return 0;
+}
+
+bool
+fx_is_video_loop (fx_video_t *video) {
+  return video->handle.looper != NULL;
+}
+
+bool
+fx_set_video_loop (fx_video_t *video, bool loop) {
+  AVPlayerLooper *looper = video->handle.looper;
+
+  if (loop) {
+    if (looper) return 0;
+
+    video->handle.looper = [[AVPlayerLooper alloc] initWithPlayer:(AVQueuePlayer *) video->handle.player
+                                                     templateItem:[video->handle.player currentItem]
+                                                        timeRange:kCMTimeRangeInvalid];
+  } else {
+    if (looper == NULL) return 0;
+
+    video->handle.looper = NULL;
+
+    [looper release];
+  }
 
   return 0;
 }

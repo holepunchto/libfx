@@ -193,6 +193,7 @@ if(IOS)
     fx
     PUBLIC
       "-framework Foundation"
+      "-framework CoreMedia"
       "-framework UIKit"
       "-framework AVFoundation"
       "-framework AVKit"
@@ -203,6 +204,7 @@ elseif(APPLE)
     fx
     PUBLIC
       "-framework Foundation"
+      "-framework CoreMedia"
       "-framework AppKit"
       "-framework AVFoundation"
       "-framework AVKit"
