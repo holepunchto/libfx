@@ -100,13 +100,13 @@ fx_platform_run (fx_platform_t *platform) {
     }
   }
 
+  if (platform->on_terminate) platform->on_terminate(fx_main_app);
+
   res = MFShutdown();
 
   if (FAILED(res)) return -1;
 
   CoUninitialize();
-
-  if (platform->on_terminate) platform->on_terminate(fx_main_app);
 
   return 0;
 }
