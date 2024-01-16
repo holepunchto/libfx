@@ -22,6 +22,7 @@ list(APPEND tests
   window/destroy-on-close
   window/multiple
   window/no-frame
+  window/no-resize
   window/screen-center
   window/screen-size
   window/title

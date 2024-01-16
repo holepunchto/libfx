@@ -4,6 +4,7 @@
 #include "../../include/fx.h"
 #include "../shared/fx.h"
 #include "fx.h"
+#include "shared.h"
 #include "view.h"
 #include "window.h"
 
@@ -44,10 +45,10 @@ on_window_message (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
         SetWindowPos(
           window->view->handle,
           NULL,
-          rect.left,
-          rect.top,
-          rect.right - rect.left,
-          rect.bottom - rect.top,
+          fx__rect_x(rect),
+          fx__rect_y(rect),
+          fx__rect_width(rect),
+          fx__rect_height(rect),
           0
         );
       }
@@ -110,12 +111,7 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
     style = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
   }
 
-  RECT rect;
-
-  rect.top = 0;
-  rect.left = 0;
-  rect.right = width;
-  rect.bottom = height;
+  auto rect = fx__rect<float>(0, 0, width, height);
 
   AdjustWindowRect(&rect, style, FALSE);
 
@@ -126,10 +122,10 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
     MAKEINTATOM(fx_window_class),
     NULL,
     style,
-    (int) x,
-    (int) y,
-    (int) rect.right - rect.left,
-    (int) rect.bottom - rect.top,
+    int(x),
+    int(y),
+    fx__rect_width<int>(rect),
+    fx__rect_height<int>(rect),
     NULL,
     NULL,
     instance,
@@ -146,10 +142,10 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
     auto success = SetWindowPos(
       view->handle,
       NULL,
-      (int) x,
-      (int) y,
-      (int) width,
-      (int) height,
+      int(x),
+      int(y),
+      int(width),
+      int(height),
       0
     );
 
@@ -172,7 +168,7 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 
   *result = window;
 
-  SetWindowLongPtr(handle, GWLP_USERDATA, (LONG_PTR) window);
+  SetWindowLongPtr(handle, GWLP_USERDATA, LONG_PTR(window));
 
   return 0;
 }
@@ -243,10 +239,10 @@ fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, flo
 
   if (!success) return -1;
 
-  if (x) *x = rect.left;
-  if (y) *y = rect.top;
-  if (width) *width = rect.right - rect.left;
-  if (height) *height = rect.bottom - rect.top;
+  if (x) *x = fx__rect_x<float>(rect);
+  if (y) *y = fx__rect_y<float>(rect);
+  if (width) *width = fx__rect_width<float>(rect);
+  if (height) *height = fx__rect_height<float>(rect);
 
   return 0;
 }
@@ -290,3 +286,23 @@ fx_show_window (fx_window_t *window);
 
 extern int
 fx_hide_window (fx_window_t *window);
+
+bool
+fx_is_window_resizable (fx_window_t *window) {
+  return (GetWindowLong(window->handle, GWL_STYLE) & WS_THICKFRAME) != 0;
+}
+
+int
+fx_set_window_resizable (fx_window_t *window, bool resizable) {
+  auto style = GetWindowLong(window->handle, GWL_STYLE);
+
+  if (resizable) {
+    style |= WS_THICKFRAME;
+  } else {
+    style &= ~WS_THICKFRAME;
+  }
+
+  SetWindowLong(window->handle, GWL_STYLE, style);
+
+  return 0;
+}

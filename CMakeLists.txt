@@ -125,6 +125,7 @@ if(WIN32)
       src/win32/node.cc
       src/win32/scroll-view.cc
       src/win32/scroll-view.h
+      src/win32/shared.h
       src/win32/text.cc
       src/win32/text.h
       src/win32/text-input.cc
