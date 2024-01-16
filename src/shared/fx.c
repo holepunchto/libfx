@@ -64,6 +64,8 @@ on_message (fx_channel_t *channel) {
 
 int
 fx_init (uv_loop_t *loop, fx_t **result) {
+  int err;
+
   fx_t *app = malloc(sizeof(fx_t));
 
   app->loop = loop;
@@ -72,18 +74,21 @@ fx_init (uv_loop_t *loop, fx_t **result) {
 
   app->on_message = NULL;
 
-  if (fx_main_app == NULL) fx_main_app = app;
-  else fx_add_worker(app);
+  if (fx_main_app == NULL) {
+    fx_main_app = app;
 
-  int err;
+    err = fx_platform_init(app, &app->platform);
+    assert(err == 0);
+  } else {
+    fx_add_worker(app);
+
+    app->platform = fx_main_app->platform;
+  }
 
   err = uv_mutex_init_recursive(&app->lock);
   assert(err == 0);
 
   err = fx_channel_init(app, &app->messages, 1024, on_message);
-  assert(err == 0);
-
-  err = fx_platform_init(app, &app->platform);
   assert(err == 0);
 
   *result = app;
@@ -109,11 +114,11 @@ fx_destroy (fx_t *app) {
 
       free(worker);
     }
+
+    fx_platform_destroy(app->platform);
   } else {
     fx_remove_worker(app);
   }
-
-  fx_platform_destroy(app->platform);
 
   fx_channel_close(&app->messages, on_close);
 

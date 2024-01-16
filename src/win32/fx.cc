@@ -4,7 +4,6 @@
 #include "../../include/fx.h"
 #include "../shared/fx.h"
 #include "fx.h"
-#include "winui.h"
 
 enum {
   fx_msg_dispatch = WM_APP + 1,
@@ -22,6 +21,12 @@ on_dispatch (MSG msg) {
 
 extern "C" int
 fx_platform_init (fx_t *app, fx_platform_t **result) {
+  HRESULT res;
+
+  res = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+
+  if (FAILED(res)) return -1;
+
   auto platform = new fx_platform_t();
 
   platform->active_windows = 0;
@@ -36,6 +41,8 @@ fx_platform_init (fx_t *app, fx_platform_t **result) {
 
 extern "C" int
 fx_platform_destroy (fx_platform_t *platform) {
+  CoUninitialize();
+
   delete platform;
 
   return 0;
@@ -67,12 +74,6 @@ fx_on_platform_resume (fx_platform_t *platform, fx_resume_cb cb) {
 
 extern "C" int
 fx_platform_run (fx_platform_t *platform) {
-  HRESULT res;
-
-  res = CoInitialize(NULL);
-
-  if (FAILED(res)) return -1;
-
   fx_main_thread_id = GetCurrentThreadId();
 
   if (platform->on_launch) platform->on_launch(fx_main_app);
@@ -96,8 +97,6 @@ fx_platform_run (fx_platform_t *platform) {
   }
 
   if (platform->on_terminate) platform->on_terminate(fx_main_app);
-
-  CoUninitialize();
 
   return 0;
 }

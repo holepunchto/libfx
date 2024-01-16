@@ -117,6 +117,8 @@ endif()
 if(WIN32)
   target_sources(
     fx
+    PUBLIC
+      src/win32/fx.manifest
     PRIVATE
       src/win32/fx.cc
       src/win32/fx.h
