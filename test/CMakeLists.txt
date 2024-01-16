@@ -14,6 +14,8 @@ list(APPEND tests
   text-input/basic
 
   video/basic
+  video/no-controls
+  video/no-controls-loop
 
   web-view/basic
   web-view/message

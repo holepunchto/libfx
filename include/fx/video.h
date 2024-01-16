@@ -7,8 +7,12 @@
 
 typedef struct fx_video_s fx_video_t;
 
+enum {
+  fx_video_no_controls = 0x1,
+};
+
 int
-fx_video_init (fx_t *app, const char *url, size_t len, float x, float y, float width, float height, fx_video_t **result);
+fx_video_init (fx_t *app, const char *url, size_t len, float x, float y, float width, float height, int flags, fx_video_t **result);
 
 int
 fx_video_destroy (fx_video_t *video);
@@ -24,6 +28,12 @@ fx_get_video_bounds (fx_video_t *video, float *x, float *y, float *width, float 
 
 int
 fx_set_video_bounds (fx_video_t *video, float x, float y, float width, float height);
+
+bool
+fx_is_video_loop (fx_video_t *video);
+
+bool
+fx_set_video_loop (fx_video_t *video, bool loop);
 
 int
 fx_play_video (fx_video_t *video);

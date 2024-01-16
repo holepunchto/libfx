@@ -45,8 +45,15 @@ fx_get_child_widget (fx_node_t *child, float *x, float *y, GtkWidget **result) {
     child_widget = GTK_WIDGET(image->handle);
     break;
   }
-  case fx_video_node:
+  case fx_video_node: {
+    fx_video_t *video = (fx_video_t *) child;
+
+    *x = video->bounds.x;
+    *y = video->bounds.y;
+
+    child_widget = GTK_WIDGET(video->handle);
     break;
+  }
   case fx_web_view_node:
     break;
   }
