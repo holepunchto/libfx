@@ -35,7 +35,7 @@ if(WIN32)
   set_target_properties(
     fx
     PROPERTIES
-    CXX_STANDARD 17
+    CXX_STANDARD 20
   )
 endif()
 
@@ -138,6 +138,7 @@ if(WIN32)
       src/win32/web-view.h
       src/win32/window.cc
       src/win32/window.h
+      src/win32/winui.h
   )
 endif()
 
@@ -216,16 +217,9 @@ if(WIN32)
   target_link_libraries(
     fx
     PRIVATE
-      # https://learn.microsoft.com/en-us/windows/win32/medfound/media-foundation-headers-and-libraries
-      dxva2.lib
-      evr.lib
-      mf.lib
-      mfplat.lib
-      mfplay.lib
-      mfreadwrite.lib
-      mfuuid.lib
+      WindowsApp.lib
     PUBLIC
-      WebView2LoaderStatic
+      WebView2LoaderStatic.lib
   )
 endif()
 

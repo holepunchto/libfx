@@ -6,40 +6,11 @@
 #include "../../include/fx.h"
 #include "../shared/bridge/edge/bridge.h"
 #include "web-view.h"
+#include "shared.h"
 
 using namespace Microsoft::WRL;
 
 static const char *fx_web_view_class = "STATIC";
-
-static inline int
-fx_to_wstring (const char *str, int str_len, PWCHAR wstr, int wstr_len) {
-  wstr_len = MultiByteToWideChar(CP_UTF8, 0, str, str_len, wstr, wstr_len);
-
-  if (wstr_len == 0) return uv_translate_sys_error(GetLastError());
-
-  if (str_len != -1) {
-    wstr_len += 1; /* NULL */
-
-    if (wstr != NULL) wstr[wstr_len - 1] = L'\0';
-  }
-
-  return wstr_len;
-}
-
-static inline int
-fx_to_string (PCWCHAR wstr, int wstr_len, char *str, int str_len) {
-  str_len = WideCharToMultiByte(CP_UTF8, 0, wstr, wstr_len, str, str_len, NULL, NULL);
-
-  if (str_len == 0) return uv_translate_sys_error(GetLastError());
-
-  if (wstr_len != -1) {
-    str_len += 1; /* NULL */
-
-    if (str != NULL) str[str_len - 1] = '\0';
-  }
-
-  return str_len;
-}
 
 static inline void
 fx_web_view_prepare (fx_web_view_t *web_view, const char *data_directory) {
@@ -47,7 +18,7 @@ fx_web_view_prepare (fx_web_view_t *web_view, const char *data_directory) {
 
   WCHAR wdata_directory[MAX_PATH];
 
-  err = fx_to_wstring(data_directory, -1, wdata_directory, MAX_PATH);
+  err = fx__to_wstring(data_directory, -1, wdata_directory, MAX_PATH);
   assert(err >= 0);
 
   CreateCoreWebView2EnvironmentWithOptions(
@@ -73,12 +44,12 @@ fx_web_view_prepare (fx_web_view_t *web_view, const char *data_directory) {
 
               ctl->get_CoreWebView2(&native_web_view);
 
-              int str_len = fx_to_wstring((char *) edge_bridge_js, edge_bridge_js_len, NULL, 0);
+              int str_len = fx__to_wstring((char *) edge_bridge_js, edge_bridge_js_len, NULL, 0);
               assert(str_len > 0);
 
               PWCHAR str = new WCHAR[str_len];
 
-              int err = fx_to_wstring((char *) edge_bridge_js, edge_bridge_js_len, str, str_len);
+              int err = fx__to_wstring((char *) edge_bridge_js, edge_bridge_js_len, str, str_len);
               assert(err > 0);
 
               native_web_view->AddScriptToExecuteOnDocumentCreated(
@@ -102,12 +73,12 @@ fx_web_view_prepare (fx_web_view_t *web_view, const char *data_directory) {
 
                     args->TryGetWebMessageAsString(&message);
 
-                    int str_len = fx_to_string(message, -1, NULL, 0);
+                    int str_len = fx__to_string(message, -1, NULL, 0);
                     assert(str_len > 0);
 
                     auto str = new char[str_len];
 
-                    int err = fx_to_string(message, -1, str, str_len);
+                    int err = fx__to_string(message, -1, str, str_len);
                     assert(err > 0);
 
                     CoTaskMemFree(message);
@@ -249,12 +220,12 @@ fx_web_view_post_message (fx_web_view_t *web_view, const char *message) {
 
   web_view->controller->get_CoreWebView2(&view);
 
-  int str_len = fx_to_wstring(message, -1, NULL, 0);
+  int str_len = fx__to_wstring(message, -1, NULL, 0);
   if (str_len < 0) return str_len;
 
   auto str = new WCHAR[str_len];
 
-  int err = fx_to_wstring(message, -1, str, str_len);
+  int err = fx__to_wstring(message, -1, str, str_len);
   if (err < 0) {
     delete[] str;
     return err;
@@ -273,12 +244,12 @@ fx_web_view_load_url (fx_web_view_t *web_view, const char *url, size_t len) {
 
   web_view->controller->get_CoreWebView2(&view);
 
-  int str_len = fx_to_wstring(url, len, NULL, 0);
+  int str_len = fx__to_wstring(url, len, NULL, 0);
   if (str_len < 0) return str_len;
 
   auto str = new WCHAR[str_len];
 
-  int err = fx_to_wstring(url, len, str, str_len);
+  int err = fx__to_wstring(url, len, str, str_len);
   if (err < 0) {
     delete[] str;
     return err;
@@ -297,12 +268,12 @@ fx_web_view_load_html (fx_web_view_t *web_view, const char *html, size_t len) {
 
   web_view->controller->get_CoreWebView2(&view);
 
-  int str_len = fx_to_wstring(html, len, NULL, 0);
+  int str_len = fx__to_wstring(html, len, NULL, 0);
   if (str_len < 0) return str_len;
 
   auto str = new WCHAR[str_len];
 
-  int err = fx_to_wstring(html, len, str, str_len);
+  int err = fx__to_wstring(html, len, str, str_len);
   if (err < 0) {
     delete[] str;
     return err;

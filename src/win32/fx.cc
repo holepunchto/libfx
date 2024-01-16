@@ -1,11 +1,10 @@
 #include <assert.h>
 #include <uv.h>
 
-#include <mfapi.h> // Must be included after uv.h
-
 #include "../../include/fx.h"
 #include "../shared/fx.h"
 #include "fx.h"
+#include "winui.h"
 
 enum {
   fx_msg_dispatch = WM_APP + 1,
@@ -74,10 +73,6 @@ fx_platform_run (fx_platform_t *platform) {
 
   if (FAILED(res)) return -1;
 
-  res = MFStartup(MF_VERSION, 0);
-
-  if (FAILED(res)) return -1;
-
   fx_main_thread_id = GetCurrentThreadId();
 
   if (platform->on_launch) platform->on_launch(fx_main_app);
@@ -101,10 +96,6 @@ fx_platform_run (fx_platform_t *platform) {
   }
 
   if (platform->on_terminate) platform->on_terminate(fx_main_app);
-
-  res = MFShutdown();
-
-  if (FAILED(res)) return -1;
 
   CoUninitialize();
 
