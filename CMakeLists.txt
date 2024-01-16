@@ -215,6 +215,15 @@ endif()
 if(WIN32)
   target_link_libraries(
     fx
+    PRIVATE
+      # https://learn.microsoft.com/en-us/windows/win32/medfound/media-foundation-headers-and-libraries
+      dxva2.lib
+      evr.lib
+      mf.lib
+      mfplat.lib
+      mfplay.lib
+      mfreadwrite.lib
+      mfuuid.lib
     PUBLIC
       WebView2LoaderStatic
   )

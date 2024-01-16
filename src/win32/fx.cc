@@ -1,4 +1,7 @@
 #include <assert.h>
+#include <uv.h>
+
+#include <mfapi.h> // Must be included after uv.h
 
 #include "../../include/fx.h"
 #include "../shared/fx.h"
@@ -65,7 +68,13 @@ fx_on_platform_resume (fx_platform_t *platform, fx_resume_cb cb) {
 
 extern "C" int
 fx_platform_run (fx_platform_t *platform) {
-  auto res = CoInitialize(NULL);
+  HRESULT res;
+
+  res = CoInitialize(NULL);
+
+  if (FAILED(res)) return -1;
+
+  res = MFStartup(MF_VERSION, 0);
 
   if (FAILED(res)) return -1;
 
@@ -90,6 +99,10 @@ fx_platform_run (fx_platform_t *platform) {
       }
     }
   }
+
+  res = MFShutdown();
+
+  if (FAILED(res)) return -1;
 
   CoUninitialize();
 
