@@ -40,6 +40,8 @@ fx_video_init (fx_t *app, const char *url, size_t len, float x, float y, float w
 
 int
 fx_video_destroy (fx_video_t *video) {
+  if (video->handle.looper) [video->handle.looper release];
+
   [video->handle.player release];
   [video->handle release];
 
