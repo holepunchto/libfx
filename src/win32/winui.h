@@ -12,6 +12,7 @@
 #include <winrt/microsoft.ui.xaml.h>
 #include <winrt/microsoft.ui.xaml.controls.h>
 #include <winrt/microsoft.ui.xaml.controls.primitives.h>
+#include <winrt/microsoft.ui.xaml.documents.h>
 
 using namespace winrt;
 
@@ -20,6 +21,7 @@ using namespace Windows::Foundation;
 using namespace Microsoft::UI;
 using namespace Microsoft::UI::Xaml;
 using namespace Microsoft::UI::Xaml::Controls;
+using namespace Microsoft::UI::Xaml::Documents;
 
 #include <mddbootstrap.h>
 

@@ -17,8 +17,7 @@ fx_get_child_element (fx_node_t *child) {
     // child_element = &((fx_scroll_view_t *) child)->handle;
     break;
   case fx_text_node:
-    // child_element = &((fx_text_t *) child)->handle;
-    break;
+    return reinterpret_cast<fx_text_t *>(child)->handle;
   case fx_text_input_node:
     // child_element = &((fx_text_input_t *) child)->handle;
     break;
@@ -42,7 +41,7 @@ fx_set_child (fx_node_t *parent, fx_node_t *child, size_t index) {
 
   switch (parent->type) {
   case fx_view_node:
-    reinterpret_cast<fx_view_t *>(parent)->handle.Children().InsertAt(child_element, index);
+    reinterpret_cast<fx_view_t *>(parent)->handle.Children().InsertAt(uint32_t(index), child_element);
     break;
   default:
     return -1;
@@ -55,7 +54,7 @@ extern "C" int
 fx_unset_child (fx_node_t *parent, fx_node_t *child, size_t index) {
   switch (parent->type) {
   case fx_view_node:
-    reinterpret_cast<fx_view_t *>(parent)->handle.Children().RemoveAt(index);
+    reinterpret_cast<fx_view_t *>(parent)->handle.Children().RemoveAt(uint32_t(index));
     break;
   default:
     return -1;

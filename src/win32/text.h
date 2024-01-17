@@ -1,9 +1,10 @@
 #include "../../include/fx.h"
+#include "winui.h"
 
 struct fx_text_s {
   fx_node_t node;
 
-  HWND handle;
+  TextBlock handle;
 
   void *data;
 };
