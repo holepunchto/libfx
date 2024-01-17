@@ -7,79 +7,16 @@
 #include "shared.h"
 #include "view.h"
 #include "window.h"
+#include "winui.h"
 
-static uv_once_t fx_window_class_init = UV_ONCE_INIT;
+struct fx_window : public WindowT<fx_window> {
+  fx_window_t *self;
 
-static ATOM fx_window_class;
-
-static LRESULT CALLBACK
-on_window_message (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-  auto window = reinterpret_cast<fx_window_t *>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
-
-  auto res = DefWindowProc(hwnd, uMsg, wParam, lParam);
-
-  switch (uMsg) {
-  case WM_SIZING:
-    if (window->on_resize) window->on_resize(window);
-    break;
-
-  case WM_MOVING:
-    if (window->on_move) window->on_move(window);
-    break;
-
-  case WM_CLOSE:
-    if (window->on_close) window->on_close(window);
-    break;
-
-  case WM_DESTROY:
-    if (--fx_main_app->platform->active_windows) return res;
-
-    PostQuitMessage(0);
-    break;
-
-  case WM_PAINT:
-    if (window->view) {
-      RECT rect;
-
-      if (GetClientRect(window->handle, &rect)) {
-        SetWindowPos(
-          window->view->handle,
-          NULL,
-          fx__rect_x(rect),
-          fx__rect_y(rect),
-          fx__rect_width(rect),
-          fx__rect_height(rect),
-          0
-        );
-      }
-    }
-  }
-
-  return res;
-}
-
-static void
-on_window_class_init () {
-  auto instance = GetModuleHandle(NULL);
-
-  WNDCLASSEX window_class;
-
-  ZeroMemory(&window_class, sizeof(WNDCLASSEX));
-
-  window_class.cbSize = sizeof(WNDCLASSEX);
-  window_class.lpfnWndProc = on_window_message;
-  window_class.hInstance = instance;
-  window_class.lpszClassName = "FX Window";
-
-  fx_window_class = RegisterClassEx(&window_class);
-
-  assert(fx_window_class);
-}
+  fx_window(fx_window_t *self) : self(self) {}
+};
 
 int
 fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float height, int flags, fx_window_t **result) {
-  uv_once(&fx_window_class_init, on_window_class_init);
-
   int screen_width = GetSystemMetrics(SM_CXSCREEN);
   int screen_height = GetSystemMetrics(SM_CYSCREEN);
 
@@ -103,58 +40,11 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
     else return -1;
   }
 
-  DWORD style;
-
-  if (flags & fx_window_no_frame) {
-    style = WS_POPUP | WS_BORDER;
-  } else {
-    style = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
-  }
-
-  auto rect = fx__rect<float>(0, 0, width, height);
-
-  AdjustWindowRect(&rect, style, FALSE);
-
-  auto instance = GetModuleHandle(NULL);
-
-  auto handle = CreateWindowEx(
-    0,
-    MAKEINTATOM(fx_window_class),
-    NULL,
-    style,
-    int(x),
-    int(y),
-    fx__rect_width<int>(rect),
-    fx__rect_height<int>(rect),
-    NULL,
-    NULL,
-    instance,
-    NULL
-  );
-
-  if (handle == NULL) return -1;
-
-  fx_main_app->platform->active_windows++;
-
-  if (view) {
-    if (SetParent(view->handle, handle) == NULL) return -1;
-
-    auto success = SetWindowPos(
-      view->handle,
-      NULL,
-      int(x),
-      int(y),
-      int(width),
-      int(height),
-      0
-    );
-
-    if (!success) return -1;
-  }
-
   auto window = new fx_window_t();
 
-  window->handle = handle;
+  window->handle = make<fx_window>(window);
+
+  window->handle.Activate();
 
   window->view = view;
 
@@ -168,15 +58,11 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 
   *result = window;
 
-  SetWindowLongPtr(handle, GWLP_USERDATA, LONG_PTR(window));
-
   return 0;
 }
 
 int
 fx_window_destroy (fx_window_t *window) {
-  DestroyWindow(window->handle);
-
   delete window;
 
   return 0;
@@ -233,51 +119,33 @@ fx_set_window_data (fx_window_t *window, void *data) {
 
 int
 fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, float *height) {
-  RECT rect;
-
-  auto success = GetWindowRect(window->handle, &rect);
-
-  if (!success) return -1;
-
-  if (x) *x = fx__rect_x<float>(rect);
-  if (y) *y = fx__rect_y<float>(rect);
-  if (width) *width = fx__rect_width<float>(rect);
-  if (height) *height = fx__rect_height<float>(rect);
+  if (x) *x = 0;
+  if (y) *y = 0;
+  if (width) *width = 0;
+  if (height) *height = 0;
 
   return 0;
 }
 
 int
 fx_set_window_title (fx_window_t *window, const char *title) {
-  auto success = SetWindowText(window->handle, title);
-
-  return success ? 0 : -1;
+  return 0;
 }
 
 int
 fx_get_window_title (fx_window_t *window, char *title, size_t len, size_t *result) {
-  if (title == NULL) {
-    *result = GetWindowTextLength(window->handle);
-  } else if (len != 0) {
-    int written = GetWindowText(window->handle, title, len);
-
-    if (written < len) title[written] = '\0';
-
-    if (result) *result = written;
-  } else if (result) *result = 0;
+  if (result) *result = 0;
 
   return 0;
 }
 
 bool
 fx_is_window_visible (fx_window_t *window) {
-  return IsWindowVisible(window->handle);
+  return false;
 }
 
 int
 fx_set_window_visible (fx_window_t *window, bool visible) {
-  ShowWindow(window->handle, visible ? SW_SHOW : SW_HIDE);
-
   return 0;
 }
 
@@ -289,20 +157,10 @@ fx_hide_window (fx_window_t *window);
 
 bool
 fx_is_window_resizable (fx_window_t *window) {
-  return (GetWindowLong(window->handle, GWL_STYLE) & WS_THICKFRAME) != 0;
+  return false;
 }
 
 int
 fx_set_window_resizable (fx_window_t *window, bool resizable) {
-  auto style = GetWindowLong(window->handle, GWL_STYLE);
-
-  if (resizable) {
-    style |= WS_THICKFRAME;
-  } else {
-    style &= ~WS_THICKFRAME;
-  }
-
-  SetWindowLong(window->handle, GWL_STYLE, style);
-
   return 0;
 }

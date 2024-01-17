@@ -1,7 +1,8 @@
 #include "../../include/fx.h"
+#include "winui.h"
 
 struct fx_window_s {
-  HWND handle;
+  Window handle;
 
   fx_view_t *view;
 

@@ -12,10 +12,10 @@ enum {
 
 static DWORD fx_main_thread_id = 0;
 
-struct fx_app : public ApplicationT<fx_app> {
+struct fx : public ApplicationT<fx> {
   fx_platform_t *platform;
 
-  fx_app(fx_platform_t *platform) : platform(platform) {}
+  fx(fx_platform_t *platform) : platform(platform) {}
 
   void
   OnLaunched (LaunchActivatedEventArgs const &) {
@@ -24,7 +24,7 @@ struct fx_app : public ApplicationT<fx_app> {
 
   void
   Exit () {
-    ApplicationT<fx_app>::Exit();
+    ApplicationT<fx>::Exit();
 
     if (platform->on_terminate) platform->on_terminate(fx_main_app);
   }
@@ -57,8 +57,6 @@ fx_platform_init (fx_t *app, fx_platform_t **result) {
   if (FAILED(res)) return -1;
 
   auto platform = new fx_platform_t();
-
-  platform->active_windows = 0;
 
   platform->on_launch = NULL;
   platform->on_terminate = NULL;
@@ -107,7 +105,7 @@ extern "C" int
 fx_platform_run (fx_platform_t *platform) {
   fx_main_thread_id = GetCurrentThreadId();
 
-  Application::Start([platform] (auto &&) { make<fx_app>(platform); });
+  Application::Start([platform] (auto &&) { make<fx>(platform); });
 
   return 0;
 }
