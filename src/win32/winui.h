@@ -5,6 +5,9 @@
 #undef GetCurrentTime
 
 #include <winrt/windows.foundation.h>
+#include <winrt/windows.foundation.collections.h>
+
+#include <winrt/microsoft.ui.windowing.h>
 
 #include <winrt/microsoft.ui.xaml.h>
 #include <winrt/microsoft.ui.xaml.controls.h>

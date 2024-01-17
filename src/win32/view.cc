@@ -1,34 +1,19 @@
 #include "view.h"
 #include "../../include/fx.h"
 
-static const char *fx_view_class = "STATIC";
+struct fx_view : public CanvasT<fx_view> {
+  fx_view_t *self;
+
+  fx_view(fx_view_t *self) : self(self) {}
+};
 
 extern "C" int
 fx_view_init (fx_t *app, float x, float y, float width, float height, fx_view_t **result) {
-  auto instance = GetModuleHandle(NULL);
-
-  auto handle = CreateWindowEx(
-    0,
-    fx_view_class,
-    NULL,
-    WS_VISIBLE | WS_CHILD,
-    (int) x,
-    (int) y,
-    (int) width,
-    (int) height,
-    HWND_MESSAGE,
-    NULL,
-    instance,
-    NULL
-  );
-
-  if (handle == NULL) return -1;
-
   auto view = new fx_view_t();
 
   view->node.type = fx_view_node;
 
-  view->handle = handle;
+  view->handle = make<fx_view>(view);
 
   *result = view;
 
@@ -37,8 +22,6 @@ fx_view_init (fx_t *app, float x, float y, float width, float height, fx_view_t 
 
 extern "C" int
 fx_view_destroy (fx_view_t *view) {
-  DestroyWindow(view->handle);
-
   delete view;
 
   return 0;

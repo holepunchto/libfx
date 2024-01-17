@@ -44,9 +44,9 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 
   window->handle = make<fx_window>(window);
 
-  window->handle.Activate();
-
   window->view = view;
+
+  if (view) window->handle.Content(view->handle);
 
   window->data = NULL;
 
@@ -119,10 +119,12 @@ fx_set_window_data (fx_window_t *window, void *data) {
 
 int
 fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, float *height) {
-  if (x) *x = 0;
-  if (y) *y = 0;
-  if (width) *width = 0;
-  if (height) *height = 0;
+  auto bounds = window->handle.Bounds();
+
+  if (x) *x = bounds.X;
+  if (y) *y = bounds.Y;
+  if (width) *width = bounds.Width;
+  if (height) *height = bounds.Height;
 
   return 0;
 }
@@ -141,11 +143,13 @@ fx_get_window_title (fx_window_t *window, char *title, size_t len, size_t *resul
 
 bool
 fx_is_window_visible (fx_window_t *window) {
-  return false;
+  return window->handle.AppWindow().IsVisible();
 }
 
 int
 fx_set_window_visible (fx_window_t *window, bool visible) {
+  window->handle.AppWindow().Show(visible);
+
   return 0;
 }
 
