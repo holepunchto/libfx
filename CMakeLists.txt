@@ -177,20 +177,6 @@ target_include_directories(
     $<TARGET_PROPERTY:uv,INTERFACE_INCLUDE_DIRECTORIES>
 )
 
-if(WIN32)
-  target_include_directories(
-    fx
-    PUBLIC
-      src/win32/webview2/include
-  )
-
-  target_link_directories(
-    fx
-    PUBLIC
-      src/win32/webview2/${CMAKE_LIBRARY_ARCHITECTURE}
-  )
-endif()
-
 if(IOS)
   target_link_libraries(
     fx
@@ -216,12 +202,12 @@ elseif(APPLE)
 endif()
 
 if(WIN32)
+  include(cmake/winui.cmake)
+
   target_link_libraries(
     fx
     PRIVATE
-      WindowsApp.lib
-    PUBLIC
-      WebView2LoaderStatic.lib
+      windowsappsdk
   )
 endif()
 

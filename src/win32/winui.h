@@ -4,13 +4,20 @@
 
 #undef GetCurrentTime
 
-#include <winrt/windows.ui.core.h>
-#include <winrt/windows.ui.xaml.h>
-#include <winrt/windows.ui.xaml.hosting.h>
-#include <winrt/windows.ui.xaml.controls.h>
+#include <winrt/microsoft.ui.xaml.h>
+#include <winrt/microsoft.ui.xaml.controls.h>
+#include <winrt/microsoft.ui.xaml.controls.primitives.h>
+#include <winrt/microsoft.ui.xaml.xamltypeinfo.h>
+#include <winrt/microsoft.ui.xaml.markup.h>
 
 using namespace winrt;
 
-using namespace Windows::UI;
-using namespace Windows::UI::Xaml::Hosting;
-using namespace Windows::UI::Xaml::Controls;
+using namespace Microsoft::UI;
+using namespace Microsoft::UI::Xaml;
+using namespace Microsoft::UI::Xaml::Controls;
+using namespace Microsoft::UI::Xaml::XamlTypeInfo;
+using namespace Microsoft::UI::Xaml::Markup;
+
+#include <mddbootstrap.h>
+
+#include <windowsappsdk-versioninfo.h>

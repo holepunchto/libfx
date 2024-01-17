@@ -4,12 +4,31 @@
 #include "../../include/fx.h"
 #include "../shared/fx.h"
 #include "fx.h"
+#include "winui.h"
 
 enum {
   fx_msg_dispatch = WM_APP + 1,
 } fx_msg_t;
 
 static DWORD fx_main_thread_id = 0;
+
+struct fx_app : public ApplicationT<fx_app> {
+  fx_platform_t *platform;
+
+  fx_app(fx_platform_t *platform) : platform(platform) {}
+
+  void
+  OnLaunched (LaunchActivatedEventArgs const &) {
+    if (platform->on_launch) platform->on_launch(fx_main_app);
+  }
+
+  void
+  Exit () {
+    ApplicationT<fx_app>::Exit();
+
+    if (platform->on_terminate) platform->on_terminate(fx_main_app);
+  }
+};
 
 static inline void
 on_dispatch (MSG msg) {
@@ -27,6 +46,16 @@ fx_platform_init (fx_t *app, fx_platform_t **result) {
 
   if (FAILED(res)) return -1;
 
+  const UINT32 version{WINDOWSAPPSDK_RELEASE_MAJORMINOR};
+
+  PCWSTR version_tag{WINDOWSAPPSDK_RELEASE_VERSION_TAG_W};
+
+  const PACKAGE_VERSION min_version{WINDOWSAPPSDK_RUNTIME_VERSION_UINT64};
+
+  res = MddBootstrapInitialize(version, version_tag, min_version);
+
+  if (FAILED(res)) return -1;
+
   auto platform = new fx_platform_t();
 
   platform->active_windows = 0;
@@ -41,6 +70,8 @@ fx_platform_init (fx_t *app, fx_platform_t **result) {
 
 extern "C" int
 fx_platform_destroy (fx_platform_t *platform) {
+  MddBootstrapShutdown();
+
   CoUninitialize();
 
   delete platform;
@@ -76,27 +107,7 @@ extern "C" int
 fx_platform_run (fx_platform_t *platform) {
   fx_main_thread_id = GetCurrentThreadId();
 
-  if (platform->on_launch) platform->on_launch(fx_main_app);
-
-  MSG msg;
-  BOOL success;
-
-  while (success = GetMessage(&msg, NULL, 0, 0), success != 0) {
-    if (success == -1) {
-      // TODO: Figure out error handling.
-    } else if (msg.hwnd) {
-      TranslateMessage(&msg);
-      DispatchMessage(&msg);
-    } else {
-      switch (msg.message) {
-      case fx_msg_dispatch:
-        on_dispatch(msg);
-        break;
-      }
-    }
-  }
-
-  if (platform->on_terminate) platform->on_terminate(fx_main_app);
+  Application::Start([platform] (auto &&) { make<fx_app>(platform); });
 
   return 0;
 }

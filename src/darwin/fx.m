@@ -37,11 +37,7 @@ fx_platform_init (fx_t *app, fx_platform_t **result) {
 
   FX *native_app = [FX sharedApplication];
 
-  if (fx_is_main(app)) {
-    native_app.delegate = [[FXDelegate alloc] init];
-  } else {
-    [native_app.delegate retain];
-  }
+  native_app.delegate = [[FXDelegate alloc] init];
 
   platform->native_app = native_app;
 
