@@ -1,11 +1,17 @@
 #include "scroll-view.h"
 #include "../../include/fx.h"
+#include "view.h"
+#include "winui.h"
 
 extern "C" int
 fx_scroll_view_init (fx_t *app, fx_view_t *view, float x, float y, float width, float height, fx_scroll_view_t **result) {
   auto scroll_view = new fx_scroll_view_t();
 
   scroll_view->node.type = fx_scroll_view_node;
+
+  scroll_view->view = view;
+
+  if (view) scroll_view->handle.Content(view->handle);
 
   *result = scroll_view;
 

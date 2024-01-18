@@ -21,7 +21,7 @@ on_launch (fx_t *app) {
   assert(e == 0);
 
   fx_text_span_t *span;
-  e = fx_append_text_span(text, value, strlen(value), &span);
+  e = fx_append_text_span(text, value, -1, &span);
   assert(e == 0);
 
   e = fx_set_child((fx_node_t *) content_view, (fx_node_t *) text, 0);

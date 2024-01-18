@@ -12,22 +12,22 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
   int screen_height = GetSystemMetrics(SM_CYSCREEN);
 
   if (x < 0) {
-    if (x == fx_screen_center) x = (screen_width - width) / 2;
+    if (int(x) == fx_screen_center) x = (screen_width - width) / 2;
     else return -1;
   }
 
   if (y < 0) {
-    if (y == fx_screen_center) y = (screen_height - height) / 2;
+    if (int(y) == fx_screen_center) y = (screen_height - height) / 2;
     else return -1;
   }
 
   if (width < 0) {
-    if (width == fx_screen_size) width = screen_width;
+    if (int(width) == fx_screen_size) width = screen_width;
     else return -1;
   }
 
   if (height < 0) {
-    if (height == fx_screen_size) height = screen_height;
+    if (int(height) == fx_screen_size) height = screen_height;
     else return -1;
   }
 

@@ -1,9 +1,12 @@
 #include "../../include/fx.h"
+#include "winui.h"
 
 struct fx_scroll_view_s {
   fx_node_t node;
 
-  HWND handle;
+  ScrollView handle;
+
+  fx_view_t *view;
 
   void *data;
 };

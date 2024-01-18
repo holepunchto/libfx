@@ -14,12 +14,11 @@ fx_get_child_element (fx_node_t *child) {
   case fx_view_node:
     return reinterpret_cast<fx_view_t *>(child)->handle;
   case fx_scroll_view_node:
-    // child_element = &((fx_scroll_view_t *) child)->handle;
-    break;
+    return reinterpret_cast<fx_scroll_view_t *>(child)->handle;
   case fx_text_node:
     return reinterpret_cast<fx_text_t *>(child)->handle;
   case fx_text_input_node:
-    // child_element = &((fx_text_input_t *) child)->handle;
+    return reinterpret_cast<fx_text_input_t *>(child)->handle;
     break;
   case fx_image_node:
     return reinterpret_cast<fx_image_t *>(child)->handle;

@@ -1,5 +1,6 @@
 #include "text-input.h"
 #include "../../include/fx.h"
+#include "winui.h"
 
 extern "C" int
 fx_text_input_init (fx_t *app, float x, float y, float width, float height, fx_text_input_t **result) {
