@@ -36,11 +36,11 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
   window->handle.Title(L"");
 
   if (flags & fx_window_no_frame) {
-    window->handle.ExtendsContentIntoTitleBar(true);
+    OverlappedPresenter presenter = OverlappedPresenter::CreateForDialog();
 
-    Grid title_bar;
+    presenter.SetBorderAndTitleBar(false, false);
 
-    window->handle.SetTitleBar(title_bar);
+    window->handle.AppWindow().SetPresenter(presenter);
   }
 
   window->view = view;
