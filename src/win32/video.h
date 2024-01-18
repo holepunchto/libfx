@@ -1,9 +1,10 @@
 #include "../../include/fx.h"
+#include "winui.h"
 
 struct fx_video_s {
   fx_node_t node;
 
-  HWND handle;
+  MediaPlayerElement handle;
 
   void *data;
 };

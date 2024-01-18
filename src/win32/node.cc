@@ -25,8 +25,7 @@ fx_get_child_element (fx_node_t *child) {
     // child_element = &((fx_image_t *) child)->handle;
     break;
   case fx_video_node:
-    // child_element = &((fx_video_t *) child)->handle;
-    break;
+    return reinterpret_cast<fx_video_t *>(child)->handle;
   case fx_web_view_node:
     // child_element = &((fx_web_view_t *) child)->handle;
     break;

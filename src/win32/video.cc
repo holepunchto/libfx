@@ -1,72 +1,37 @@
-#include <assert.h>
-#include <uv.h>
-
-#include "../../include/fx.h"
 #include "video.h"
+#include "../../include/fx.h"
+#include "shared.h"
+#include "winui.h"
 
-static uv_once_t fx_video_class_init = UV_ONCE_INIT;
+struct fx_video : MediaPlayerElementT<fx_video> {
+  fx_video_t *self;
 
-static ATOM fx_video_class;
-
-static LRESULT CALLBACK
-on_video_message (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-  auto video = reinterpret_cast<fx_video_t *>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
-
-  auto res = DefWindowProc(hwnd, uMsg, wParam, lParam);
-
-  return res;
-}
-
-static void
-on_video_class_init () {
-  auto instance = GetModuleHandle(NULL);
-
-  WNDCLASSEX video_class;
-
-  ZeroMemory(&video_class, sizeof(WNDCLASSEX));
-
-  video_class.cbSize = sizeof(WNDCLASSEX);
-  video_class.lpfnWndProc = on_video_message;
-  video_class.hInstance = instance;
-  video_class.lpszClassName = "FX Video";
-
-  fx_video_class = RegisterClassEx(&video_class);
-
-  assert(fx_video_class);
-}
+  fx_video(fx_video_t *self) : self(self) {}
+};
 
 extern "C" int
 fx_video_init (fx_t *app, const char *url, size_t len, float x, float y, float width, float height, int flags, fx_video_t **result) {
-  uv_once(&fx_video_class_init, on_video_class_init);
-
-  auto instance = GetModuleHandle(NULL);
-
-  auto handle = CreateWindowEx(
-    0,
-    MAKEINTATOM(fx_video_class),
-    NULL,
-    WS_VISIBLE | WS_CHILD,
-    int(x),
-    int(y),
-    int(width),
-    int(height),
-    HWND_MESSAGE,
-    NULL,
-    instance,
-    NULL
-  );
-
-  if (handle == NULL) return -1;
-
   auto video = new fx_video_t();
 
   video->node.type = fx_video_node;
 
-  video->handle = handle;
+  video->handle = make<fx_video>(video);
+
+  video->handle.AreTransportControlsEnabled((flags & fx_video_no_controls) == 0);
+
+  auto wstr_len = fx__to_wstring(url, len, NULL, 0);
+
+  auto wstr = new wchar_t[wstr_len];
+
+  fx__to_wstring(url, len, wstr, wstr_len);
+
+  Uri uri(wstr);
+
+  delete[] wstr;
+
+  video->handle.Source(MediaSource::CreateFromUri(uri));
 
   *result = video;
-
-  SetWindowLongPtr(handle, GWLP_USERDATA, LONG_PTR(video));
 
   return 0;
 }

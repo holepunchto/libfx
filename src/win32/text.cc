@@ -64,7 +64,7 @@ extern "C" int
 fx_append_text_span (fx_text_t *text, const char *value, size_t len, fx_text_span_t **result) {
   auto wstr_len = fx__to_wstring(value, len, NULL, 0);
 
-  auto wstr = new wchar_t[wstr_len + 1];
+  auto wstr = new wchar_t[wstr_len];
 
   fx__to_wstring(value, len, wstr, wstr_len);
 
