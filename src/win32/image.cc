@@ -1,131 +1,20 @@
-#include <assert.h>
-#include <uv.h>
-
-#include "../../include/fx.h"
 #include "image.h"
-
-static uv_once_t fx_image_class_init = UV_ONCE_INIT;
-
-static ATOM fx_image_class;
-
-static LRESULT CALLBACK
-on_image_message (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-  auto image = reinterpret_cast<fx_image_t *>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
-
-  switch (uMsg) {
-  case WM_PAINT: {
-    PAINTSTRUCT ps;
-
-    HDC device_context = BeginPaint(hwnd, &ps);
-
-    RECT rect;
-    GetClientRect(hwnd, &rect);
-
-    if (image->bitmap) {
-      SelectObject(image->device_context, image->bitmap);
-
-      BITMAP bitmap;
-
-      auto success = GetObject(image->bitmap, sizeof(BITMAP), &bitmap);
-
-      if (success) {
-        SetStretchBltMode(device_context, HALFTONE);
-
-        StretchBlt(
-          device_context,
-          rect.left,
-          rect.top,
-          rect.right - rect.left,
-          rect.bottom - rect.top,
-          image->device_context,
-          0,
-          0,
-          bitmap.bmWidth,
-          bitmap.bmHeight,
-          SRCCOPY
-        );
-      }
-    }
-
-    EndPaint(hwnd, &ps);
-
-    return 0;
-  }
-  }
-
-  return DefWindowProc(hwnd, uMsg, wParam, lParam);
-}
-
-static void
-on_image_class_init () {
-  auto instance = GetModuleHandle(NULL);
-
-  WNDCLASSEX image_class;
-
-  ZeroMemory(&image_class, sizeof(WNDCLASSEX));
-
-  image_class.cbSize = sizeof(WNDCLASSEX);
-  image_class.lpfnWndProc = on_image_message;
-  image_class.hInstance = instance;
-  image_class.lpszClassName = "FX Image";
-
-  fx_image_class = RegisterClassEx(&image_class);
-
-  assert(fx_image_class);
-}
+#include "../../include/fx.h"
+#include "winui.h"
 
 extern "C" int
 fx_image_init (fx_t *app, float x, float y, float width, float height, fx_image_t **result) {
-  uv_once(&fx_image_class_init, on_image_class_init);
-
-  auto instance = GetModuleHandle(NULL);
-
-  auto handle = CreateWindowEx(
-    0,
-    MAKEINTATOM(fx_image_class),
-    NULL,
-    WS_VISIBLE | WS_CHILD,
-    (int) x,
-    (int) y,
-    (int) width,
-    (int) height,
-    HWND_MESSAGE,
-    NULL,
-    instance,
-    NULL
-  );
-
-  if (handle == NULL) return -1;
-
   auto image = new fx_image_t();
 
   image->node.type = fx_image_node;
 
-  image->handle = handle;
-
-  auto hdc = GetDC(image->handle);
-
-  image->device_context = CreateCompatibleDC(hdc);
-
-  ReleaseDC(image->handle, hdc);
-
-  image->bitmap = NULL;
-
   *result = image;
-
-  SetWindowLongPtr(handle, GWLP_USERDATA, (LONG_PTR) image);
 
   return 0;
 }
 
 extern "C" int
 fx_image_destroy (fx_image_t *image) {
-  DestroyWindow(image->handle);
-
-  DeleteDC(image->device_context);
-
-  if (image->bitmap) DeleteObject(image->bitmap);
-
   delete image;
 
   return 0;
@@ -135,24 +24,9 @@ int
 fx_image_load (fx_image_t *image, const uint8_t *pixels, int width, int height, int stride) {
   if (stride == -1) stride = width * 4;
 
-  BITMAPINFO bmi;
+  WriteableBitmap bitmap(width, height);
 
-  ZeroMemory(&bmi, sizeof(BITMAPINFO));
-
-  bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-  bmi.bmiHeader.biWidth = width;
-  bmi.bmiHeader.biHeight = -height;
-  bmi.bmiHeader.biPlanes = 1;
-  bmi.bmiHeader.biBitCount = 32;
-  bmi.bmiHeader.biCompression = BI_RGB;
-
-  uint8_t *data;
-
-  auto bitmap = CreateDIBSection(image->device_context, &bmi, DIB_RGB_COLORS, reinterpret_cast<void **>(&data), NULL, 0);
-
-  if (bitmap == NULL) return -1;
-
-  image->bitmap = bitmap;
+  auto data = bitmap.PixelBuffer().data();
 
   for (int y = 0; y < height; y++) {
     for (int x = 0; x < width * 4; x += 4) {
@@ -172,6 +46,8 @@ fx_image_load (fx_image_t *image, const uint8_t *pixels, int width, int height, 
     pixels += stride;
     data += width * 4;
   }
+
+  image->handle.Source(bitmap);
 
   return 0;
 }

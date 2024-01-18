@@ -1,19 +1,11 @@
 #include "view.h"
 #include "../../include/fx.h"
 
-struct fx_view : public CanvasT<fx_view> {
-  fx_view_t *self;
-
-  fx_view(fx_view_t *self) : self(self) {}
-};
-
 extern "C" int
 fx_view_init (fx_t *app, float x, float y, float width, float height, fx_view_t **result) {
   auto view = new fx_view_t();
 
   view->node.type = fx_view_node;
-
-  view->handle = make<fx_view>(view);
 
   *result = view;
 

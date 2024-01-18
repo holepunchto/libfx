@@ -1,19 +1,10 @@
-#include <assert.h>
-#include <uv.h>
-
+#include "window.h"
 #include "../../include/fx.h"
 #include "../shared/fx.h"
 #include "fx.h"
 #include "shared.h"
 #include "view.h"
-#include "window.h"
 #include "winui.h"
-
-struct fx_window : public WindowT<fx_window> {
-  fx_window_t *self;
-
-  fx_window(fx_window_t *self) : self(self) {}
-};
 
 int
 fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float height, int flags, fx_window_t **result) {
@@ -41,8 +32,6 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
   }
 
   auto window = new fx_window_t();
-
-  window->handle = make<fx_window>(window);
 
   window->view = view;
 

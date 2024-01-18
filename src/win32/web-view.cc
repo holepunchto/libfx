@@ -1,9 +1,6 @@
-#include <assert.h>
-#include <uv.h>
-
+#include "web-view.h"
 #include "../../include/fx.h"
 #include "../shared/bridge/edge/bridge.h"
-#include "web-view.h"
 #include "shared.h"
 
 static const char *fx_web_view_class = "STATIC";

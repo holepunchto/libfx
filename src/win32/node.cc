@@ -22,8 +22,7 @@ fx_get_child_element (fx_node_t *child) {
     // child_element = &((fx_text_input_t *) child)->handle;
     break;
   case fx_image_node:
-    // child_element = &((fx_image_t *) child)->handle;
-    break;
+    return reinterpret_cast<fx_image_t *>(child)->handle;
   case fx_video_node:
     return reinterpret_cast<fx_video_t *>(child)->handle;
   case fx_web_view_node:
