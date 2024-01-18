@@ -7,6 +7,12 @@ fx_view_init (fx_t *app, float x, float y, float width, float height, fx_view_t 
 
   view->node.type = fx_view_node;
 
+  view->handle.Width(width);
+  view->handle.Height(height);
+
+  view->handle.HorizontalAlignment(HorizontalAlignment::Left);
+  view->handle.VerticalAlignment(VerticalAlignment::Top);
+
   *result = view;
 
   return 0;

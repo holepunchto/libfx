@@ -9,6 +9,9 @@ fx_text_init (fx_t *app, float x, float y, float width, float height, fx_text_t 
 
   text->node.type = fx_text_node;
 
+  text->handle.Width(width);
+  text->handle.Height(height);
+
   *result = text;
 
   return 0;

@@ -8,6 +8,9 @@ fx_image_init (fx_t *app, float x, float y, float width, float height, fx_image_
 
   image->node.type = fx_image_node;
 
+  image->handle.Width(width);
+  image->handle.Height(height);
+
   *result = image;
 
   return 0;

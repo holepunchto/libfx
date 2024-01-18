@@ -9,6 +9,9 @@ fx_scroll_view_init (fx_t *app, fx_view_t *view, float x, float y, float width, 
 
   scroll_view->node.type = fx_scroll_view_node;
 
+  scroll_view->handle.Width(width);
+  scroll_view->handle.Height(height);
+
   scroll_view->view = view;
 
   if (view) scroll_view->handle.Content(view->handle);

@@ -33,11 +33,19 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 
   auto window = new fx_window_t();
 
+  window->handle.Title(L"");
+
+  if (flags & fx_window_no_frame) {
+    window->handle.ExtendsContentIntoTitleBar(true);
+
+    Grid title_bar;
+
+    window->handle.SetTitleBar(title_bar);
+  }
+
   window->view = view;
 
   if (view) window->handle.Content(view->handle);
-
-  window->handle.Title(L"");
 
   window->handle.Activate();
 

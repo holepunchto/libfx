@@ -9,6 +9,9 @@ fx_video_init (fx_t *app, const char *url, size_t len, float x, float y, float w
 
   video->node.type = fx_video_node;
 
+  video->handle.Width(width);
+  video->handle.Height(height);
+
   video->handle.AreTransportControlsEnabled((flags & fx_video_no_controls) == 0);
 
   auto wstr_len = fx__to_wstring(url, len, NULL, 0);

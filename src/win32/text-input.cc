@@ -8,6 +8,9 @@ fx_text_input_init (fx_t *app, float x, float y, float width, float height, fx_t
 
   text_input->node.type = fx_text_input_node;
 
+  text_input->handle.Width(width);
+  text_input->handle.Height(height);
+
   *result = text_input;
 
   return 0;
