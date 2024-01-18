@@ -37,6 +37,8 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 
   if (view) window->handle.Content(view->handle);
 
+  window->handle.Title(L"");
+
   window->handle.Activate();
 
   window->data = NULL;
