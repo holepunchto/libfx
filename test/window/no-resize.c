@@ -16,9 +16,6 @@ on_launch (fx_t *app) {
 
   e = fx_set_window_resizable(window, false);
   assert(e == 0);
-
-  e = fx_show_window(window);
-  assert(e == 0);
 }
 
 int

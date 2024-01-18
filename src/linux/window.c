@@ -50,6 +50,8 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 
   *result = window;
 
+  gtk_widget_set_visible(handle, true);
+
   gtk_window_set_title(window->handle, fx_default_window_title);
 
   if (width == fx_screen_size && height == fx_screen_size) {
@@ -177,24 +179,6 @@ fx_get_window_title (fx_window_t *window, char *title, size_t len, size_t *resul
 
   return 0;
 }
-
-bool
-fx_is_window_visible (fx_window_t *window) {
-  return gtk_widget_get_visible(GTK_WIDGET(window->handle));
-}
-
-int
-fx_set_window_visible (fx_window_t *window, bool visible) {
-  gtk_widget_set_visible(GTK_WIDGET(window->handle), visible);
-
-  return 0;
-}
-
-extern int
-fx_show_window (fx_window_t *window);
-
-extern int
-fx_hide_window (fx_window_t *window);
 
 bool
 fx_is_window_resizable (fx_window_t *window) {

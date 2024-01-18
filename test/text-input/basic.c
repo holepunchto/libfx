@@ -20,9 +20,6 @@ on_launch (fx_t *app) {
   fx_window_t *window;
   e = fx_window_init(app, view, 0.0, 0.0, 100.0, 100.0, 0, &window);
   assert(e == 0);
-
-  e = fx_show_window(window);
-  assert(e == 0);
 }
 
 int

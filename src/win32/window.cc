@@ -37,6 +37,8 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 
   if (view) window->handle.Content(view->handle);
 
+  window->handle.Activate();
+
   window->data = NULL;
 
   window->on_resize = NULL;
@@ -129,24 +131,6 @@ fx_get_window_title (fx_window_t *window, char *title, size_t len, size_t *resul
 
   return 0;
 }
-
-bool
-fx_is_window_visible (fx_window_t *window) {
-  return window->handle.AppWindow().IsVisible();
-}
-
-int
-fx_set_window_visible (fx_window_t *window, bool visible) {
-  window->handle.AppWindow().Show(visible);
-
-  return 0;
-}
-
-extern int
-fx_show_window (fx_window_t *window);
-
-extern int
-fx_hide_window (fx_window_t *window);
 
 bool
 fx_is_window_resizable (fx_window_t *window) {

@@ -55,22 +55,6 @@ int
 fx_get_window_title (fx_window_t *window, char *title, size_t len, size_t *result);
 
 bool
-fx_is_window_visible (fx_window_t *window);
-
-int
-fx_set_window_visible (fx_window_t *window, bool visible);
-
-inline int
-fx_show_window (fx_window_t *window) {
-  return fx_set_window_visible(window, true);
-}
-
-inline int
-fx_hide_window (fx_window_t *window) {
-  return fx_set_window_visible(window, false);
-}
-
-bool
 fx_is_window_resizable (fx_window_t *window);
 
 int

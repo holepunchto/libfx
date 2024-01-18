@@ -27,7 +27,5 @@ main () {
   fx_window_t *window;
   fx_window_init(app, view, x, y, width, height, 0, &window);
 
-  fx_show_window(window);
-
   return fx_run(app);
 }

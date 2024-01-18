@@ -22,6 +22,8 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
     [native_window addSubview:view->native_view];
   }
 
+  [native_window makeKeyWindow];
+
   fx_window_t *window = malloc(sizeof(fx_window_t));
 
   window->native_window = native_window;
@@ -109,25 +111,3 @@ fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, flo
 
   return 0;
 }
-
-bool
-fx_is_window_visible (fx_window_t *window) {
-  return !window->native_window.hidden;
-}
-
-int
-fx_set_window_visible (fx_window_t *window, bool visible) {
-  window->native_window.hidden = !visible;
-
-  if (visible) {
-    [window->native_window makeKeyWindow];
-  }
-
-  return 0;
-}
-
-extern int
-fx_show_window (fx_window_t *window);
-
-extern int
-fx_hide_window (fx_window_t *window);

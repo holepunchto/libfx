@@ -81,6 +81,8 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 
   if (view) handle.contentView = view->handle;
 
+  [handle makeKeyAndOrderFront:handle];
+
   fx_window_t *window = malloc(sizeof(fx_window_t));
 
   window->handle = handle;
@@ -202,24 +204,6 @@ fx_get_window_title (fx_window_t *window, char *title, size_t len, size_t *resul
 
   return 0;
 }
-
-bool
-fx_is_window_visible (fx_window_t *window) {
-  return window->handle.visible;
-}
-
-int
-fx_set_window_visible (fx_window_t *window, bool visible) {
-  [window->handle setIsVisible:visible];
-
-  return 0;
-}
-
-extern int
-fx_show_window (fx_window_t *window);
-
-extern int
-fx_hide_window (fx_window_t *window);
 
 bool
 fx_is_window_resizable (fx_window_t *window) {
