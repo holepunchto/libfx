@@ -6,19 +6,19 @@
 #include "fx.h"
 #include "winui.h"
 
-enum {
-  fx_msg_dispatch = WM_APP + 1,
-} fx_msg_t;
-
-static DWORD fx_main_thread_id = 0;
+static DispatcherQueue *fx_dispatcher;
 
 struct fx : public ApplicationT<fx> {
   fx_platform_t *platform;
 
   fx(fx_platform_t *platform) : platform(platform) {}
 
+  DispatcherQueue dispatcher = DispatcherQueue::GetForCurrentThread();
+
   void
   OnLaunched (LaunchActivatedEventArgs const &) {
+    fx_dispatcher = &dispatcher;
+
     if (platform->on_launch) platform->on_launch(fx_main_app);
   }
 
@@ -29,14 +29,6 @@ struct fx : public ApplicationT<fx> {
     if (platform->on_terminate) platform->on_terminate(fx_main_app);
   }
 };
-
-static inline void
-on_dispatch (MSG msg) {
-  auto cb = reinterpret_cast<fx_dispatch_cb>(msg.wParam);
-  auto data = reinterpret_cast<void *>(msg.lParam);
-
-  cb(fx_main_app, data);
-}
 
 extern "C" int
 fx_platform_init (fx_t *app, fx_platform_t **result) {
@@ -103,18 +95,16 @@ fx_on_platform_resume (fx_platform_t *platform, fx_resume_cb cb) {
 
 extern "C" int
 fx_platform_run (fx_platform_t *platform) {
-  fx_main_thread_id = GetCurrentThreadId();
-
-  Application::Start([platform] (auto &&) { make<fx>(platform); });
+  Application::Start([=] (auto &&) { make<fx>(platform); });
 
   return 0;
 }
 
 extern "C" int
 fx_dispatch (fx_dispatch_cb cb, void *data) {
-  assert(fx_main_thread_id);
+  assert(fx_dispatcher);
 
-  auto success = PostThreadMessage(fx_main_thread_id, fx_msg_dispatch, (WPARAM) cb, (LPARAM) data);
+  auto success = fx_dispatcher->TryEnqueue([=] () { cb(fx_main_app, data); });
 
   return success ? 0 : -1;
 }
