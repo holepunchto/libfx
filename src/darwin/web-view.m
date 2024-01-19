@@ -3,6 +3,7 @@
 
 #import "../../include/fx.h"
 #import "../shared/bridge/webkit/bridge.h"
+#import "shared.h"
 #import "web-view.h"
 
 @implementation FXWebViewDelegate
@@ -25,7 +26,7 @@
 @end
 
 int
-fx_web_view_init (fx_t *app, const char *data_directory, float x, float y, float width, float height, fx_web_view_ready_cb cb, fx_web_view_t **result) {
+fx_web_view_init (fx_t *app, float x, float y, float width, float height, fx_web_view_t **result) {
   WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
 
   FXWebViewDelegate *delegate = [[FXWebViewDelegate alloc] init];
@@ -60,16 +61,11 @@ fx_web_view_init (fx_t *app, const char *data_directory, float x, float y, float
 
   web_view->data = NULL;
 
-  web_view->on_ready = cb;
   web_view->on_message = NULL;
 
   native_web_view.fxWebView = web_view;
 
   *result = web_view;
-
-  dispatch_async(dispatch_get_main_queue(), ^{
-    if (web_view->on_ready) web_view->on_ready(web_view, 0);
-  });
 
   return 0;
 }
@@ -137,14 +133,14 @@ fx_web_view_post_message (fx_web_view_t *web_view, const char *message) {
 
 int
 fx_web_view_load_url (fx_web_view_t *web_view, const char *url, size_t len) {
-  [web_view->handle loadRequest:[[NSURLRequest alloc] initWithURL:[[NSURL alloc] initWithString:[[NSString alloc] initWithBytes:url length:len encoding:NSUTF8StringEncoding]]]];
+  [web_view->handle loadRequest:[[NSURLRequest alloc] initWithURL:fx__url(url, len)]];
 
   return 0;
 }
 
 int
 fx_web_view_load_html (fx_web_view_t *web_view, const char *html, size_t len) {
-  [web_view->handle loadHTMLString:[[NSString alloc] initWithBytes:html length:len encoding:NSUTF8StringEncoding] baseURL:NULL];
+  [web_view->handle loadHTMLString:fx__string(html, len) baseURL:NULL];
 
   return 0;
 }

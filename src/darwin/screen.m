@@ -4,7 +4,7 @@
 #import "screen.h"
 
 int
-fx_screen_destroy (fx_screen_t *screen) {
+fx_screen_release (fx_screen_t *screen) {
   [screen->native_screen release];
 
   free(screen);

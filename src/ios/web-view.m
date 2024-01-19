@@ -21,7 +21,7 @@
 @end
 
 int
-fx_web_view_init (fx_t *app, const char *data_directory, float x, float y, float width, float height, fx_web_view_ready_cb cb, fx_web_view_t **result) {
+fx_web_view_init (fx_t *app, float x, float y, float width, float height, fx_web_view_t **result) {
   WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
 
   FXWebViewDelegate *delegate = [[FXWebViewDelegate alloc] init];
@@ -56,16 +56,11 @@ fx_web_view_init (fx_t *app, const char *data_directory, float x, float y, float
 
   web_view->data = NULL;
 
-  web_view->on_ready = cb;
   web_view->on_message = NULL;
 
   native_web_view.fxWebView = web_view;
 
   *result = web_view;
-
-  dispatch_async(dispatch_get_main_queue(), ^{
-    if (web_view->on_ready) web_view->on_ready(web_view, 0);
-  });
 
   return 0;
 }

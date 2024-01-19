@@ -20,6 +20,5 @@ struct fx_web_view_s {
 
   void *data;
 
-  fx_web_view_ready_cb on_ready;
   fx_web_view_message_cb on_message;
 };
