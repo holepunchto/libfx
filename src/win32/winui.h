@@ -6,6 +6,7 @@
 
 #include <winrt/windows.foundation.collections.h>
 #include <winrt/windows.foundation.h>
+#include <winrt/windows.graphics.h>
 #include <winrt/windows.media.core.h>
 #include <winrt/windows.media.h>
 #include <winrt/windows.storage.streams.h>
@@ -13,6 +14,7 @@
 // UI headers for WinUI, which replace the deprecated system UI headers
 // from the windows.ui.* namespace.
 
+#include <winrt/microsoft.ui.interop.h>
 #include <winrt/microsoft.ui.windowing.h>
 #include <winrt/microsoft.ui.xaml.controls.h>
 #include <winrt/microsoft.ui.xaml.controls.primitives.h>
@@ -24,6 +26,7 @@
 using namespace winrt;
 
 using namespace Windows::Foundation;
+using namespace Windows::Graphics;
 using namespace Windows::Media;
 using namespace Windows::Media::Core;
 using namespace Windows::Storage::Streams;

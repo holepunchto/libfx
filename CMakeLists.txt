@@ -125,6 +125,8 @@ if(WIN32)
       src/win32/image.cc
       src/win32/image.h
       src/win32/node.cc
+      src/win32/screen.h
+      src/win32/screen.cc
       src/win32/scroll-view.cc
       src/win32/scroll-view.h
       src/win32/shared.h
@@ -208,6 +210,9 @@ if(WIN32)
     fx
     PRIVATE
       windowsappsdk
+    PUBLIC
+      WindowsApp.lib
+      Shcore.lib # High-DPI functions
   )
 endif()
 

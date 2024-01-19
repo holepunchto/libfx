@@ -30,7 +30,12 @@ ExternalProject_Add(
   URL "https://www.nuget.org/api/v2/package/Microsoft.WindowsAppSDK/1.4.231219000"
 
   CONFIGURE_COMMAND ""
-  BUILD_COMMAND cppwinrt -ref sdk -in "<SOURCE_DIR>/lib/uap10.0" -in "<SOURCE_DIR>/lib/uap10.0.17763" -in "<SOURCE_DIR>/lib/uap10.0.18362" -output "<BINARY_DIR>/include"
+  BUILD_COMMAND cppwinrt
+    -ref sdk
+    -in "<SOURCE_DIR>/lib/uap10.0"
+    -in "<SOURCE_DIR>/lib/uap10.0.17763"
+    -in "<SOURCE_DIR>/lib/uap10.0.18362"
+    -output "<BINARY_DIR>/include"
   INSTALL_COMMAND ""
 
   EXCLUDE_FROM_ALL
@@ -39,6 +44,19 @@ ExternalProject_Add(
 ExternalProject_Get_property(WindowsAppSDK SOURCE_DIR)
 
 ExternalProject_Get_property(WindowsAppSDK BINARY_DIR)
+
+add_library(windowsappsdk_bootstrap SHARED IMPORTED)
+
+add_dependencies(windowsappsdk_bootstrap WindowsAppSDK)
+
+set_target_properties(
+  windowsappsdk_bootstrap
+  PROPERTIES
+  IMPORTED_LOCATION
+    "${SOURCE_DIR}/runtimes/win10-${CMAKE_LIBRARY_ARCHITECTURE}/native/Microsoft.WindowsAppRuntime.Bootstrap.dll"
+  IMPORTED_IMPLIB
+    "${SOURCE_DIR}/lib/win10-${CMAKE_LIBRARY_ARCHITECTURE}/Microsoft.WindowsAppRuntime.Bootstrap.lib"
+)
 
 add_library(windowsappsdk INTERFACE)
 
@@ -51,15 +69,8 @@ target_include_directories(
     "${BINARY_DIR}/include"
 )
 
-target_link_directories(
-  windowsappsdk
-  INTERFACE
-    ${SOURCE_DIR}/lib/win10-${CMAKE_LIBRARY_ARCHITECTURE}
-)
-
 target_link_libraries(
   windowsappsdk
   INTERFACE
-    WindowsApp.lib
-    Microsoft.WindowsAppRuntime.Bootstrap.lib
+    windowsappsdk_bootstrap
 )

@@ -50,6 +50,13 @@ foreach(test IN LISTS tests)
   set_tests_properties(
     ${name}
     PROPERTIES
-    TIMEOUT 30000
+    TIMEOUT 30
+  )
+
+  add_custom_command(
+    TARGET ${name}
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_FILE_DIR:${name}> $<TARGET_RUNTIME_DLLS:${name}>
+    COMMAND_EXPAND_LISTS
   )
 endforeach()

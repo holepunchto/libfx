@@ -1,12 +1,12 @@
 #include "../../include/fx.h"
+#include "winui.h"
 
 struct fx_web_view_s {
   fx_node_t node;
 
-  HWND handle;
+  WebView2 handle;
 
   void *data;
 
-  fx_web_view_ready_cb on_ready;
   fx_web_view_message_cb on_message;
 };
