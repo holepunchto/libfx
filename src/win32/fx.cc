@@ -20,13 +20,10 @@ struct fx : public ApplicationT<fx> {
     fx_dispatcher = &dispatcher;
 
     if (platform->on_launch) platform->on_launch(fx_main_app);
-  }
 
-  void
-  Exit () {
-    ApplicationT<fx>::Exit();
-
-    if (platform->on_terminate) platform->on_terminate(fx_main_app);
+    dispatcher.ShutdownCompleted([=] (const auto &sender, const auto &args) {
+      if (platform->on_terminate) platform->on_terminate(fx_main_app);
+    });
   }
 };
 
