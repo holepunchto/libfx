@@ -8,7 +8,7 @@
 
 static DispatcherQueue *fx_dispatcher;
 
-struct fx : public ApplicationT<fx> {
+struct fx : public ApplicationT<fx, IXamlMetadataProvider> {
   fx_platform_t *platform;
 
   fx(fx_platform_t *platform) : platform(platform) {}
@@ -17,6 +17,8 @@ struct fx : public ApplicationT<fx> {
 
   void
   OnLaunched (LaunchActivatedEventArgs const &) {
+    Resources().MergedDictionaries().Append(XamlControlsResources());
+
     fx_dispatcher = &dispatcher;
 
     if (platform->on_launch) platform->on_launch(fx_main_app);
@@ -24,6 +26,23 @@ struct fx : public ApplicationT<fx> {
     dispatcher.ShutdownCompleted([=] (const auto &sender, const auto &args) {
       if (platform->on_terminate) platform->on_terminate(fx_main_app);
     });
+  }
+
+  XamlControlsXamlMetaDataProvider provider;
+
+  IXamlType
+  GetXamlType (hstring const &name) {
+    return provider.GetXamlType(name);
+  }
+
+  IXamlType
+  GetXamlType (TypeName const &type) {
+    return provider.GetXamlType(type);
+  }
+
+  com_array<XmlnsDefinition>
+  GetXmlnsDefinitions () {
+    return provider.GetXmlnsDefinitions();
   }
 };
 

@@ -12,34 +12,8 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
   int err;
 
   fx_screen_t *screen;
-
-  if (x < 0 || y < 0) {
-    err = fx_get_main_screen(app, &screen);
-  } else {
-    err = fx_get_screen_at(app, x, y, &screen);
-  }
-
+  err = fx_get_screen_at(app, x, y, &screen);
   if (err < 0) return -1;
-
-  if (x < 0) {
-    if (int(x) == fx_screen_center) x = (screen->width - width) / 2;
-    else x = 0;
-  }
-
-  if (y < 0) {
-    if (int(y) == fx_screen_center) y = (screen->height - height) / 2;
-    else y = 0;
-  }
-
-  if (width < 0) {
-    if (int(width) == fx_screen_size) width = screen->width;
-    else width = 0;
-  }
-
-  if (height < 0) {
-    if (int(height) == fx_screen_size) height = screen->height;
-    else height = 0;
-  }
 
   x *= screen->scale;
   y *= screen->scale;
