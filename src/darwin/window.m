@@ -202,3 +202,10 @@ fx_set_window_resizable (fx_window_t *window, bool resizable) {
 
   return 0;
 }
+
+int
+fx_close_window (fx_window_t *window) {
+  [window->handle close];
+
+  return 0;
+}

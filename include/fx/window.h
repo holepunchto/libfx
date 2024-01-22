@@ -60,4 +60,7 @@ fx_is_window_resizable (fx_window_t *window);
 int
 fx_set_window_resizable (fx_window_t *window, bool resizable);
 
+int
+fx_close_window (fx_window_t *window);
+
 #endif // FX_WINDOW_H
