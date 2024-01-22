@@ -6,6 +6,13 @@ struct fx_text_s {
 
   TextBlock handle;
 
+  struct {
+    float x;
+    float y;
+    float width;
+    float height;
+  } bounds;
+
   void *data;
 };
 

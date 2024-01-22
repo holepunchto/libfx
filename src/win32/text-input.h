@@ -6,6 +6,13 @@ struct fx_text_input_s {
 
   TextBox handle;
 
+  struct {
+    float x;
+    float y;
+    float width;
+    float height;
+  } bounds;
+
   void *data;
 
   fx_text_input_change_cb on_change;

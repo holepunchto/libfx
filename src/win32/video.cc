@@ -22,6 +22,11 @@ fx_video_init (fx_t *app, const char *url, size_t len, float x, float y, float w
 
   video->handle.Source(MediaSource::CreateFromUri(Uri(hstr)));
 
+  video->bounds.x = x;
+  video->bounds.y = y;
+  video->bounds.width = width;
+  video->bounds.height = height;
+
   *result = video;
 
   return 0;

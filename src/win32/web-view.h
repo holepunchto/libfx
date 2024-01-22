@@ -9,6 +9,13 @@ struct fx_web_view_s {
   IAsyncAction initialize;
   IAsyncAction navigate;
 
+  struct {
+    float x;
+    float y;
+    float width;
+    float height;
+  } bounds;
+
   void *data;
 
   fx_web_view_message_cb on_message;

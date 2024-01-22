@@ -11,6 +11,11 @@ fx_text_input_init (fx_t *app, float x, float y, float width, float height, fx_t
   text_input->handle.Width(width);
   text_input->handle.Height(height);
 
+  text_input->bounds.x = x;
+  text_input->bounds.y = y;
+  text_input->bounds.width = width;
+  text_input->bounds.height = height;
+
   *result = text_input;
 
   return 0;

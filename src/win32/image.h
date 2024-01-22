@@ -6,5 +6,12 @@ struct fx_image_s {
 
   Image handle;
 
+  struct {
+    float x;
+    float y;
+    float width;
+    float height;
+  } bounds;
+
   void *data;
 };

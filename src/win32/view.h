@@ -6,5 +6,12 @@ struct fx_view_s {
 
   Canvas handle;
 
+  struct {
+    float x;
+    float y;
+    float width;
+    float height;
+  } bounds;
+
   void *data;
 };

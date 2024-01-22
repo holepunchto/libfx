@@ -16,6 +16,11 @@ fx_scroll_view_init (fx_t *app, fx_view_t *view, float x, float y, float width, 
 
   if (view) scroll_view->handle.Content(view->handle);
 
+  scroll_view->bounds.x = x;
+  scroll_view->bounds.y = y;
+  scroll_view->bounds.width = width;
+  scroll_view->bounds.height = height;
+
   *result = scroll_view;
 
   return 0;

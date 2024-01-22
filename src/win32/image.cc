@@ -11,6 +11,11 @@ fx_image_init (fx_t *app, float x, float y, float width, float height, fx_image_
   image->handle.Width(width);
   image->handle.Height(height);
 
+  image->bounds.x = x;
+  image->bounds.y = y;
+  image->bounds.width = width;
+  image->bounds.height = height;
+
   *result = image;
 
   return 0;

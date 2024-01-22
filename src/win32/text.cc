@@ -12,6 +12,11 @@ fx_text_init (fx_t *app, float x, float y, float width, float height, fx_text_t 
   text->handle.Width(width);
   text->handle.Height(height);
 
+  text->bounds.x = x;
+  text->bounds.y = y;
+  text->bounds.width = width;
+  text->bounds.height = height;
+
   *result = text;
 
   return 0;

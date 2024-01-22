@@ -13,6 +13,11 @@ fx_view_init (fx_t *app, float x, float y, float width, float height, fx_view_t 
   view->handle.HorizontalAlignment(HorizontalAlignment::Left);
   view->handle.VerticalAlignment(VerticalAlignment::Top);
 
+  view->bounds.x = x;
+  view->bounds.y = y;
+  view->bounds.width = width;
+  view->bounds.height = height;
+
   *result = view;
 
   return 0;

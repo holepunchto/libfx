@@ -15,6 +15,11 @@ fx_web_view_init (fx_t *app, float x, float y, float width, float height, fx_web
 
   web_view->initialize = web_view->handle.EnsureCoreWebView2Async();
 
+  web_view->bounds.x = x;
+  web_view->bounds.y = y;
+  web_view->bounds.width = width;
+  web_view->bounds.height = height;
+
   web_view->data = NULL;
 
   web_view->on_message = NULL;
