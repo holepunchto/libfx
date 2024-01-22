@@ -4,7 +4,7 @@
 #include "screen.h"
 
 int
-fx_screen_destroy (fx_screen_t *screen) {
+fx_screen_release (fx_screen_t *screen) {
   free(screen);
 
   return 0;

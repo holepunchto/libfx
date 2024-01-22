@@ -155,6 +155,8 @@ if(LINUX)
       src/linux/image.c
       src/linux/image.h
       src/linux/node.c
+      src/linux/screen.c
+      src/linux/screen.h
       src/linux/scroll-view.c
       src/linux/scroll-view.h
       src/linux/text.c

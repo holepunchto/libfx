@@ -3,12 +3,11 @@
 #include "web-view.h"
 
 int
-fx_web_view_init (fx_t *app, const char *data_directory, float x, float y, float width, float height, fx_web_view_ready_cb cb, fx_web_view_t **result) {
+fx_web_view_init (fx_t *app, float x, float y, float width, float height, fx_web_view_t **result) {
   fx_web_view_t *web_view = malloc(sizeof(fx_web_view_t));
 
   web_view->node.type = fx_web_view_node;
 
-  web_view->on_ready = cb;
   web_view->on_message = NULL;
 
   *result = web_view;
