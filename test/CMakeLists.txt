@@ -10,6 +10,7 @@ list(APPEND tests
   scroll-view/basic
 
   text/basic
+  text/used-bounds
 
   text-input/basic
 

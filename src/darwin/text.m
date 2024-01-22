@@ -1,6 +1,7 @@
 #import <AppKit/AppKit.h>
 
 #import "../../include/fx.h"
+#import "shared.h"
 #import "text.h"
 
 @implementation FXText
@@ -95,7 +96,7 @@ fx_append_text_span (fx_text_t *text, const char *value, size_t len, fx_text_spa
   NSUInteger start = [text->handle.textStorage length];
   NSUInteger end = start + len;
 
-  [text->handle.textStorage appendAttributedString:[[NSAttributedString alloc] initWithString:[[NSString alloc] initWithBytes:value length:len encoding:NSUTF8StringEncoding]]];
+  [text->handle.textStorage appendAttributedString:[[NSAttributedString alloc] initWithString:fx__string(value, len)]];
 
   if (result) {
     fx_text_span_t *span = malloc(sizeof(fx_text_span_t));
