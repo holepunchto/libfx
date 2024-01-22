@@ -13,6 +13,8 @@ fx_web_view_init (fx_t *app, float x, float y, float width, float height, fx_web
   web_view->handle.Width(width);
   web_view->handle.Height(height);
 
+  web_view->initialize = web_view->handle.EnsureCoreWebView2Async();
+
   web_view->data = NULL;
 
   web_view->on_message = NULL;
@@ -22,8 +24,15 @@ fx_web_view_init (fx_t *app, float x, float y, float width, float height, fx_web
   return 0;
 }
 
+static inline void
+fx_web_view_cancel_navigation (fx_web_view_t *web_view) {
+  if (web_view->navigate) web_view->navigate.Cancel();
+}
+
 extern "C" int
 fx_web_view_destroy (fx_web_view_t *web_view) {
+  fx_web_view_cancel_navigation(web_view);
+
   delete web_view;
 
   return 0;
@@ -70,34 +79,46 @@ fx_web_view_post_message (fx_web_view_t *web_view, const char *message) {
   return 0;
 }
 
+static IAsyncAction
+fx_web_view_load_url (fx_web_view_t *web_view, hstring url) {
+  co_await web_view->initialize;
+
+  web_view->handle.Source(Uri(url));
+}
+
 extern "C" int
 fx_web_view_load_url (fx_web_view_t *web_view, const char *url, size_t len) {
-  auto wstr_len = fx__to_wstring(url, len, NULL, 0);
+  int err;
 
-  auto wstr = new wchar_t[wstr_len];
+  hstring wstr;
+  err = fx__to_hstring(url, len, wstr);
+  if (err < 0) return err;
 
-  fx__to_wstring(url, len, wstr, wstr_len);
+  fx_web_view_cancel_navigation(web_view);
 
-  Uri uri(wstr);
-
-  delete[] wstr;
-
-  web_view->handle.Source(uri);
+  web_view->navigate = fx_web_view_load_url(web_view, wstr);
 
   return 0;
 }
 
+static IAsyncAction
+fx_web_view_load_html (fx_web_view_t *web_view, hstring html) {
+  co_await web_view->initialize;
+
+  web_view->handle.NavigateToString(html);
+}
+
 extern "C" int
 fx_web_view_load_html (fx_web_view_t *web_view, const char *html, size_t len) {
-  auto wstr_len = fx__to_wstring(html, len, NULL, 0);
+  int err;
 
-  auto wstr = new wchar_t[wstr_len];
+  hstring wstr;
+  err = fx__to_hstring(html, len, wstr);
+  if (err < 0) return err;
 
-  fx__to_wstring(html, len, wstr, wstr_len);
+  fx_web_view_cancel_navigation(web_view);
 
-  web_view->handle.NavigateToString(wstr);
-
-  delete[] wstr;
+  web_view->navigate = fx_web_view_load_html(web_view, wstr);
 
   return 0;
 }

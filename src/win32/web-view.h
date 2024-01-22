@@ -6,6 +6,9 @@ struct fx_web_view_s {
 
   WebView2 handle;
 
+  IAsyncAction initialize;
+  IAsyncAction navigate;
+
   void *data;
 
   fx_web_view_message_cb on_message;
