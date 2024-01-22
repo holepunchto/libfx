@@ -15,9 +15,6 @@ int
 fx_image_destroy (fx_image_t *image);
 
 int
-fx_image_load (fx_image_t *image, const uint8_t *pixels, int width, int height, int stride);
-
-int
 fx_get_image_data (fx_image_t *image, void **result);
 
 int
@@ -28,5 +25,8 @@ fx_get_image_bounds (fx_image_t *image, float *x, float *y, float *width, float 
 
 int
 fx_set_image_bounds (fx_image_t *image, float x, float y, float width, float height);
+
+int
+fx_image_load_data (fx_image_t *image, const uint8_t *pixels, int width, int height, int stride);
 
 #endif // FX_IMAGE_H
