@@ -34,28 +34,6 @@
 
 int
 fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float height, int flags, fx_window_t **result) {
-  CGRect rect = [[NSScreen mainScreen] visibleFrame];
-
-  if (x < 0) {
-    if (x == fx_screen_center) x = NSMidX(rect) - (width / 2);
-    else return -1;
-  }
-
-  if (y < 0) {
-    if (y == fx_screen_center) y = NSMidY(rect) - (height / 2);
-    else return -1;
-  }
-
-  if (width < 0) {
-    if (width == fx_screen_size) width = NSWidth(rect);
-    else return -1;
-  }
-
-  if (height < 0) {
-    if (height == fx_screen_size) height = NSHeight(rect);
-    else return -1;
-  }
-
   NSWindowStyleMask style;
 
   if (flags & fx_window_no_frame) {
