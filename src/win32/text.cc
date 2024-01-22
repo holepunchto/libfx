@@ -12,6 +12,8 @@ fx_text_init (fx_t *app, float x, float y, float width, float height, fx_text_t 
   text->handle.Width(width);
   text->handle.Height(height);
 
+  text->handle.TextWrapping(TextWrapping::Wrap);
+
   text->bounds.x = x;
   text->bounds.y = y;
   text->bounds.width = width;
@@ -45,26 +47,47 @@ fx_set_text_data (fx_text_t *text, void *data) {
 
 extern "C" int
 fx_get_text_bounds (fx_text_t *text, float *x, float *y, float *width, float *height) {
-  if (x) *x = 0;
-  if (y) *y = 0;
-  if (width) *width = 0;
-  if (height) *height = 0;
+  if (x) *x = text->bounds.x;
+  if (y) *y = text->bounds.y;
+  if (width) *width = text->bounds.width;
+  if (height) *height = text->bounds.height;
 
   return 0;
 }
 
+template <typename T>
+static inline T
+fx_text_layout_dimension (T value) {
+  return isnan(value) ? std::numeric_limits<T>::infinity() : value;
+}
+
 extern "C" int
 fx_get_text_bounds_used (fx_text_t *text, float *x, float *y, float *width, float *height) {
-  if (x) *x = 0;
-  if (y) *y = 0;
-  if (width) *width = 0;
-  if (height) *height = 0;
+  text->handle.Measure({
+    fx_text_layout_dimension(text->bounds.width),
+    fx_text_layout_dimension(text->bounds.height),
+  });
+
+  auto size = text->handle.DesiredSize();
+
+  if (x) *x = text->bounds.x;
+  if (y) *y = text->bounds.y;
+  if (width) *width = size.Width;
+  if (height) *height = size.Height;
 
   return 0;
 }
 
 extern "C" int
 fx_set_text_bounds (fx_text_t *text, float x, float y, float width, float height) {
+  text->handle.Width(width);
+  text->handle.Height(width);
+
+  text->bounds.x = x;
+  text->bounds.y = y;
+  text->bounds.width = width;
+  text->bounds.height = height;
+
   return 0;
 }
 

@@ -1,4 +1,6 @@
 #include <assert.h>
+#include <math.h>
+#include <stdio.h>
 
 #include "../include/fx.h"
 
@@ -11,7 +13,7 @@ on_launch (fx_t *app) {
   assert(e == 0);
 
   fx_text_t *text;
-  e = fx_text_init(app, 0.0, 0.0, 200.0, 0.0, &text);
+  e = fx_text_init(app, 0.0, 0.0, 200.0, NAN, &text);
   assert(e == 0);
 
   fx_text_span_t *span;
@@ -21,6 +23,8 @@ on_launch (fx_t *app) {
   float height;
   e = fx_get_text_bounds_used(text, NULL, NULL, NULL, &height);
   assert(e == 0);
+
+  printf("height=%f\n", height);
 
   e = fx_set_text_bounds(text, 0.0, 0.0, 200.0, height);
   assert(e == 0);
