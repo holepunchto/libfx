@@ -4,8 +4,39 @@
 #include "shared.h"
 #include "winui.h"
 
+IAsyncAction
+fx_web_view_init (fx_web_view_t *web_view, hstring bridge) {
+  co_await web_view->handle.EnsureCoreWebView2Async();
+
+  auto core_web_view = web_view->handle.CoreWebView2();
+
+  co_await core_web_view.AddScriptToExecuteOnDocumentCreatedAsync(bridge);
+
+  core_web_view.WebMessageReceived([=] (const auto &sender, const auto &args) {
+    if (web_view->on_message == NULL) return;
+
+    auto message = args.WebMessageAsJson();
+
+    auto str_len = fx__from_hstring(message, NULL, 0);
+
+    auto str = new char[str_len];
+
+    fx__from_hstring(message, str, str_len);
+
+    web_view->on_message(web_view, str);
+
+    delete[] str;
+  });
+}
+
 extern "C" int
 fx_web_view_init (fx_t *app, float x, float y, float width, float height, fx_web_view_t **result) {
+  int err;
+
+  hstring wstr;
+  err = fx__to_hstring((char *) edge_bridge_js, edge_bridge_js_len, wstr);
+  if (err < 0) return err;
+
   auto web_view = new fx_web_view_t();
 
   web_view->node.type = fx_web_view_node;
@@ -13,7 +44,7 @@ fx_web_view_init (fx_t *app, float x, float y, float width, float height, fx_web
   web_view->handle.Width(width);
   web_view->handle.Height(height);
 
-  web_view->initialize = web_view->handle.EnsureCoreWebView2Async();
+  web_view->initialize = fx_web_view_init(web_view, wstr);
 
   web_view->bounds.x = x;
   web_view->bounds.y = y;
@@ -37,6 +68,8 @@ fx_web_view_cancel_navigation (fx_web_view_t *web_view) {
 extern "C" int
 fx_web_view_destroy (fx_web_view_t *web_view) {
   fx_web_view_cancel_navigation(web_view);
+
+  web_view->handle.Close();
 
   delete web_view;
 
@@ -79,8 +112,23 @@ fx_set_web_view_bounds (fx_web_view_t *web_view, float x, float y, float width, 
   return 0;
 }
 
+static IAsyncAction
+fx_web_view_post_message (fx_web_view_t *web_view, hstring message) {
+  co_await web_view->initialize;
+
+  web_view->handle.CoreWebView2().PostWebMessageAsJson(message);
+}
+
 extern "C" int
 fx_web_view_post_message (fx_web_view_t *web_view, const char *message) {
+  int err;
+
+  hstring wstr;
+  err = fx__to_hstring(message, -1, wstr);
+  if (err < 0) return err;
+
+  fx_web_view_post_message(web_view, wstr);
+
   return 0;
 }
 
@@ -88,7 +136,7 @@ static IAsyncAction
 fx_web_view_load_url (fx_web_view_t *web_view, hstring url) {
   co_await web_view->initialize;
 
-  web_view->handle.Source(Uri(url));
+  web_view->handle.CoreWebView2().Navigate(url);
 }
 
 extern "C" int
@@ -110,7 +158,7 @@ static IAsyncAction
 fx_web_view_load_html (fx_web_view_t *web_view, hstring html) {
   co_await web_view->initialize;
 
-  web_view->handle.NavigateToString(html);
+  web_view->handle.CoreWebView2().NavigateToString(html);
 }
 
 extern "C" int
