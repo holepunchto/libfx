@@ -146,3 +146,10 @@ extern "C" int
 fx_set_window_resizable (fx_window_t *window, bool resizable) {
   return 0;
 }
+
+extern "C" int
+fx_close_window (fx_window_t *window) {
+  window->handle.Close();
+
+  return 0;
+}
