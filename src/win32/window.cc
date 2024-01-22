@@ -28,15 +28,19 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
   window->handle.Title(L"");
 
   if (flags & fx_window_no_frame) {
-    auto presenter = OverlappedPresenter::CreateForDialog();
+    auto presenter = window->presenter;
 
     presenter.SetBorderAndTitleBar(false, false);
-
-    window->handle.AppWindow().SetPresenter(presenter);
+    presenter.IsMaximizable(false);
+    presenter.IsMinimizable(false);
+    presenter.IsResizable(false);
   }
 
-  window->handle.AppWindow().Move({int(x), int(y)});
-  window->handle.AppWindow().ResizeClient({int(width), int(height)});
+  auto app_window = window->handle.AppWindow();
+
+  app_window.SetPresenter(window->presenter);
+  app_window.Move({int(x), int(y)});
+  app_window.ResizeClient({int(width), int(height)});
 
   window->view = view;
 
@@ -127,23 +131,47 @@ fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, flo
 
 extern "C" int
 fx_set_window_title (fx_window_t *window, const char *title) {
+  int err;
+
+  hstring hstr;
+  err = fx__to_hstring(title, -1, hstr);
+  if (err < 0) return err;
+
+  window->handle.Title(hstr);
+
   return 0;
 }
 
 extern "C" int
 fx_get_window_title (fx_window_t *window, char *title, size_t len, size_t *result) {
-  if (result) *result = 0;
+  auto hstr = window->handle.Title();
+
+  if (title == NULL) {
+    *result = fx__from_hstring(hstr, NULL, 0);
+  } else if (len != 0) {
+    size_t bytes_len = fx__from_hstring(hstr, NULL, 0);
+
+    size_t written = len < bytes_len ? len : bytes_len;
+
+    fx__from_hstring(hstr, title, written);
+
+    if (written < len) title[written] = '\0';
+
+    if (result) *result = written;
+  } else if (result) *result = 0;
 
   return 0;
 }
 
 extern "C" bool
 fx_is_window_resizable (fx_window_t *window) {
-  return false;
+  return window->presenter.IsResizable();
 }
 
 extern "C" int
 fx_set_window_resizable (fx_window_t *window, bool resizable) {
+  window->presenter.IsResizable(resizable);
+
   return 0;
 }
 

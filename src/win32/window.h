@@ -4,6 +4,8 @@
 struct fx_window_s {
   Window handle;
 
+  OverlappedPresenter presenter;
+
   fx_view_t *view;
 
   void *data;
@@ -13,4 +15,6 @@ struct fx_window_s {
   fx_window_minimize_cb on_minimize;
   fx_window_deminimize_cb on_deminimize;
   fx_window_close_cb on_close;
+
+  fx_window_s () : presenter(OverlappedPresenter::Create()) {}
 };
