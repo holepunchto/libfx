@@ -65,17 +65,14 @@ fx_set_text_bounds (fx_text_t *text, float x, float y, float width, float height
 
 extern "C" int
 fx_append_text_span (fx_text_t *text, const char *value, size_t len, fx_text_span_t **result) {
-  auto wstr_len = fx__to_wstring(value, len, NULL, 0);
+  int err;
 
-  auto wstr = new wchar_t[wstr_len];
-
-  fx__to_wstring(value, len, wstr, wstr_len);
+  hstring hstr;
+  err = fx__to_hstring(value, len, hstr);
+  if (err < 0) return err;
 
   Run run;
-
-  run.Text(wstr);
-
-  delete[] wstr;
+  run.Text(hstr);
 
   text->handle.Inlines().Append(run);
 

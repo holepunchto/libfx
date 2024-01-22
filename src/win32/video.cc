@@ -5,6 +5,12 @@
 
 extern "C" int
 fx_video_init (fx_t *app, const char *url, size_t len, float x, float y, float width, float height, int flags, fx_video_t **result) {
+  int err;
+
+  hstring hstr;
+  err = fx__to_hstring(url, len, hstr);
+  if (err < 0) return err;
+
   auto video = new fx_video_t();
 
   video->node.type = fx_video_node;
@@ -14,17 +20,7 @@ fx_video_init (fx_t *app, const char *url, size_t len, float x, float y, float w
 
   video->handle.AreTransportControlsEnabled((flags & fx_video_no_controls) == 0);
 
-  auto wstr_len = fx__to_wstring(url, len, NULL, 0);
-
-  auto wstr = new wchar_t[wstr_len];
-
-  fx__to_wstring(url, len, wstr, wstr_len);
-
-  Uri uri(wstr);
-
-  delete[] wstr;
-
-  video->handle.Source(MediaSource::CreateFromUri(uri));
+  video->handle.Source(MediaSource::CreateFromUri(Uri(hstr)));
 
   *result = video;
 
