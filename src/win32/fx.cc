@@ -50,7 +50,7 @@ extern "C" int
 fx_platform_init (fx_t *app, fx_platform_t **result) {
   HRESULT res;
 
-  res = CoInitializeEx(NULL, COINIT_MULTITHREADED);
+  res = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
 
   if (FAILED(res)) return -1;
 
