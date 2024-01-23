@@ -49,7 +49,7 @@ ExternalProject_Get_property(WindowsAppSDK SOURCE_DIR)
 
 ExternalProject_Get_property(WindowsAppSDK BINARY_DIR)
 
-add_library(windowsappsdk_bootstrap SHARED IMPORTED)
+add_library(windowsappsdk_bootstrap SHARED IMPORTED GLOBAL)
 
 add_dependencies(windowsappsdk_bootstrap WindowsAppSDK)
 
@@ -100,5 +100,7 @@ set_target_properties(
   windowsappsdk_installer
   PROPERTIES
   IMPORTED_LOCATION
-    "${SOURCE_DIR}/WindowsAppSDK-Installer-${CMAKE_LIBRARY_ARCHITECTURE}/WindowsAppRuntimeInstall-${CMAKE_LIBRARY_ARCHITECTURE}"
+    "${SOURCE_DIR}/WindowsAppSDK-Installer-${CMAKE_LIBRARY_ARCHITECTURE}/WindowsAppRuntimeInstall-${CMAKE_LIBRARY_ARCHITECTURE}.exe"
 )
+
+add_dependencies(windowsappsdk WindowsAppSDKRuntime)
