@@ -5,13 +5,19 @@ ExternalProject_Add(
   URL "https://www.nuget.org/api/v2/package/Microsoft.Windows.CppWinRT/2.0.240111.5"
 
   CONFIGURE_COMMAND ""
-  BUILD_COMMAND "<SOURCE_DIR>/bin/cppwinrt.exe" -in local -output "<BINARY_DIR>/include"
+
+  BUILD_COMMAND
+    "<SOURCE_DIR>/bin/cppwinrt.exe" -in local -output "<BINARY_DIR>/include"
+  COMMAND
+    ${CMAKE_COMMAND}
+    -E copy
+    "<SOURCE_DIR>/bin/cppwinrt.exe"
+    "<BINARY_DIR>/cppwinrt.exe"
+
   INSTALL_COMMAND ""
 
   EXCLUDE_FROM_ALL
 )
-
-ExternalProject_Get_property(CppWinRT SOURCE_DIR)
 
 ExternalProject_Get_property(CppWinRT BINARY_DIR)
 
@@ -22,7 +28,7 @@ add_dependencies(cppwinrt CppWinRT)
 set_target_properties(
   cppwinrt
   PROPERTIES
-  IMPORTED_LOCATION "${SOURCE_DIR}/bin/cppwinrt.exe"
+  IMPORTED_LOCATION "${BINARY_DIR}/cppwinrt.exe"
 )
 
 # Make sure our C++/WinRT headers take precendence over the system provided
@@ -34,12 +40,25 @@ ExternalProject_Add(
   URL "https://www.nuget.org/api/v2/package/Microsoft.WindowsAppSDK/1.4.231219000"
 
   CONFIGURE_COMMAND ""
-  BUILD_COMMAND cppwinrt
+
+  BUILD_COMMAND
+    cppwinrt
     -ref sdk
     -in "<SOURCE_DIR>/lib/uap10.0"
     -in "<SOURCE_DIR>/lib/uap10.0.17763"
     -in "<SOURCE_DIR>/lib/uap10.0.18362"
     -output "<BINARY_DIR>/include"
+  COMMAND
+    ${CMAKE_COMMAND}
+    -E copy
+    "<SOURCE_DIR>/runtimes/win10-${CMAKE_LIBRARY_ARCHITECTURE}/native/Microsoft.WindowsAppRuntime.Bootstrap.dll"
+    "<BINARY_DIR>/Microsoft.WindowsAppRuntime.Bootstrap.dll"
+  COMMAND
+    ${CMAKE_COMMAND}
+    -E copy
+    "<SOURCE_DIR>/lib/win10-${CMAKE_LIBRARY_ARCHITECTURE}/Microsoft.WindowsAppRuntime.Bootstrap.lib"
+    "<BINARY_DIR>/Microsoft.WindowsAppRuntime.Bootstrap.lib"
+
   INSTALL_COMMAND ""
 
   EXCLUDE_FROM_ALL
@@ -56,10 +75,8 @@ add_dependencies(windowsappsdk_bootstrap WindowsAppSDK)
 set_target_properties(
   windowsappsdk_bootstrap
   PROPERTIES
-  IMPORTED_LOCATION
-    "${SOURCE_DIR}/runtimes/win10-${CMAKE_LIBRARY_ARCHITECTURE}/native/Microsoft.WindowsAppRuntime.Bootstrap.dll"
-  IMPORTED_IMPLIB
-    "${SOURCE_DIR}/lib/win10-${CMAKE_LIBRARY_ARCHITECTURE}/Microsoft.WindowsAppRuntime.Bootstrap.lib"
+  IMPORTED_LOCATION "${BINARY_DIR}/Microsoft.WindowsAppRuntime.Bootstrap.dll"
+  IMPORTED_IMPLIB "${BINARY_DIR}/Microsoft.WindowsAppRuntime.Bootstrap.lib"
 )
 
 add_library(windowsappsdk INTERFACE)
@@ -84,13 +101,17 @@ ExternalProject_Add(
   URL "https://aka.ms/windowsappsdk/1.4/1.4.231219000/Microsoft.WindowsAppRuntime.Redist.1.4.zip"
 
   CONFIGURE_COMMAND ""
-  BUILD_COMMAND ""
+  BUILD_COMMAND
+    ${CMAKE_COMMAND}
+    -E copy
+    "<SOURCE_DIR>/WindowsAppSDK-Installer-${CMAKE_LIBRARY_ARCHITECTURE}/WindowsAppRuntimeInstall-${CMAKE_LIBRARY_ARCHITECTURE}.exe"
+    "<BINARY_DIR>/Microsoft.WindowsAppRuntime.Install.exe"
   INSTALL_COMMAND ""
 
   EXCLUDE_FROM_ALL
 )
 
-ExternalProject_Get_property(WindowsAppSDKRuntime SOURCE_DIR)
+ExternalProject_Get_property(WindowsAppSDKRuntime BINARY_DIR)
 
 add_executable(windowsappsdk_installer IMPORTED GLOBAL)
 
@@ -99,8 +120,7 @@ add_dependencies(windowsappsdk_installer WindowsAppSDKRuntime)
 set_target_properties(
   windowsappsdk_installer
   PROPERTIES
-  IMPORTED_LOCATION
-    "${SOURCE_DIR}/WindowsAppSDK-Installer-${CMAKE_LIBRARY_ARCHITECTURE}/WindowsAppRuntimeInstall-${CMAKE_LIBRARY_ARCHITECTURE}.exe"
+  IMPORTED_LOCATION "${BINARY_DIR}/Microsoft.WindowsAppRuntime.Install.exe"
 )
 
 add_dependencies(windowsappsdk WindowsAppSDKRuntime)
