@@ -1,3 +1,6 @@
+#ifndef FX_LINUX_VIDEO_H
+#define FX_LINUX_VIDEO_H
+
 #include "../../include/fx.h"
 
 #include <gtk/gtk.h>
@@ -20,3 +23,5 @@ struct fx_video_s {
 
   void *data;
 };
+
+#endif // FX_LINUX_VIDEO_H

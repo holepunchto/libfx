@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../../include/fx.h"
 
 struct fx_screen_s {

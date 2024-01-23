@@ -1,3 +1,6 @@
+#ifndef FX_LINUX_WINDOW_H
+#define FX_LINUX_WINDOW_H
+
 #include "../../include/fx.h"
 
 #include <gtk/gtk.h>
@@ -15,3 +18,5 @@ struct fx_window_s {
   fx_window_deminimize_cb on_deminimize;
   fx_window_close_cb on_close;
 };
+
+#endif // FX_LINUX_WINDOW_H

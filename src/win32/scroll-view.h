@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../../include/fx.h"
 #include "winui.h"
 

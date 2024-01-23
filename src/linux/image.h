@@ -1,3 +1,6 @@
+#ifndef FX_LINUX_IMAGE_H
+#define FX_LINUX_IMAGE_H
+
 #include "../../include/fx.h"
 
 #include <gtk/gtk.h>
@@ -18,3 +21,5 @@ struct fx_image_s {
 
   void *data;
 };
+
+#endif // FX_LINUX_IMAGE_H

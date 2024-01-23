@@ -1,3 +1,6 @@
+#ifndef FX_LINUX_VIEW_H
+#define FX_LINUX_VIEW_H
+
 #include "../../include/fx.h"
 
 #include <gtk/gtk.h>
@@ -18,3 +21,5 @@ struct fx_view_s {
 
   void *data;
 };
+
+#endif // FX_LINUX_VIEW_H
