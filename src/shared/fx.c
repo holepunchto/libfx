@@ -1,6 +1,6 @@
-#include "../../include/fx.h"
-
 #include "fx.h"
+
+#include "../../include/fx.h"
 
 #include <assert.h>
 #include <stdbool.h>

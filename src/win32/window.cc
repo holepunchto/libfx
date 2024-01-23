@@ -2,7 +2,7 @@
 
 #include "../../include/fx.h"
 #include "../shared/fx.h"
-#include "fx.h"
+#include "platform.h"
 #include "screen.h"
 #include "shared.h"
 #include "view.h"

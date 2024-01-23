@@ -34,7 +34,6 @@
 #include <winrt/microsoft.ui.xaml.media.h>
 #include <winrt/microsoft.ui.xaml.media.imaging.h>
 #include <winrt/microsoft.ui.xaml.xamltypeinfo.h>
-
 #include <winrt/microsoft.web.webview2.core.h>
 
 using namespace winrt;

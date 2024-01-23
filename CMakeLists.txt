@@ -64,11 +64,11 @@ if(IOS)
   target_sources(
     fx
     PRIVATE
-      src/ios/fx.h
-      src/ios/fx.m
       src/ios/image.h
       src/ios/image.m
       src/ios/node.m
+      src/ios/platform.h
+      src/ios/platform.m
       src/ios/screen.h
       src/ios/screen.m
       src/ios/scroll-view.h
@@ -90,11 +90,11 @@ elseif(APPLE)
   target_sources(
     fx
     PRIVATE
-      src/darwin/fx.h
-      src/darwin/fx.m
       src/darwin/image.h
       src/darwin/image.m
       src/darwin/node.m
+      src/darwin/platform.h
+      src/darwin/platform.m
       src/darwin/screen.h
       src/darwin/screen.m
       src/darwin/scroll-view.h
@@ -120,11 +120,11 @@ if(WIN32)
     PUBLIC
       src/win32/fx.manifest
     PRIVATE
-      src/win32/fx.cc
-      src/win32/fx.h
       src/win32/image.cc
       src/win32/image.h
       src/win32/node.cc
+      src/win32/platform.cc
+      src/win32/platform.h
       src/win32/screen.h
       src/win32/screen.cc
       src/win32/scroll-view.cc
@@ -150,11 +150,11 @@ if(LINUX)
   target_sources(
     fx
     PRIVATE
-      src/linux/fx.c
-      src/linux/fx.h
       src/linux/image.c
       src/linux/image.h
       src/linux/node.c
+      src/linux/platform.c
+      src/linux/platform.h
       src/linux/screen.c
       src/linux/screen.h
       src/linux/scroll-view.c

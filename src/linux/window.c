@@ -2,7 +2,7 @@
 
 #include "../../include/fx.h"
 #include "../shared/fx.h"
-#include "fx.h"
+#include "platform.h"
 #include "view.h"
 
 #include <gtk/gtk.h>
