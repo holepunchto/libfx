@@ -1,4 +1,5 @@
 #include "text.h"
+
 #include "../../include/fx.h"
 #include "shared.h"
 #include "winui.h"

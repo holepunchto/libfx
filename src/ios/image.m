@@ -1,8 +1,9 @@
-#import <CoreGraphics/CoreGraphics.h>
-#import <UIKit/UIKit.h>
+#import "image.h"
 
 #import "../../include/fx.h"
-#import "image.h"
+
+#import <CoreGraphics/CoreGraphics.h>
+#import <UIKit/UIKit.h>
 
 @implementation FXImage
 

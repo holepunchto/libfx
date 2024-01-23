@@ -1,4 +1,5 @@
 #include "view.h"
+
 #include "../../include/fx.h"
 
 extern "C" int

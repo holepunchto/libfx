@@ -1,9 +1,10 @@
-#include <gtk/gtk.h>
-#include <stdlib.h>
-
 #include "../../include/fx.h"
+
 #include "../shared/fx.h"
 #include "fx.h"
+
+#include <gtk/gtk.h>
+#include <stdlib.h>
 
 typedef struct fx_dispatch_s fx_dispatch_t;
 

@@ -1,7 +1,8 @@
-#import <UIKit/UIKit.h>
+#import "view.h"
 
 #import "../../include/fx.h"
-#import "view.h"
+
+#import <UIKit/UIKit.h>
 
 @implementation FXView
 

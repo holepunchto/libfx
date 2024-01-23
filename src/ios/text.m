@@ -1,7 +1,9 @@
-#import <UIKit/UIKit.h>
+#import "text.h"
 
 #import "../../include/fx.h"
-#import "text.h"
+
+#import <UIKit/UIKit.h>
+#import <math.h>
 
 @implementation FXText
 
@@ -9,6 +11,9 @@
 
 int
 fx_text_init (fx_t *app, float x, float y, float width, float height, fx_text_t **result) {
+  if (isnan(width)) width = INFINITY;
+  if (isnan(height)) height = INFINITY;
+
   FXText *native_text = [[FXText alloc] initWithFrame:CGRectMake(x, y, width, height)];
 
   fx_text_t *text = malloc(sizeof(fx_text_t));

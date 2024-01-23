@@ -1,7 +1,8 @@
-#import <UIKit/UIKit.h>
+#import "text-input.h"
 
 #import "../../include/fx.h"
-#import "text-input.h"
+
+#import <UIKit/UIKit.h>
 
 @implementation FXTextFieldDelegate
 

@@ -1,11 +1,10 @@
 #pragma once
 
-#include <uv.h>
+#include "winui.h"
 
 #include <hstring.h> // Must be included after uv.h
+#include <uv.h>
 #include <winstring.h>
-
-#include "winui.h"
 
 static inline int
 fx__to_wstring (const char *str, int str_len, PWCHAR wstr, int wstr_len) {

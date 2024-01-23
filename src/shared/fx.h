@@ -5,11 +5,11 @@
 extern "C" {
 #endif
 
-#include <uv.h>
-
 #include "../../include/fx.h"
 #include "channel.h"
 #include "platform.h"
+
+#include <uv.h>
 
 typedef struct fx_worker_s fx_worker_t;
 

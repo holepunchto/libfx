@@ -1,12 +1,13 @@
-#include <gtk/gtk.h>
-#include <stdlib.h>
-#include <string.h>
+#include "window.h"
 
 #include "../../include/fx.h"
 #include "../shared/fx.h"
 #include "fx.h"
 #include "view.h"
-#include "window.h"
+
+#include <gtk/gtk.h>
+#include <stdlib.h>
+#include <string.h>
 
 static const char *fx_default_window_title = "";
 

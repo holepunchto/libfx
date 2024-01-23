@@ -16,5 +16,5 @@ struct fx_window_s {
   fx_window_deminimize_cb on_deminimize;
   fx_window_close_cb on_close;
 
-  fx_window_s () : presenter(OverlappedPresenter::Create()) {}
+  fx_window_s() : presenter(OverlappedPresenter::Create()) {}
 };

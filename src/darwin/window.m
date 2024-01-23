@@ -1,10 +1,10 @@
-#import <string.h>
-
-#import <AppKit/AppKit.h>
+#import "window.h"
 
 #import "../../include/fx.h"
 #import "view.h"
-#import "window.h"
+
+#import <AppKit/AppKit.h>
+#import <string.h>
 
 @implementation FXWindowDelegate
 

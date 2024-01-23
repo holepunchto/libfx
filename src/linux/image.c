@@ -1,9 +1,10 @@
+#include "image.h"
+
+#include "../../include/fx.h"
+
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
 #include <stdlib.h>
-
-#include "../../include/fx.h"
-#include "image.h"
 
 int
 fx_image_init (fx_t *app, float x, float y, float width, float height, fx_image_t **result) {

@@ -1,6 +1,6 @@
-#import <UIKit/UIKit.h>
-
 #import "../../include/fx.h"
+
+#import <UIKit/UIKit.h>
 
 @interface FXImage : UIImageView
 

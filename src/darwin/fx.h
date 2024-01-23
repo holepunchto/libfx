@@ -1,9 +1,8 @@
-#import <uv.h>
-
-#import <AppKit/AppKit.h>
-
 #import "../../include/fx.h"
 #import "../shared/fx.h"
+
+#import <AppKit/AppKit.h>
+#import <uv.h>
 
 @interface FXDelegate : NSObject <NSApplicationDelegate>
 

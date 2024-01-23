@@ -1,7 +1,8 @@
-#include <stdlib.h>
+#include "video.h"
 
 #include "../../include/fx.h"
-#include "video.h"
+
+#include <stdlib.h>
 
 int
 fx_video_init (fx_t *app, const char *url, size_t len, float x, float y, float width, float height, int flags, fx_video_t **result) {

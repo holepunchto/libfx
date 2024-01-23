@@ -1,11 +1,11 @@
 #ifndef FX_CHANNEL_H
 #define FX_CHANNEL_H
 
+#include "../../include/fx.h"
+
 #include <stdbool.h>
 #include <stdint.h>
 #include <uv.h>
-
-#include "../../include/fx.h"
 
 typedef struct fx_channel_s fx_channel_t;
 typedef struct fx_message_s fx_message_t;

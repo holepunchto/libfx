@@ -1,7 +1,7 @@
+#import "../../include/fx.h"
+
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
-
-#import "../../include/fx.h"
 
 @interface FXWebViewDelegate : NSObject <WKUIDelegate, WKScriptMessageHandler>
 

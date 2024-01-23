@@ -1,6 +1,6 @@
-#include <stdlib.h>
-
 #include "web-view.h"
+
+#include <stdlib.h>
 
 int
 fx_web_view_init (fx_t *app, float x, float y, float width, float height, fx_web_view_t **result) {

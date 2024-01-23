@@ -1,6 +1,6 @@
-#include <gtk/gtk.h>
-
 #include "../../include/fx.h"
+
+#include <gtk/gtk.h>
 
 struct fx_platform_s {
   GtkApplication *app;

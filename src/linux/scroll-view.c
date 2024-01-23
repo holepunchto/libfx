@@ -1,7 +1,8 @@
-#include <stdlib.h>
+#include "scroll-view.h"
 
 #include "../../include/fx.h"
-#include "scroll-view.h"
+
+#include <stdlib.h>
 
 int
 fx_scroll_view_init (fx_t *app, fx_view_t *view, float x, float y, float width, float height, fx_scroll_view_t **result) {

@@ -1,6 +1,5 @@
-#import <string.h>
-
 #import <Foundation/Foundation.h>
+#import <string.h>
 
 static inline NSString *
 fx__string (const char *str, size_t len) {

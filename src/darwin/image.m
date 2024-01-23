@@ -1,8 +1,9 @@
-#import <AppKit/AppKit.h>
-#import <CoreGraphics/CoreGraphics.h>
+#import "image.h"
 
 #import "../../include/fx.h"
-#import "image.h"
+
+#import <AppKit/AppKit.h>
+#import <CoreGraphics/CoreGraphics.h>
 
 @implementation FXImage
 

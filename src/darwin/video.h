@@ -1,7 +1,7 @@
+#import "../../include/fx.h"
+
 #import <AVKit/AVKit.h>
 #import <AppKit/AppKit.h>
-
-#import "../../include/fx.h"
 
 @interface FXVideo : AVPlayerView
 

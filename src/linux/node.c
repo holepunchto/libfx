@@ -1,5 +1,3 @@
-#include <gtk/gtk.h>
-
 #include "../../include/fx.h"
 #include "image.h"
 #include "scroll-view.h"
@@ -8,6 +6,8 @@
 #include "video.h"
 #include "view.h"
 #include "web-view.h"
+
+#include <gtk/gtk.h>
 
 static inline int
 fx_get_child_widget (fx_node_t *child, float *x, float *y, GtkWidget **result) {

@@ -1,8 +1,9 @@
-#include <gdk/gdk.h>
-#include <stdlib.h>
+#include "screen.h"
 
 #include "../../include/fx.h"
-#include "screen.h"
+
+#include <gdk/gdk.h>
+#include <stdlib.h>
 
 int
 fx_screen_release (fx_screen_t *screen) {

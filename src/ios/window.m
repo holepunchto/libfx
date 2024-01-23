@@ -1,8 +1,9 @@
-#import <UIKit/UIKit.h>
+#import "window.h"
 
 #import "../../include/fx.h"
 #import "view.h"
-#import "window.h"
+
+#import <UIKit/UIKit.h>
 
 @implementation FXWindowController
 

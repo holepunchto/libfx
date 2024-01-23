@@ -1,9 +1,10 @@
-#import <AVKit/AVKit.h>
-#import <AppKit/AppKit.h>
+#import "video.h"
 
 #import "../../include/fx.h"
 #import "shared.h"
-#import "video.h"
+
+#import <AVKit/AVKit.h>
+#import <AppKit/AppKit.h>
 
 @implementation FXVideo
 

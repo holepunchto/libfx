@@ -1,7 +1,8 @@
-#include <stdlib.h>
+#include "text-input.h"
 
 #include "../../include/fx.h"
-#include "text-input.h"
+
+#include <stdlib.h>
 
 int
 fx_text_input_init (fx_t *app, float x, float y, float width, float height, fx_text_input_t **result) {

@@ -2,14 +2,14 @@
 // earliest version that supports WinUI 3.
 #define NTDDI_VERSION NTDDI_WIN10_RS5
 
-#include <uv.h>
-
-#include <shellscalingapi.h> // Must be included after uv.h
+#include "screen.h"
 
 #include "../../include/fx.h"
-#include "screen.h"
 #include "window.h"
 #include "winui.h"
+
+#include <shellscalingapi.h> // Must be included after uv.h
+#include <uv.h>
 
 extern "C" int
 fx_screen_release (fx_screen_t *screen) {

@@ -1,8 +1,9 @@
-#import <AppKit/AppKit.h>
+#import "scroll-view.h"
 
 #import "../../include/fx.h"
-#import "scroll-view.h"
 #import "view.h"
+
+#import <AppKit/AppKit.h>
 
 @implementation FXScrollView
 

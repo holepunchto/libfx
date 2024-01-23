@@ -1,8 +1,10 @@
-#import <AppKit/AppKit.h>
+#import "text.h"
 
 #import "../../include/fx.h"
 #import "shared.h"
-#import "text.h"
+
+#import <AppKit/AppKit.h>
+#import <math.h>
 
 @implementation FXText
 
@@ -14,10 +16,14 @@
 
 int
 fx_text_init (fx_t *app, float x, float y, float width, float height, fx_text_t **result) {
+  if (isnan(width)) width = INFINITY;
+  if (isnan(height)) height = INFINITY;
+
   FXText *native_text = [[FXText alloc] initWithFrame:CGRectMake(x, y, width, height)];
 
   native_text.drawsBackground = NO;
   native_text.editable = NO;
+  native_text.textContainer.lineFragmentPadding = 0;
 
   fx_text_t *text = malloc(sizeof(fx_text_t));
 

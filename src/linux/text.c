@@ -1,8 +1,9 @@
-#include <gtk/gtk.h>
-#include <stdlib.h>
+#include "text.h"
 
 #include "../../include/fx.h"
-#include "text.h"
+
+#include <gtk/gtk.h>
+#include <stdlib.h>
 
 int
 fx_text_init (fx_t *app, float x, float y, float width, float height, fx_text_t **result) {
@@ -67,7 +68,7 @@ int
 fx_get_text_bounds_used (fx_text_t *text, float *x, float *y, float *width, float *height) {
   if (x) *x = text->bounds.x;
   if (y) *y = text->bounds.y;
-  if (width) *width = gtk_widget_get_allocated_width(GTK_WIDGET(text->handle));;
+  if (width) *width = gtk_widget_get_allocated_width(GTK_WIDGET(text->handle));
   if (height) *height = gtk_widget_get_allocated_height(GTK_WIDGET(text->handle));
 
   return 0;

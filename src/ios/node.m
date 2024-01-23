@@ -1,5 +1,3 @@
-#import <UIKit/UIKit.h>
-
 #import "../../include/fx.h"
 #import "image.h"
 #import "scroll-view.h"
@@ -8,6 +6,8 @@
 #import "video.h"
 #import "view.h"
 #import "web-view.h"
+
+#import <UIKit/UIKit.h>
 
 static inline int
 fx_get_parent_view (fx_node_t *parent, UIView **result) {

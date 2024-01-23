@@ -1,11 +1,12 @@
+#include "channel.h"
+
+#include "../../include/fx.h"
+#include "fx.h"
+
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 #include <uv.h>
-
-#include "../../include/fx.h"
-#include "channel.h"
-#include "fx.h"
 
 static void
 on_notify (uv_async_t *async) {

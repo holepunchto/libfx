@@ -1,4 +1,5 @@
 #include "window.h"
+
 #include "../../include/fx.h"
 #include "../shared/fx.h"
 #include "fx.h"

@@ -1,10 +1,10 @@
-#import <stdbool.h>
-#import <string.h>
-
-#import <AppKit/AppKit.h>
+#import "text-input.h"
 
 #import "../../include/fx.h"
-#import "text-input.h"
+
+#import <AppKit/AppKit.h>
+#import <stdbool.h>
+#import <string.h>
 
 @implementation FXTextInputDelegate
 

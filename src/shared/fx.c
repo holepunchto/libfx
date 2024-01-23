@@ -1,10 +1,11 @@
+#include "../../include/fx.h"
+
+#include "fx.h"
+
 #include <assert.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <uv.h>
-
-#include "../../include/fx.h"
-#include "fx.h"
 
 fx_t *fx_main_app = NULL;
 

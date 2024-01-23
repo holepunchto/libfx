@@ -1,7 +1,8 @@
-#import <UIKit/UIKit.h>
+#import "screen.h"
 
 #import "../../include/fx.h"
-#import "screen.h"
+
+#import <UIKit/UIKit.h>
 
 int
 fx_screen_release (fx_screen_t *screen) {

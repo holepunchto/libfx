@@ -1,7 +1,8 @@
-#import <AppKit/AppKit.h>
+#import "view.h"
 
 #import "../../include/fx.h"
-#import "view.h"
+
+#import <AppKit/AppKit.h>
 
 @implementation FXView
 

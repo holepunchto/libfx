@@ -1,11 +1,11 @@
-#import <stdbool.h>
-#import <uv.h>
-
-#import <AppKit/AppKit.h>
-
 #import "../../include/fx.h"
+
 #import "../shared/fx.h"
 #import "fx.h"
+
+#import <AppKit/AppKit.h>
+#import <stdbool.h>
+#import <uv.h>
 
 @implementation FXDelegate
 

@@ -1,8 +1,7 @@
-#import <stdint.h>
+#import "../../include/fx.h"
 
 #import <UIKit/UIKit.h>
-
-#import "../../include/fx.h"
+#import <stdint.h>
 
 @interface FXText : UITextView
 

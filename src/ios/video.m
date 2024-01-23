@@ -1,8 +1,9 @@
-#import <AVKit/AVKit.h>
-#import <UIKit/UIKit.h>
+#import "video.h"
 
 #import "../../include/fx.h"
-#import "video.h"
+
+#import <AVKit/AVKit.h>
+#import <UIKit/UIKit.h>
 
 @implementation FXVideo
 

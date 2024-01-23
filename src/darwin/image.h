@@ -1,6 +1,6 @@
-#import <AppKit/AppKit.h>
-
 #import "../../include/fx.h"
+
+#import <AppKit/AppKit.h>
 
 @interface FXImage : NSImageView
 

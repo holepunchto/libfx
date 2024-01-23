@@ -1,8 +1,9 @@
-#include <gtk/gtk.h>
-#include <stdlib.h>
+#include "view.h"
 
 #include "../../include/fx.h"
-#include "view.h"
+
+#include <gtk/gtk.h>
+#include <stdlib.h>
 
 int
 fx_view_init (fx_t *app, float x, float y, float width, float height, fx_view_t **result) {
