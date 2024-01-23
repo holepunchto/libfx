@@ -1,7 +1,7 @@
+#include "../include/fx.h"
+
 #include <assert.h>
 #include <uv.h>
-
-#include "../include/fx.h"
 
 static uv_thread_t thread;
 
@@ -69,5 +69,5 @@ main () {
   e = uv_thread_create(&thread, on_thread, NULL);
   assert(e == 0);
 
-  return fx_run(parent);
+  return fx_run(parent, NULL, NULL);
 }

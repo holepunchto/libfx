@@ -1,6 +1,10 @@
 #ifndef FX_CHANNEL_H
 #define FX_CHANNEL_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "../../include/fx.h"
 
 #include <stdbool.h>
@@ -49,5 +53,9 @@ fx_channel_pause (fx_channel_t *channel);
 
 void
 fx_channel_resume (fx_channel_t *channel);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // FX_CHANNEL_H

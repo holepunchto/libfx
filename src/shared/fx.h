@@ -21,6 +21,8 @@ struct fx_s {
 
   void *data;
 
+  fx_suspend_cb on_suspend;
+  fx_resume_cb on_resume;
   fx_message_cb on_message;
 
   fx_channel_t messages;

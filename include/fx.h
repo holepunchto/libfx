@@ -24,22 +24,13 @@ int
 fx_destroy (fx_t *app);
 
 int
-fx_run (fx_t *app);
+fx_run (fx_t *app, fx_launch_cb on_launch, fx_terminate_cb on_terminate);
 
 bool
 fx_is_main (fx_t *app);
 
 bool
 fx_is_worker (fx_t *app);
-
-int
-fx_dispatch (fx_dispatch_cb cb, void *data);
-
-int
-fx_on_launch (fx_t *app, fx_launch_cb cb);
-
-int
-fx_on_terminate (fx_t *app, fx_terminate_cb cb);
 
 int
 fx_on_suspend (fx_t *app, fx_suspend_cb cb);
@@ -52,6 +43,9 @@ fx_get_data (fx_t *app, void **result);
 
 int
 fx_set_data (fx_t *app, void *data);
+
+int
+fx_dispatch (fx_dispatch_cb cb, void *data);
 
 int
 fx_broadcast (fx_t *sender, const uv_buf_t *message);

@@ -1,7 +1,7 @@
+#include "../include/fx.h"
+
 #include <assert.h>
 #include <string.h>
-
-#include "../include/fx.h"
 
 static void
 on_message (fx_web_view_t *web_view, const char *message) {
@@ -52,8 +52,5 @@ main () {
   e = fx_init(uv_default_loop(), &app);
   assert(e == 0);
 
-  e = fx_on_launch(app, on_launch);
-  assert(e == 0);
-
-  return fx_run(app);
+  return fx_run(app, on_launch, NULL);
 }

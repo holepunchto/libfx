@@ -5,47 +5,36 @@
 #include "winui.h"
 
 #include <assert.h>
-#include <uv.h>
 
-static DispatcherQueue *fx_dispatcher;
+FX::FX(fx_platform_t *platform) : platform(platform) {}
 
-struct fx : public ApplicationT<fx, IXamlMetadataProvider> {
-  fx_platform_t *platform;
+void
+FX::OnLaunched(LaunchActivatedEventArgs const &) {
+  Resources().MergedDictionaries().Append(XamlControlsResources());
 
-  fx(fx_platform_t *platform) : platform(platform) {}
+  fx_dispatcher = &dispatcher;
 
-  DispatcherQueue dispatcher = DispatcherQueue::GetForCurrentThread();
+  if (platform->on_launch) platform->on_launch(fx_main_app);
 
-  void
-  OnLaunched (LaunchActivatedEventArgs const &) {
-    Resources().MergedDictionaries().Append(XamlControlsResources());
+  dispatcher.ShutdownCompleted([=] (const auto &sender, const auto &args) {
+    if (platform->on_terminate) platform->on_terminate(fx_main_app);
+  });
+}
 
-    fx_dispatcher = &dispatcher;
+IXamlType
+FX::GetXamlType(hstring const &name) {
+  return provider.GetXamlType(name);
+}
 
-    if (platform->on_launch) platform->on_launch(fx_main_app);
+IXamlType
+FX::GetXamlType(TypeName const &type) {
+  return provider.GetXamlType(type);
+}
 
-    dispatcher.ShutdownCompleted([=] (const auto &sender, const auto &args) {
-      if (platform->on_terminate) platform->on_terminate(fx_main_app);
-    });
-  }
-
-  XamlControlsXamlMetaDataProvider provider;
-
-  IXamlType
-  GetXamlType (hstring const &name) {
-    return provider.GetXamlType(name);
-  }
-
-  IXamlType
-  GetXamlType (TypeName const &type) {
-    return provider.GetXamlType(type);
-  }
-
-  com_array<XmlnsDefinition>
-  GetXmlnsDefinitions () {
-    return provider.GetXmlnsDefinitions();
-  }
-};
+com_array<XmlnsDefinition>
+FX::GetXmlnsDefinitions() {
+  return provider.GetXmlnsDefinitions();
+}
 
 extern "C" int
 fx_platform_init (fx_t *app, fx_platform_t **result) {
@@ -87,32 +76,11 @@ fx_platform_destroy (fx_platform_t *platform) {
 }
 
 extern "C" int
-fx_on_platform_launch (fx_platform_t *platform, fx_launch_cb cb) {
-  platform->on_launch = cb;
+fx_run (fx_t *app, fx_launch_cb on_launch, fx_terminate_cb on_terminate) {
+  app->platform->on_launch = cb;
+  app->platform->on_terminate = cb;
 
-  return 0;
-}
-
-extern "C" int
-fx_on_platform_terminate (fx_platform_t *platform, fx_terminate_cb cb) {
-  platform->on_terminate = cb;
-
-  return 0;
-}
-
-extern "C" int
-fx_on_platform_suspend (fx_platform_t *platform, fx_suspend_cb cb) {
-  return 0;
-}
-
-extern "C" int
-fx_on_platform_resume (fx_platform_t *platform, fx_resume_cb cb) {
-  return 0;
-}
-
-extern "C" int
-fx_platform_run (fx_platform_t *platform) {
-  Application::Start([=] (auto &&) { make<fx>(platform); });
+  Application::Start([=] (auto &&) { make<fx>(app->platform); });
 
   return 0;
 }

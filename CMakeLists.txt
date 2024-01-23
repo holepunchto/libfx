@@ -64,6 +64,7 @@ if(IOS)
   target_sources(
     fx
     PRIVATE
+      src/ios/fx.m
       src/ios/image.h
       src/ios/image.m
       src/ios/node.m
@@ -90,6 +91,7 @@ elseif(APPLE)
   target_sources(
     fx
     PRIVATE
+      src/darwin/fx.m
       src/darwin/image.h
       src/darwin/image.m
       src/darwin/node.m
@@ -120,6 +122,7 @@ if(WIN32)
     PUBLIC
       src/win32/fx.manifest
     PRIVATE
+      src/win32/fx.cc
       src/win32/image.cc
       src/win32/image.h
       src/win32/node.cc
@@ -150,6 +153,7 @@ if(LINUX)
   target_sources(
     fx
     PRIVATE
+      src/linux/fx.c
       src/linux/image.c
       src/linux/image.h
       src/linux/node.c

@@ -1,8 +1,8 @@
+#include "../include/fx.h"
+
 #include <assert.h>
 #include <math.h>
 #include <stdio.h>
-
-#include "../include/fx.h"
 
 static void
 on_launch (fx_t *app) {
@@ -45,8 +45,5 @@ main () {
   e = fx_init(uv_default_loop(), &app);
   assert(e == 0);
 
-  e = fx_on_launch(app, on_launch);
-  assert(e == 0);
-
-  return fx_run(app);
+  return fx_run(app, on_launch, NULL);
 }

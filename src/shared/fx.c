@@ -126,11 +126,6 @@ fx_destroy (fx_t *app) {
   return 0;
 }
 
-int
-fx_run (fx_t *app) {
-  return fx_platform_run(app->platform);
-}
-
 bool
 fx_is_main (fx_t *app) {
   return app == fx_main_app;
@@ -142,23 +137,17 @@ fx_is_worker (fx_t *app) {
 }
 
 int
-fx_on_launch (fx_t *app, fx_launch_cb cb) {
-  return fx_on_platform_launch(app->platform, cb);
-}
-
-int
-fx_on_terminate (fx_t *app, fx_terminate_cb cb) {
-  return fx_on_platform_terminate(app->platform, cb);
-}
-
-int
 fx_on_suspend (fx_t *app, fx_suspend_cb cb) {
-  return fx_on_platform_suspend(app->platform, cb);
+  app->on_suspend = cb;
+
+  return 0;
 }
 
 int
 fx_on_resume (fx_t *app, fx_resume_cb cb) {
-  return fx_on_platform_resume(app->platform, cb);
+  app->on_resume = cb;
+
+  return 0;
 }
 
 int
