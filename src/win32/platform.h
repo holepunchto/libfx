@@ -1,14 +1,13 @@
 #pragma once
 
 #include "../../include/fx.h"
+#include "../shared/platform.h"
 #include "winui.h"
 
 static DispatcherQueue *fx_dispatcher;
 
 struct FX : public ApplicationT<FX, IXamlMetadataProvider> {
-  fx_platform_t *platform;
-
-  FX(fx_platform_t *platform);
+  FX();
 
   void
   OnLaunched (LaunchActivatedEventArgs const &);
@@ -23,7 +22,7 @@ struct FX : public ApplicationT<FX, IXamlMetadataProvider> {
   GetXmlnsDefinitions ();
 
 private:
-  DispatcherQueue dispatcher = DispatcherQueue::GetForCurrentThread();
+  DispatcherQueue dispatcher;
   XamlControlsXamlMetaDataProvider provider;
 };
 

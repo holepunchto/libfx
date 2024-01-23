@@ -4,15 +4,15 @@
 #include "../shared/fx.h"
 #include "winui.h"
 
-#include <assert.h>
-
-FX::FX(fx_platform_t *platform) : platform(platform) {}
+FX::FX() : dispatcher(DispatcherQueue::GetForCurrentThread()) {}
 
 void
 FX::OnLaunched(LaunchActivatedEventArgs const &) {
   Resources().MergedDictionaries().Append(XamlControlsResources());
 
   fx_dispatcher = &dispatcher;
+
+  auto platform = fx_main_app->platform;
 
   if (platform->on_launch) platform->on_launch(fx_main_app);
 
@@ -73,23 +73,4 @@ fx_platform_destroy (fx_platform_t *platform) {
   delete platform;
 
   return 0;
-}
-
-extern "C" int
-fx_run (fx_t *app, fx_launch_cb on_launch, fx_terminate_cb on_terminate) {
-  app->platform->on_launch = cb;
-  app->platform->on_terminate = cb;
-
-  Application::Start([=] (auto &&) { make<fx>(app->platform); });
-
-  return 0;
-}
-
-extern "C" int
-fx_dispatch (fx_dispatch_cb cb, void *data) {
-  assert(fx_dispatcher);
-
-  auto success = fx_dispatcher->TryEnqueue([=] () { cb(fx_main_app, data); });
-
-  return success ? 0 : -1;
 }

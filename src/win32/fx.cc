@@ -9,7 +9,7 @@ fx_run (fx_t *app, fx_launch_cb on_launch, fx_terminate_cb on_terminate) {
   app->platform->on_launch = on_launch;
   app->platform->on_terminate = on_terminate;
 
-  Application::Start([=] (auto &&) { make<FX>(app->platform); });
+  Application::Start([=] (auto &&) { make<FX>(); });
 
   return 0;
 }
