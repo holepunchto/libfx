@@ -113,12 +113,12 @@ ExternalProject_Add(
 
 ExternalProject_Get_property(WindowsAppSDKRuntime BINARY_DIR)
 
-add_executable(windowsappsdk_installer IMPORTED GLOBAL)
+add_executable(windowsappsdk_install IMPORTED GLOBAL)
 
-add_dependencies(windowsappsdk_installer WindowsAppSDKRuntime)
+add_dependencies(windowsappsdk_install WindowsAppSDKRuntime)
 
 set_target_properties(
-  windowsappsdk_installer
+  windowsappsdk_install
   PROPERTIES
   IMPORTED_LOCATION "${BINARY_DIR}/Microsoft.WindowsAppRuntime.Install.exe"
 )
