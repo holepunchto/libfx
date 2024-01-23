@@ -44,11 +44,11 @@ fx_platform_init (fx_t *app, fx_platform_t **result) {
 
   if (FAILED(res)) return -1;
 
-  const UINT32 version{WINDOWSAPPSDK_RELEASE_MAJORMINOR};
+  const UINT32 version = Release::MajorMinor;
 
-  PCWSTR version_tag{WINDOWSAPPSDK_RELEASE_VERSION_TAG_W};
+  PCWSTR version_tag = Release::VersionTag;
 
-  const PACKAGE_VERSION min_version{WINDOWSAPPSDK_RUNTIME_VERSION_UINT64};
+  const PACKAGE_VERSION min_version{Runtime::Version::UInt64};
 
   res = MddBootstrapInitialize(version, version_tag, min_version);
 

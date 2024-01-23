@@ -62,3 +62,5 @@ using namespace Microsoft::UI::Xaml::XamlTypeInfo;
 
 #include <mddbootstrap.h>
 #include <windowsappsdk-versioninfo.h>
+
+using namespace ::Microsoft::WindowsAppSDK;

@@ -19,7 +19,11 @@ add_executable(cppwinrt IMPORTED GLOBAL)
 
 add_dependencies(cppwinrt CppWinRT)
 
-set_target_properties(cppwinrt PROPERTIES IMPORTED_LOCATION "${SOURCE_DIR}/bin/cppwinrt.exe")
+set_target_properties(
+  cppwinrt
+  PROPERTIES
+  IMPORTED_LOCATION "${SOURCE_DIR}/bin/cppwinrt.exe"
+)
 
 # Make sure our C++/WinRT headers take precendence over the system provided
 # Windows SDK headers.
@@ -73,4 +77,28 @@ target_link_libraries(
   windowsappsdk
   INTERFACE
     windowsappsdk_bootstrap
+)
+
+ExternalProject_Add(
+  WindowsAppSDKRuntime
+  URL "https://aka.ms/windowsappsdk/1.4/1.4.231219000/Microsoft.WindowsAppRuntime.Redist.1.4.zip"
+
+  CONFIGURE_COMMAND ""
+  BUILD_COMMAND ""
+  INSTALL_COMMAND ""
+
+  EXCLUDE_FROM_ALL
+)
+
+ExternalProject_Get_property(WindowsAppSDKRuntime SOURCE_DIR)
+
+add_executable(windowsappsdk_installer IMPORTED GLOBAL)
+
+add_dependencies(windowsappsdk_installer WindowsAppSDKRuntime)
+
+set_target_properties(
+  windowsappsdk_installer
+  PROPERTIES
+  IMPORTED_LOCATION
+    "${SOURCE_DIR}/WindowsAppSDK-Installer-${CMAKE_LIBRARY_ARCHITECTURE}/WindowsAppRuntimeInstall-${CMAKE_LIBRARY_ARCHITECTURE}"
 )
