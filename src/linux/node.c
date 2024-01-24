@@ -15,8 +15,8 @@ fx_get_child_widget (fx_node_t *child, float *x, float *y) {
   case fx_view_node: {
     fx_view_t *view = (fx_view_t *) child;
 
-    *x = view->bounds.x;
-    *y = view->bounds.y;
+    if (x) *x = view->bounds.x;
+    if (y) *y = view->bounds.y;
 
     return GTK_WIDGET(view->handle);
   }
@@ -27,8 +27,8 @@ fx_get_child_widget (fx_node_t *child, float *x, float *y) {
   case fx_text_node: {
     fx_text_t *text = (fx_text_t *) child;
 
-    *x = text->bounds.x;
-    *y = text->bounds.y;
+    if (x) *x = text->bounds.x;
+    if (y) *y = text->bounds.y;
 
     return GTK_WIDGET(text->handle);
   }
@@ -39,8 +39,8 @@ fx_get_child_widget (fx_node_t *child, float *x, float *y) {
   case fx_image_node: {
     fx_image_t *image = (fx_image_t *) child;
 
-    *x = image->bounds.x;
-    *y = image->bounds.y;
+    if (x) *x = image->bounds.x;
+    if (y) *y = image->bounds.y;
 
     return GTK_WIDGET(image->handle);
   }
@@ -48,8 +48,8 @@ fx_get_child_widget (fx_node_t *child, float *x, float *y) {
   case fx_video_node: {
     fx_video_t *video = (fx_video_t *) child;
 
-    *x = video->bounds.x;
-    *y = video->bounds.y;
+    if (x) *x = video->bounds.x;
+    if (y) *y = video->bounds.y;
 
     return GTK_WIDGET(video->handle);
   }
@@ -85,5 +85,20 @@ fx_set_child (fx_node_t *parent, fx_node_t *child, size_t index) {
 
 int
 fx_unset_child (fx_node_t *parent, fx_node_t *child, size_t index) {
+  GtkWidget *child_widget = fx_get_child_widget(child, NULL, NULL);
+
+  switch (parent->type) {
+  case fx_view_node: {
+    GtkFixed *handle = ((fx_view_t *) parent)->handle;
+
+    gtk_fixed_remove(handle, child_widget);
+
+    break;
+  }
+
+  default:
+    return -1;
+  }
+
   return 0;
 }
