@@ -164,6 +164,19 @@ fx_set_window_title (fx_window_t *window, const char *title, size_t len) {
   return 0;
 }
 
+extern "C" int
+fx_set_window_icon (fx_window_t *window, const char *url, size_t len) {
+  int err;
+
+  hstring hstr;
+  err = fx__to_hstring(url, len, hstr);
+  if (err < 0) return err;
+
+  window->handle.AppWindow().SetIcon(hstr);
+
+  return 0;
+}
+
 extern "C" bool
 fx_is_window_resizable (fx_window_t *window) {
   return window->presenter.IsResizable();

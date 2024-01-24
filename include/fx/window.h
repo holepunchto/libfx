@@ -54,6 +54,9 @@ fx_get_window_title (fx_window_t *window, char *title, size_t len, size_t *resul
 int
 fx_set_window_title (fx_window_t *window, const char *title, size_t len);
 
+int
+fx_set_window_icon (fx_window_t *window, const char *url, size_t len);
+
 bool
 fx_is_window_resizable (fx_window_t *window);
 
