@@ -143,13 +143,6 @@ fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, flo
 }
 
 int
-fx_set_window_title (fx_window_t *window, const char *title) {
-  gtk_window_set_title(window->handle, title);
-
-  return 0;
-}
-
-int
 fx_get_window_title (fx_window_t *window, char *title, size_t len, size_t *result) {
   const char *bytes = gtk_window_get_title(window->handle);
 
@@ -166,6 +159,13 @@ fx_get_window_title (fx_window_t *window, char *title, size_t len, size_t *resul
 
     if (result) *result = written;
   } else if (result) *result = 0;
+
+  return 0;
+}
+
+int
+fx_set_window_title (fx_window_t *window, const char *title, size_t len) {
+  gtk_window_set_title(window->handle, title);
 
   return 0;
 }

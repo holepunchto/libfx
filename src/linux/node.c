@@ -72,7 +72,6 @@ fx_set_child (fx_node_t *parent, fx_node_t *child, size_t index) {
     GtkFixed *handle = ((fx_view_t *) parent)->handle;
 
     gtk_fixed_put(handle, child_widget, x, y);
-
     break;
   }
 
@@ -92,7 +91,6 @@ fx_unset_child (fx_node_t *parent, fx_node_t *child, size_t index) {
     GtkFixed *handle = ((fx_view_t *) parent)->handle;
 
     gtk_fixed_remove(handle, child_widget);
-
     break;
   }
 

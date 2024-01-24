@@ -58,9 +58,9 @@ fx_set_text_input_bounds (fx_text_input_t *text_input, float x, float y, float w
   return 0;
 }
 
-char *
-fx_get_text_input_value (fx_text_input_t *text_input) {
-  return NULL;
+int
+fx_get_text_input_value (fx_text_input_t *text_input, char *value, size_t len, size_t *result) {
+  return 0;
 }
 
 int
