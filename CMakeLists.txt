@@ -44,6 +44,7 @@ target_sources(
   INTERFACE
     include/fx.h
     include/fx/image.h
+    include/fx/install.h
     include/fx/node.h
     include/fx/screen.h
     include/fx/scroll-view.h
@@ -125,6 +126,7 @@ if(WIN32)
       src/win32/fx.cc
       src/win32/image.cc
       src/win32/image.h
+      src/win32/install.cc
       src/win32/node.cc
       src/win32/platform.cc
       src/win32/platform.h
