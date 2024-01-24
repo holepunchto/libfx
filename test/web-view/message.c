@@ -24,7 +24,7 @@ on_launch (fx_t *app) {
   e = fx_web_view_init(app, 0.0, 0.0, 1280.0, 720.0, &web_view);
   assert(e == 0);
 
-  e = fx_on_web_view_message(web_view, on_message, -1);
+  e = fx_on_web_view_message(web_view, on_message);
   assert(e == 0);
 
   char *code =

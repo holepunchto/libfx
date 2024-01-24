@@ -6,6 +6,7 @@
 
 #import <AppKit/AppKit.h>
 #import <WebKit/WebKit.h>
+#import <string.h>
 
 @implementation FXWebViewDelegate
 
@@ -13,7 +14,9 @@
       didReceiveScriptMessage:(WKScriptMessage *)message {
   fx_web_view_t *web_view = ((FXWebView *) message.webView).fxWebView;
 
-  if (web_view->on_message != NULL) web_view->on_message(web_view, [message.body UTF8String]);
+  const char *bytes = [message.body UTF8String];
+
+  if (web_view->on_message != NULL) web_view->on_message(web_view, bytes, strlen(bytes));
 }
 
 @end
@@ -121,8 +124,8 @@ fx_set_web_view_bounds (fx_web_view_t *web_view, float x, float y, float width, 
 }
 
 int
-fx_web_view_post_message (fx_web_view_t *web_view, const char *message) {
-  NSString *js = [[NSString alloc] initWithFormat:@"globalThis.bridge.dispatchMessage(%s)", message];
+fx_web_view_post_message (fx_web_view_t *web_view, const char *message, size_t len) {
+  NSString *js = [[NSString alloc] initWithFormat:@"globalThis.bridge.dispatchMessage(%.*s)", (int) len, message];
 
   [web_view->handle evaluateJavaScript:js
                      completionHandler:nil];

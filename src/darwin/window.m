@@ -1,6 +1,7 @@
 #import "window.h"
 
 #import "../../include/fx.h"
+#import "shared.h"
 #import "view.h"
 
 #import <AppKit/AppKit.h>
@@ -152,17 +153,6 @@ fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, flo
 }
 
 int
-fx_set_window_title (fx_window_t *window, const char *title) {
-  NSString *string = [[NSString alloc] initWithFormat:@"%s", title];
-
-  window->handle.title = string;
-
-  [string release];
-
-  return 0;
-}
-
-int
 fx_get_window_title (fx_window_t *window, char *title, size_t len, size_t *result) {
   const char *bytes = [window->handle.title UTF8String];
 
@@ -179,6 +169,13 @@ fx_get_window_title (fx_window_t *window, char *title, size_t len, size_t *resul
 
     if (result) *result = written;
   } else if (result) *result = 0;
+
+  return 0;
+}
+
+int
+fx_set_window_title (fx_window_t *window, const char *title, size_t len) {
+  window->handle.title = fx__string(title, len);
 
   return 0;
 }

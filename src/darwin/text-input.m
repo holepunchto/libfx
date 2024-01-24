@@ -92,11 +92,25 @@ fx_set_text_input_bounds (fx_text_input_t *text_input, float x, float y, float w
   return 0;
 }
 
-char *
-fx_get_text_input_value (fx_text_input_t *text_input) {
-  const char *value = [text_input->handle.stringValue cStringUsingEncoding:NSUTF8StringEncoding];
+int
+fx_get_text_input_value (fx_text_input_t *text_input, char *value, size_t len, size_t *result) {
+  const char *bytes = [text_input->handle.stringValue UTF8String];
 
-  return strdup(value);
+  if (value == NULL) {
+    *result = strlen(bytes);
+  } else if (len != 0) {
+    size_t bytes_len = strlen(bytes);
+
+    size_t written = len < bytes_len ? len : bytes_len;
+
+    strncpy(value, bytes, written);
+
+    if (written < len) value[written] = '\0';
+
+    if (result) *result = written;
+  } else if (result) *result = 0;
+
+  return 0;
 }
 
 int
