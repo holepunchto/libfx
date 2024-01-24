@@ -49,10 +49,10 @@ int
 fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, float *height);
 
 int
-fx_set_window_title (fx_window_t *window, const char *title);
+fx_get_window_title (fx_window_t *window, char *title, size_t len, size_t *result);
 
 int
-fx_get_window_title (fx_window_t *window, char *title, size_t len, size_t *result);
+fx_set_window_title (fx_window_t *window, const char *title, size_t len);
 
 bool
 fx_is_window_resizable (fx_window_t *window);

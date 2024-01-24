@@ -24,7 +24,7 @@ fx_web_view_init (fx_web_view_t *web_view, hstring bridge) {
 
     fx__from_hstring(message, str, str_len);
 
-    web_view->on_message(web_view, str);
+    web_view->on_message(web_view, str, str_len);
 
     delete[] str;
   });
@@ -121,11 +121,11 @@ fx_web_view_post_message (fx_web_view_t *web_view, hstring message) {
 }
 
 extern "C" int
-fx_web_view_post_message (fx_web_view_t *web_view, const char *message) {
+fx_web_view_post_message (fx_web_view_t *web_view, const char *message, size_t len) {
   int err;
 
   hstring wstr;
-  err = fx__to_hstring(message, -1, wstr);
+  err = fx__to_hstring(message, len, wstr);
   if (err < 0) return err;
 
   fx_web_view_post_message(web_view, wstr);

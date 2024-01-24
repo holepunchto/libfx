@@ -88,7 +88,7 @@ fx_set_child (fx_node_t *parent, fx_node_t *child, size_t index) {
   case fx_view_node: {
     auto view = reinterpret_cast<fx_view_t *>(parent);
 
-    view->handle.Children().InsertAt(uint32_t(index), child_element);
+    view->handle.Children().Append(child_element);
 
     view->handle.SetLeft(child_element, x);
     view->handle.SetTop(child_element, y);

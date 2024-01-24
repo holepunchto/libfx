@@ -4,12 +4,12 @@
 #include <string.h>
 
 static void
-on_message (fx_web_view_t *web_view, const char *message) {
+on_message (fx_web_view_t *web_view, const char *message, size_t len) {
   int e;
 
   printf("%s\n", message);
 
-  e = fx_web_view_post_message(web_view, message);
+  e = fx_web_view_post_message(web_view, message, len);
   assert(e == 0);
 }
 
@@ -24,7 +24,7 @@ on_launch (fx_t *app) {
   e = fx_web_view_init(app, 0.0, 0.0, 1280.0, 720.0, &web_view);
   assert(e == 0);
 
-  e = fx_on_web_view_message(web_view, on_message);
+  e = fx_on_web_view_message(web_view, on_message, -1);
   assert(e == 0);
 
   char *code =

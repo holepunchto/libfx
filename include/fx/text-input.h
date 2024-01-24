@@ -30,8 +30,8 @@ fx_get_text_input_bounds (fx_text_input_t *text_input, float *x, float *y, float
 int
 fx_set_text_input_bounds (fx_text_input_t *text_input, float x, float y, float width, float height);
 
-char *
-fx_get_text_input_value (fx_text_input_t *text_input);
+int
+fx_get_text_input_value (fx_text_input_t *text_input, char *value, size_t len, size_t *result);
 
 int
 fx_set_text_input_value (fx_text_input_t *text_input, const char *value, size_t len);

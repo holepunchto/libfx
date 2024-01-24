@@ -14,7 +14,7 @@ on_launch (fx_t *app) {
   e = fx_window_init(app, view, 0.0, 0.0, 256.0, 256.0, 0, &window);
   assert(e == 0);
 
-  e = fx_set_window_title(window, "Hello world");
+  e = fx_set_window_title(window, "Hello world", -1);
   assert(e == 0);
 }
 
