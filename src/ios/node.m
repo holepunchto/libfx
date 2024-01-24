@@ -9,81 +9,53 @@
 
 #import <UIKit/UIKit.h>
 
-static inline int
-fx_get_parent_view (fx_node_t *parent, UIView **result) {
-  UIView *parent_view;
-
-  switch (parent->type) {
-  case fx_view_node:
-    parent_view = ((fx_view_t *) parent)->native_view;
-    break;
-  default:
-    return -1;
-  }
-
-  *result = parent_view;
-
-  return 0;
-}
-
-static inline int
-fx_get_child_view (fx_node_t *child, UIView **result) {
-  UIView *child_view;
-
+static inline UIView *
+fx_get_child_view (fx_node_t *child) {
   switch (child->type) {
   case fx_view_node:
-    child_view = ((fx_view_t *) child)->native_view;
-    break;
+    return ((fx_view_t *) child)->native_view;
+
   case fx_scroll_view_node:
-    child_view = ((fx_scroll_view_t *) child)->native_scroll_view;
-    break;
+    return ((fx_scroll_view_t *) child)->native_scroll_view;
+
   case fx_text_node:
-    child_view = ((fx_text_t *) child)->native_text;
-    break;
+    return ((fx_text_t *) child)->native_text;
+
   case fx_text_input_node:
-    child_view = ((fx_text_input_t *) child)->native_text_input;
-    break;
+    return ((fx_text_input_t *) child)->native_text_input;
+
   case fx_image_node:
-    child_view = ((fx_image_t *) child)->native_image;
-    break;
+    return ((fx_image_t *) child)->native_image;
+
   case fx_video_node:
-    child_view = ((fx_video_t *) child)->native_video;
-    break;
+    return ((fx_video_t *) child)->native_video;
+
   case fx_web_view_node:
-    child_view = ((fx_web_view_t *) child)->native_web_view;
-    break;
+    return ((fx_web_view_t *) child)->native_web_view;
   }
 
-  *result = child_view;
-
-  return 0;
+  return NULL;
 }
 
 int
 fx_set_child (fx_node_t *parent, fx_node_t *child, size_t index) {
-  int err;
+  UIView *child_view = fx_get_child_view(child);
 
-  UIView *parent_view;
+  switch (parent->type) {
+  case fx_view_node:
+    [((fx_view_t *) parent)->native_view addSubview:child_view];
+    break;
 
-  err = fx_get_parent_view(parent, &parent_view);
-  if (err < 0) return err;
-
-  UIView *child_view;
-
-  err = fx_get_child_view(child, &child_view);
-  if (err < 0) return err;
-
-  [parent_view addSubview:child_view];
+  default:
+    return -1;
+  }
 
   return 0;
 }
 
 int
 fx_unset_child (fx_node_t *parent, fx_node_t *child, size_t index) {
-  UIView *child_view;
-
-  int err = fx_get_child_view(child, &child_view);
-  if (err < 0) return err;
+  UIView *child_view = fx_get_child_view(child);
 
   [child_view removeFromSuperview];
 

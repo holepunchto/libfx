@@ -9,10 +9,8 @@
 
 #include <gtk/gtk.h>
 
-static inline int
-fx_get_child_widget (fx_node_t *child, float *x, float *y, GtkWidget **result) {
-  GtkWidget *child_widget;
-
+static inline GtkWidget *
+fx_get_child_widget (fx_node_t *child, float *x, float *y) {
   switch (child->type) {
   case fx_view_node: {
     fx_view_t *view = (fx_view_t *) child;
@@ -20,58 +18,54 @@ fx_get_child_widget (fx_node_t *child, float *x, float *y, GtkWidget **result) {
     *x = view->bounds.x;
     *y = view->bounds.y;
 
-    child_widget = GTK_WIDGET(view->handle);
-    break;
+    return GTK_WIDGET(view->handle);
   }
+
   case fx_scroll_view_node:
     break;
+
   case fx_text_node: {
     fx_text_t *text = (fx_text_t *) child;
 
     *x = text->bounds.x;
     *y = text->bounds.y;
 
-    child_widget = GTK_WIDGET(text->handle);
-    break;
+    return GTK_WIDGET(text->handle);
   }
+
   case fx_text_input_node:
     break;
+
   case fx_image_node: {
     fx_image_t *image = (fx_image_t *) child;
 
     *x = image->bounds.x;
     *y = image->bounds.y;
 
-    child_widget = GTK_WIDGET(image->handle);
-    break;
+    return GTK_WIDGET(image->handle);
   }
+
   case fx_video_node: {
     fx_video_t *video = (fx_video_t *) child;
 
     *x = video->bounds.x;
     *y = video->bounds.y;
 
-    child_widget = GTK_WIDGET(video->handle);
-    break;
+    return GTK_WIDGET(video->handle);
   }
+
   case fx_web_view_node:
     break;
   }
 
-  *result = child_widget;
-
-  return 0;
+  return NULL;
 }
 
 int
 fx_set_child (fx_node_t *parent, fx_node_t *child, size_t index) {
-  int err;
-
   float x, y;
 
-  GtkWidget *child_widget;
-  err = fx_get_child_widget(child, &x, &y, &child_widget);
-  if (err < 0) return -1;
+  GtkWidget *child_widget = fx_get_child_widget(child, &x, &y);
 
   switch (parent->type) {
   case fx_view_node: {
@@ -81,6 +75,7 @@ fx_set_child (fx_node_t *parent, fx_node_t *child, size_t index) {
 
     break;
   }
+
   default:
     return -1;
   }
