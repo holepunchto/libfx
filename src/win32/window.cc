@@ -47,8 +47,6 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 
   if (view) window->handle.Content(view->handle);
 
-  window->handle.Activate();
-
   window->data = NULL;
 
   window->on_resize = NULL;
@@ -178,6 +176,18 @@ fx_set_window_icon (fx_window_t *window, const char *url, size_t len) {
 }
 
 extern "C" bool
+fx_is_window_visible (fx_window_t *window) {
+  return window->handle.AppWindow().IsVisible();
+}
+
+extern "C" int
+fx_set_window_visible (fx_window_t *window, bool visible) {
+  window->handle.AppWindow().Show(visible);
+
+  return 0;
+}
+
+extern "C" bool
 fx_is_window_resizable (fx_window_t *window) {
   return window->presenter.IsResizable();
 }
@@ -185,6 +195,13 @@ fx_is_window_resizable (fx_window_t *window) {
 extern "C" int
 fx_set_window_resizable (fx_window_t *window, bool resizable) {
   window->presenter.IsResizable(resizable);
+
+  return 0;
+}
+
+extern "C" int
+fx_activate_window (fx_window_t *window) {
+  window->handle.Activate();
 
   return 0;
 }

@@ -60,8 +60,6 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 
   if (view) handle.contentView = view->handle;
 
-  [handle makeKeyAndOrderFront:handle];
-
   fx_window_t *window = malloc(sizeof(fx_window_t));
 
   window->handle = handle;
@@ -181,6 +179,18 @@ fx_set_window_title (fx_window_t *window, const char *title, size_t len) {
 }
 
 bool
+fx_is_window_visible (fx_window_t *window) {
+  return window->handle.visible;
+}
+
+int
+fx_set_window_visible (fx_window_t *window, bool visible) {
+  [window->handle setIsVisible:visible];
+
+  return 0;
+}
+
+bool
 fx_is_window_resizable (fx_window_t *window) {
   return (window->handle.styleMask & NSWindowStyleMaskResizable) != 0;
 }
@@ -196,6 +206,13 @@ fx_set_window_resizable (fx_window_t *window, bool resizable) {
   }
 
   [window->handle setStyleMask:style];
+
+  return 0;
+}
+
+int
+fx_activate_window (fx_window_t *window) {
+  [window->handle makeKeyAndOrderFront:window->handle];
 
   return 0;
 }

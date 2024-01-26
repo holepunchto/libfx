@@ -47,8 +47,6 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 
   *result = window;
 
-  gtk_widget_set_visible(handle, true);
-
   gtk_window_set_title(window->handle, fx_default_window_title);
 
   gtk_window_set_default_size(window->handle, width, height);
@@ -171,6 +169,18 @@ fx_set_window_title (fx_window_t *window, const char *title, size_t len) {
 }
 
 bool
+fx_is_window_visible (fx_window_t *window) {
+  return gtk_widget_get_visible(GTK_WIDGET(window->handle));
+}
+
+int
+fx_set_window_visible (fx_window_t *window, bool visible) {
+  gtk_widget_set_visible(GTK_WIDGET(window->handle), visible);
+
+  return 0;
+}
+
+bool
 fx_is_window_resizable (fx_window_t *window) {
   return gtk_window_get_resizable(window->handle);
 }
@@ -180,6 +190,11 @@ fx_set_window_resizable (fx_window_t *window, bool resizable) {
   gtk_window_set_resizable(window->handle, resizable);
 
   return 0;
+}
+
+int
+fx_activate_window (fx_window_t *window) {
+  return fx_show_window(window);
 }
 
 int

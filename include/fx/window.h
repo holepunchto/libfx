@@ -58,12 +58,31 @@ int
 fx_set_window_icon (fx_window_t *window, const char *url, size_t len);
 
 bool
+fx_is_window_visible (fx_window_t *window);
+
+int
+fx_set_window_visible (fx_window_t *window, bool visible);
+
+bool
 fx_is_window_resizable (fx_window_t *window);
 
 int
 fx_set_window_resizable (fx_window_t *window, bool resizable);
 
 int
+fx_activate_window (fx_window_t *window);
+
+int
 fx_close_window (fx_window_t *window);
+
+static inline int
+fx_show_window (fx_window_t *window) {
+  return fx_set_window_visible(window, true);
+}
+
+static inline int
+fx_hide_window (fx_window_t *window) {
+  return fx_set_window_visible(window, false);
+}
 
 #endif // FX_WINDOW_H
