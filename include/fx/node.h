@@ -1,9 +1,9 @@
 #ifndef FX_NODE_H
 #define FX_NODE_H
 
-#include <stddef.h>
-
 #include "../fx.h"
+
+#include <stddef.h>
 
 typedef struct fx_node_s fx_node_t;
 

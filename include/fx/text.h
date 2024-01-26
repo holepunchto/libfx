@@ -1,9 +1,9 @@
 #ifndef FX_TEXT_H
 #define FX_TEXT_H
 
-#include <stddef.h>
-
 #include "../fx.h"
+
+#include <stddef.h>
 
 typedef struct fx_text_s fx_text_t;
 typedef struct fx_text_span_s fx_text_span_t;

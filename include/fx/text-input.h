@@ -1,9 +1,9 @@
 #ifndef FX_TEXT_INPUT_H
 #define FX_TEXT_INPUT_H
 
-#include <stdbool.h>
-
 #include "../fx.h"
+
+#include <stdbool.h>
 
 typedef struct fx_text_input_s fx_text_input_t;
 

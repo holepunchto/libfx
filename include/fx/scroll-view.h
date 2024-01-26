@@ -1,10 +1,10 @@
 #ifndef FX_SCROLL_VIEW_H
 #define FX_SCROLL_VIEW_H
 
-#include <stddef.h>
-
 #include "../fx.h"
 #include "view.h"
+
+#include <stddef.h>
 
 typedef struct fx_scroll_view_s fx_scroll_view_t;
 

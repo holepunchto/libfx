@@ -1,10 +1,10 @@
 #ifndef FX_WINDOW_H
 #define FX_WINDOW_H
 
-#include <stdbool.h>
-
 #include "../fx.h"
 #include "view.h"
+
+#include <stdbool.h>
 
 typedef struct fx_window_s fx_window_t;
 

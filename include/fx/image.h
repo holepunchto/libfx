@@ -1,10 +1,10 @@
 #ifndef FX_IMAGE_H
 #define FX_IMAGE_H
 
+#include "../fx.h"
+
 #include <stddef.h>
 #include <stdint.h>
-
-#include "../fx.h"
 
 typedef struct fx_image_s fx_image_t;
 

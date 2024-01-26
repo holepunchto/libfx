@@ -1,9 +1,9 @@
 #ifndef FX_VIDEO_H
 #define FX_VIDEO_H
 
-#include <stddef.h>
-
 #include "../fx.h"
+
+#include <stddef.h>
 
 typedef struct fx_video_s fx_video_t;
 
