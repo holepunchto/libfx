@@ -4,7 +4,7 @@
 #include "../shared/platform.h"
 #include "winui.h"
 
-static DispatcherQueue *fx_dispatcher;
+extern DispatcherQueue *fx_dispatcher;
 
 struct FX : public ApplicationT<FX, IXamlMetadataProvider> {
   FX();

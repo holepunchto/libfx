@@ -4,6 +4,8 @@
 #include "../shared/fx.h"
 #include "winui.h"
 
+DispatcherQueue *fx_dispatcher = NULL;
+
 FX::FX() : dispatcher(DispatcherQueue::GetForCurrentThread()) {}
 
 void
