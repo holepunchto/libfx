@@ -95,32 +95,3 @@ target_link_libraries(
   INTERFACE
     windowsappsdk_bootstrap
 )
-
-ExternalProject_Add(
-  WindowsAppSDKRuntime
-  URL "https://aka.ms/windowsappsdk/1.4/1.4.231219000/Microsoft.WindowsAppRuntime.Redist.1.4.zip"
-
-  CONFIGURE_COMMAND ""
-  BUILD_COMMAND
-    ${CMAKE_COMMAND}
-    -E copy
-    "<SOURCE_DIR>/WindowsAppSDK-Installer-${CMAKE_LIBRARY_ARCHITECTURE}/WindowsAppRuntimeInstall-${CMAKE_LIBRARY_ARCHITECTURE}.exe"
-    "<BINARY_DIR>/Microsoft.WindowsAppRuntime.Install.exe"
-  INSTALL_COMMAND ""
-
-  EXCLUDE_FROM_ALL
-)
-
-ExternalProject_Get_property(WindowsAppSDKRuntime BINARY_DIR)
-
-add_executable(windowsappsdk_install IMPORTED GLOBAL)
-
-add_dependencies(windowsappsdk_install WindowsAppSDKRuntime)
-
-set_target_properties(
-  windowsappsdk_install
-  PROPERTIES
-  IMPORTED_LOCATION "${BINARY_DIR}/Microsoft.WindowsAppRuntime.Install.exe"
-)
-
-add_dependencies(windowsappsdk WindowsAppSDKRuntime)
