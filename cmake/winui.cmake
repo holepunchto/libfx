@@ -56,6 +56,8 @@ ExternalProject_Add(
 
 ExternalProject_Get_property(WindowsAppSDK SOURCE_DIR)
 
+ExternalProject_Get_property(WindowsAppSDK BINARY_DIR)
+
 add_library(windowsappsdk INTERFACE)
 
 add_dependencies(windowsappsdk WindowsAppSDK)
