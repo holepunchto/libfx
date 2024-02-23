@@ -56,11 +56,3 @@ using namespace Microsoft::UI::Xaml::Markup;
 using namespace Microsoft::UI::Xaml::Media;
 using namespace Microsoft::UI::Xaml::Media::Imaging;
 using namespace Microsoft::UI::Xaml::XamlTypeInfo;
-
-// Headers for Windows App SDK bootstrapping.
-// https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/win32/_bootstrap/
-
-#include <mddbootstrap.h>
-#include <windowsappsdk-versioninfo.h>
-
-using namespace ::Microsoft::WindowsAppSDK;

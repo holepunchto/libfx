@@ -48,16 +48,6 @@ ExternalProject_Add(
     -in "<SOURCE_DIR>/lib/uap10.0.17763"
     -in "<SOURCE_DIR>/lib/uap10.0.18362"
     -output "<BINARY_DIR>/include"
-  COMMAND
-    ${CMAKE_COMMAND}
-    -E copy
-    "<SOURCE_DIR>/runtimes/win10-${CMAKE_LIBRARY_ARCHITECTURE}/native/Microsoft.WindowsAppRuntime.Bootstrap.dll"
-    "<BINARY_DIR>/Microsoft.WindowsAppRuntime.Bootstrap.dll"
-  COMMAND
-    ${CMAKE_COMMAND}
-    -E copy
-    "<SOURCE_DIR>/lib/win10-${CMAKE_LIBRARY_ARCHITECTURE}/Microsoft.WindowsAppRuntime.Bootstrap.lib"
-    "<BINARY_DIR>/Microsoft.WindowsAppRuntime.Bootstrap.lib"
 
   INSTALL_COMMAND ""
 
@@ -65,19 +55,6 @@ ExternalProject_Add(
 )
 
 ExternalProject_Get_property(WindowsAppSDK SOURCE_DIR)
-
-ExternalProject_Get_property(WindowsAppSDK BINARY_DIR)
-
-add_library(windowsappsdk_bootstrap SHARED IMPORTED GLOBAL)
-
-add_dependencies(windowsappsdk_bootstrap WindowsAppSDK)
-
-set_target_properties(
-  windowsappsdk_bootstrap
-  PROPERTIES
-  IMPORTED_LOCATION "${BINARY_DIR}/Microsoft.WindowsAppRuntime.Bootstrap.dll"
-  IMPORTED_IMPLIB "${BINARY_DIR}/Microsoft.WindowsAppRuntime.Bootstrap.lib"
-)
 
 add_library(windowsappsdk INTERFACE)
 
@@ -88,10 +65,4 @@ target_include_directories(
   INTERFACE
     "${SOURCE_DIR}/include"
     "${BINARY_DIR}/include"
-)
-
-target_link_libraries(
-  windowsappsdk
-  INTERFACE
-    windowsappsdk_bootstrap
 )

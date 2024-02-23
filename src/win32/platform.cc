@@ -46,16 +46,6 @@ fx_platform_init (fx_t *app, fx_platform_t **result) {
 
   if (FAILED(res)) return -1;
 
-  const UINT32 version = Release::MajorMinor;
-
-  PCWSTR version_tag = Release::VersionTag;
-
-  const PACKAGE_VERSION min_version{Runtime::Version::UInt64};
-
-  res = MddBootstrapInitialize(version, version_tag, min_version);
-
-  if (FAILED(res)) return -1;
-
   auto platform = new fx_platform_t();
 
   platform->on_launch = NULL;
@@ -68,8 +58,6 @@ fx_platform_init (fx_t *app, fx_platform_t **result) {
 
 extern "C" int
 fx_platform_destroy (fx_platform_t *platform) {
-  MddBootstrapShutdown();
-
   CoUninitialize();
 
   delete platform;
