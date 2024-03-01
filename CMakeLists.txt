@@ -217,8 +217,8 @@ if(WIN32)
     PRIVATE
       windowsappsdk
     PUBLIC
-      WindowsApp.lib
-      Shcore.lib # High-DPI functions
+      WindowsApp
+      Shcore # High-DPI functions
   )
 endif()
 
