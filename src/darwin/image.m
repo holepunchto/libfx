@@ -1,6 +1,7 @@
 #import "image.h"
 
 #import "../../include/fx.h"
+#import "shared.h"
 
 #import <AppKit/AppKit.h>
 #import <CoreGraphics/CoreGraphics.h>
@@ -77,7 +78,14 @@ fx_set_image_bounds (fx_image_t *image, float x, float y, float width, float hei
 }
 
 int
-fx_image_load_data (fx_image_t *image, const uint8_t *pixels, int width, int height, int stride) {
+fx_image_load_file (fx_image_t *image, const char *path, size_t len) {
+  image->handle.image = [[NSImage alloc] initWithContentsOfFile:fx__string(path, len)];
+
+  return 0;
+}
+
+int
+fx_image_load_pixels (fx_image_t *image, const uint8_t *pixels, int width, int height, int stride) {
   if (stride == -1) stride = width * 4;
 
   CGColorSpaceRef color_space = CGColorSpaceCreateDeviceRGB();

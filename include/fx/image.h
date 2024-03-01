@@ -27,6 +27,9 @@ int
 fx_set_image_bounds (fx_image_t *image, float x, float y, float width, float height);
 
 int
-fx_image_load_data (fx_image_t *image, const uint8_t *pixels, int width, int height, int stride);
+fx_image_load_file (fx_image_t *image, const char *path, size_t len);
+
+int
+fx_image_load_pixels (fx_image_t *image, const uint8_t *pixels, int width, int height, int stride);
 
 #endif // FX_IMAGE_H

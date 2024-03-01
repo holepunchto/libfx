@@ -59,7 +59,7 @@ fx_set_image_bounds (fx_image_t *image, float x, float y, float width, float hei
 }
 
 extern "C" int
-fx_image_load_data (fx_image_t *image, const uint8_t *pixels, int width, int height, int stride) {
+fx_image_load_pixels (fx_image_t *image, const uint8_t *pixels, int width, int height, int stride) {
   if (stride == -1) stride = width * 4;
 
   WriteableBitmap bitmap(width, height);

@@ -16,7 +16,7 @@ on_launch (fx_t *app) {
   e = fx_image_init(app, 96.0, 96.0, 64.0, 64.0, &image);
   assert(e == 0);
 
-  e = fx_image_load_data(image, image1_rgba, 64, 64, -1);
+  e = fx_image_load_pixels(image, image1_rgba, 64, 64, -1);
   assert(e == 0);
 
   e = fx_set_child((fx_node_t *) view, (fx_node_t *) image, 0);
