@@ -1,6 +1,7 @@
 #include "image.h"
 
 #include "../../include/fx.h"
+#include "shared.h"
 #include "winui.h"
 
 extern "C" int
@@ -55,6 +56,23 @@ fx_get_image_bounds (fx_image_t *image, float *x, float *y, float *width, float 
 
 extern "C" int
 fx_set_image_bounds (fx_image_t *image, float x, float y, float width, float height) {
+  return 0;
+}
+
+extern "C" int
+fx_image_load_file (fx_image_t *image, const char *path, size_t len) {
+  int err;
+
+  hstring wstr;
+  err = fx__to_hstring(path, len, wstr);
+  if (err < 0) return err;
+
+  BitmapImage bitmap;
+
+  bitmap.UriSource(Uri(wstr));
+
+  image->handle.Source(bitmap);
+
   return 0;
 }
 
