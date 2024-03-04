@@ -5,13 +5,21 @@
 #include "shared.h"
 #include "winui.h"
 
-IAsyncAction
-fx_web_view_init (fx_web_view_t *web_view, hstring bridge) {
-  co_await web_view->handle.EnsureCoreWebView2Async();
+static inline IAsyncAction
+fx_web_view_init (fx_web_view_t *web_view, hstring bridge) noexcept {
+  try {
+    co_await web_view->handle.EnsureCoreWebView2Async();
+  } catch (...) {
+    std::terminate();
+  }
 
   auto core_web_view = web_view->handle.CoreWebView2();
 
-  co_await core_web_view.AddScriptToExecuteOnDocumentCreatedAsync(bridge);
+  try {
+    co_await core_web_view.AddScriptToExecuteOnDocumentCreatedAsync(bridge);
+  } catch (...) {
+    std::terminate();
+  }
 
   core_web_view.WebMessageReceived([=] (const auto &sender, const auto &args) {
     if (web_view->on_message == NULL) return;
@@ -113,9 +121,13 @@ fx_set_web_view_bounds (fx_web_view_t *web_view, float x, float y, float width, 
   return 0;
 }
 
-static IAsyncAction
-fx_web_view_post_message (fx_web_view_t *web_view, hstring message) {
-  co_await web_view->initialize;
+static inline IAsyncAction
+fx_web_view_post_message (fx_web_view_t *web_view, hstring message) noexcept {
+  try {
+    co_await web_view->initialize;
+  } catch (...) {
+    std::terminate();
+  }
 
   web_view->handle.CoreWebView2().PostWebMessageAsJson(message);
 }
@@ -133,9 +145,13 @@ fx_web_view_post_message (fx_web_view_t *web_view, const char *message, size_t l
   return 0;
 }
 
-static IAsyncAction
-fx_web_view_load_url (fx_web_view_t *web_view, hstring url) {
-  co_await web_view->initialize;
+static inline IAsyncAction
+fx_web_view_load_url (fx_web_view_t *web_view, hstring url) noexcept {
+  try {
+    co_await web_view->initialize;
+  } catch (...) {
+    std::terminate();
+  }
 
   web_view->handle.CoreWebView2().Navigate(url);
 }
@@ -155,9 +171,13 @@ fx_web_view_load_url (fx_web_view_t *web_view, const char *url, size_t len) {
   return 0;
 }
 
-static IAsyncAction
-fx_web_view_load_html (fx_web_view_t *web_view, hstring html) {
-  co_await web_view->initialize;
+static inline IAsyncAction
+fx_web_view_load_html (fx_web_view_t *web_view, hstring html) noexcept {
+  try {
+    co_await web_view->initialize;
+  } catch (...) {
+    std::terminate();
+  }
 
   web_view->handle.CoreWebView2().NavigateToString(html);
 }
