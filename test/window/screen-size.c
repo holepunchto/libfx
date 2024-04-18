@@ -24,6 +24,9 @@ on_launch (fx_t *app) {
 
   e = fx_screen_release(screen);
   assert(e == 0);
+
+  e = fx_activate_window(window);
+  assert(e == 0);
 }
 
 int

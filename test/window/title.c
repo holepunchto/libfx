@@ -16,6 +16,9 @@ on_launch (fx_t *app) {
 
   e = fx_set_window_title(window, "Hello world", -1);
   assert(e == 0);
+
+  e = fx_activate_window(window);
+  assert(e == 0);
 }
 
 int

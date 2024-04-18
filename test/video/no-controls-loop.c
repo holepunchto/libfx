@@ -26,6 +26,9 @@ on_launch (fx_t *app) {
 
   e = fx_play_video(video);
   assert(e == 0);
+
+  e = fx_activate_window(window);
+  assert(e == 0);
 }
 
 int
