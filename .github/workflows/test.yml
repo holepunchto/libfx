@@ -30,13 +30,9 @@ jobs:
     - uses: actions/checkout@v4
       with:
         submodules: recursive
-    - uses: actions/cache@v4
-      with:
-        path: vendor/libappling/vendor/bare/corestore
-        key: corestore-${{ matrix.platform }}-${{ matrix.arch }}
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
-    - run: npm install -g bare-dev
-    - run: bare-dev configure --debug --platform ${{ matrix.platform }} --arch ${{ matrix.arch }}
-    - run: bare-dev build --debug
+    - run: npm install -g bare-make
+    - run: bare-make generate --platform ${{ matrix.platform }} --arch ${{ matrix.arch }} --debug
+    - run: bare-make build
