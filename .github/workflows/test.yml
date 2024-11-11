@@ -29,16 +29,15 @@ jobs:
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.platform }}-${{ matrix.arch }}
     steps:
-    - if: ${{ matrix.platform == 'linux' }}
-      run: |
+    - run: |
         sudo apt update
         sudo apt install -y libgtk-4-dev
+      if: ${{ matrix.platform == 'linux' }}
     - uses: actions/checkout@v4
-      with:
-        submodules: recursive
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
     - run: npm install -g bare-make
+    - run: npm install
     - run: bare-make generate --platform ${{ matrix.platform }} --arch ${{ matrix.arch }} --debug
     - run: bare-make build

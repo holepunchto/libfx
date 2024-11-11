@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
 
+find_package(cmake-fetch REQUIRED PATHS node_modules/cmake-fetch)
+
 project(fx C)
 
 if(APPLE)
@@ -10,9 +12,7 @@ if(WIN32)
   enable_language(CXX)
 endif()
 
-if(NOT TARGET uv)
-  add_subdirectory(vendor/libuv EXCLUDE_FROM_ALL)
-endif()
+fetch_package("github:libuv/libuv@1.48.0")
 
 add_library(fx OBJECT)
 
