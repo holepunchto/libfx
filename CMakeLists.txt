@@ -225,7 +225,7 @@ endif()
 if(LINUX)
   find_package(PkgConfig REQUIRED)
 
-  pkg_check_modules(GTK4 REQUIRED IMPORTED_TARGET gtk4)
+  pkg_check_modules(GTK4 REQUIRED IMPORTED_TARGET GLOBAL gtk4)
 
   target_link_libraries(
     fx
