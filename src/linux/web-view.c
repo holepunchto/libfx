@@ -1,13 +1,14 @@
 #include "web-view.h"
+
 #include "../shared/bridge/webkit/bridge.h"
 
 #include <stdlib.h>
 
 static void
-on_message(WebKitUserContentManager* self, JSCValue* message, void *data) {
+on_message (WebKitUserContentManager *self, JSCValue *message, void *data) {
   fx_web_view_t *web_view = (fx_web_view_t *) data;
 
-  GBytes* bytes = jsc_value_to_string_as_bytes(message);
+  GBytes *bytes = jsc_value_to_string_as_bytes(message);
 
   if (web_view->on_message) web_view->on_message(web_view, g_bytes_get_data(bytes, NULL), g_bytes_get_size(bytes));
 
@@ -43,7 +44,7 @@ fx_web_view_init (fx_t *app, float x, float y, float width, float height, fx_web
 
   WebKitUserScript *script = webkit_user_script_new((const gchar *) webkit_bridge_js, WEBKIT_USER_CONTENT_INJECT_ALL_FRAMES, WEBKIT_USER_SCRIPT_INJECT_AT_DOCUMENT_START, NULL, NULL);
 
-  WebKitUserContentManager* user_content_manager = webkit_web_view_get_user_content_manager(web_view->handle);
+  WebKitUserContentManager *user_content_manager = webkit_web_view_get_user_content_manager(web_view->handle);
 
   webkit_user_content_manager_add_script(user_content_manager, script);
 

@@ -7,7 +7,7 @@
 extern DispatcherQueue *fx_dispatcher;
 
 struct FX : public ApplicationT<FX, IXamlMetadataProvider> {
-  FX();
+  FX ();
 
   void
   OnLaunched (LaunchActivatedEventArgs const &);
