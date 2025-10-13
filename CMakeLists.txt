@@ -12,7 +12,7 @@ if(WIN32)
   enable_language(CXX)
 endif()
 
-fetch_package("github:libuv/libuv@1.48.0")
+fetch_package("github:libuv/libuv@1.51.0")
 
 add_library(fx OBJECT)
 
@@ -225,12 +225,15 @@ endif()
 if(LINUX)
   find_package(PkgConfig REQUIRED)
 
-  pkg_check_modules(GTK4 REQUIRED IMPORTED_TARGET GLOBAL gtk4)
+  pkg_check_modules(GTK REQUIRED IMPORTED_TARGET GLOBAL gtk4)
+
+  pkg_check_modules(WebKitGTK REQUIRED IMPORTED_TARGET GLOBAL webkitgtk-6.0)
 
   target_link_libraries(
     fx
     PUBLIC
-      PkgConfig::GTK4
+      PkgConfig::GTK
+      PkgConfig::WebKitGTK
   )
 endif()
 
