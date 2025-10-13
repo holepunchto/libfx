@@ -10,7 +10,7 @@
 fx_t *fx_main_app = NULL;
 
 static void
-fx_add_worker (fx_t *worker) {
+fx_add_worker(fx_t *worker) {
   uv_mutex_lock(&fx_main_app->lock);
 
   fx_worker_t *node = malloc(sizeof(fx_worker_t));
@@ -24,7 +24,7 @@ fx_add_worker (fx_t *worker) {
 }
 
 static void
-fx_remove_worker (fx_t *worker) {
+fx_remove_worker(fx_t *worker) {
   uv_mutex_lock(&fx_main_app->lock);
 
   fx_worker_t *next = fx_main_app->workers;
@@ -47,7 +47,7 @@ fx_remove_worker (fx_t *worker) {
 }
 
 static void
-on_message (fx_channel_t *channel) {
+on_message(fx_channel_t *channel) {
   fx_t *app = channel->app;
 
   for (;;) {
@@ -64,7 +64,7 @@ on_message (fx_channel_t *channel) {
 }
 
 int
-fx_init (uv_loop_t *loop, fx_t **result) {
+fx_init(uv_loop_t *loop, fx_t **result) {
   int err;
 
   fx_t *app = malloc(sizeof(fx_t));
@@ -98,12 +98,12 @@ fx_init (uv_loop_t *loop, fx_t **result) {
 }
 
 static void
-on_close (fx_channel_t *channel) {
+on_close(fx_channel_t *channel) {
   free(channel->app);
 }
 
 int
-fx_destroy (fx_t *app) {
+fx_destroy(fx_t *app) {
   if (fx_is_main(app)) {
     fx_main_app = NULL;
 
@@ -127,45 +127,45 @@ fx_destroy (fx_t *app) {
 }
 
 bool
-fx_is_main (fx_t *app) {
+fx_is_main(fx_t *app) {
   return app == fx_main_app;
 }
 
 bool
-fx_is_worker (fx_t *app) {
+fx_is_worker(fx_t *app) {
   return app != fx_main_app;
 }
 
 int
-fx_on_suspend (fx_t *app, fx_suspend_cb cb) {
+fx_on_suspend(fx_t *app, fx_suspend_cb cb) {
   app->on_suspend = cb;
 
   return 0;
 }
 
 int
-fx_on_resume (fx_t *app, fx_resume_cb cb) {
+fx_on_resume(fx_t *app, fx_resume_cb cb) {
   app->on_resume = cb;
 
   return 0;
 }
 
 int
-fx_get_data (fx_t *app, void **result) {
+fx_get_data(fx_t *app, void **result) {
   *result = app->data;
 
   return 0;
 }
 
 int
-fx_set_data (fx_t *app, void *data) {
+fx_set_data(fx_t *app, void *data) {
   app->data = data;
 
   return 0;
 }
 
 int
-fx_broadcast (fx_t *sender, const uv_buf_t *message) {
+fx_broadcast(fx_t *sender, const uv_buf_t *message) {
   uv_mutex_lock(&fx_main_app->lock);
 
   if (fx_is_worker(sender)) {
@@ -189,7 +189,7 @@ fx_broadcast (fx_t *sender, const uv_buf_t *message) {
 }
 
 int
-fx_read_start (fx_t *receiver, fx_message_cb cb) {
+fx_read_start(fx_t *receiver, fx_message_cb cb) {
   receiver->on_message = cb;
 
   fx_channel_resume(&receiver->messages);
@@ -198,7 +198,7 @@ fx_read_start (fx_t *receiver, fx_message_cb cb) {
 }
 
 int
-fx_read_stop (fx_t *receiver) {
+fx_read_stop(fx_t *receiver) {
   receiver->on_message = NULL;
 
   fx_channel_pause(&receiver->messages);

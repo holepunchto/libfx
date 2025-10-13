@@ -11,7 +11,7 @@ static fx_t *child;
 static uv_buf_t buf;
 
 static void
-on_parent_message (fx_t *receiver, const uv_buf_t *buf, fx_t *sender) {
+on_parent_message(fx_t *receiver, const uv_buf_t *buf, fx_t *sender) {
   int e;
 
   printf("message to parent\n");
@@ -24,7 +24,7 @@ on_parent_message (fx_t *receiver, const uv_buf_t *buf, fx_t *sender) {
 }
 
 static void
-on_child_message (fx_t *receiver, const uv_buf_t *buf, fx_t *sender) {
+on_child_message(fx_t *receiver, const uv_buf_t *buf, fx_t *sender) {
   int e;
 
   printf("message to child\n");
@@ -34,7 +34,7 @@ on_child_message (fx_t *receiver, const uv_buf_t *buf, fx_t *sender) {
 }
 
 static void
-on_thread (void *data) {
+on_thread(void *data) {
   int e;
 
   uv_loop_t loop;
@@ -55,7 +55,7 @@ on_thread (void *data) {
 }
 
 int
-main () {
+main() {
   int e;
 
   e = fx_init(uv_default_loop(), &parent);

@@ -10,7 +10,7 @@
 #include <gtk/gtk.h>
 
 static inline GtkWidget *
-fx_get_child_widget (fx_node_t *child, float *x, float *y) {
+fx_get_child_widget(fx_node_t *child, float *x, float *y) {
   switch (child->type) {
   case fx_view_node: {
     fx_view_t *view = (fx_view_t *) child;
@@ -68,7 +68,7 @@ fx_get_child_widget (fx_node_t *child, float *x, float *y) {
 }
 
 int
-fx_set_child (fx_node_t *parent, fx_node_t *child, size_t index) {
+fx_set_child(fx_node_t *parent, fx_node_t *child, size_t index) {
   float x, y;
 
   GtkWidget *child_widget = fx_get_child_widget(child, &x, &y);
@@ -89,7 +89,7 @@ fx_set_child (fx_node_t *parent, fx_node_t *child, size_t index) {
 }
 
 int
-fx_unset_child (fx_node_t *parent, fx_node_t *child, size_t index) {
+fx_unset_child(fx_node_t *parent, fx_node_t *child, size_t index) {
   GtkWidget *child_widget = fx_get_child_widget(child, NULL, NULL);
 
   switch (parent->type) {

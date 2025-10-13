@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 int
-fx_text_init (fx_t *app, float x, float y, float width, float height, fx_text_t **result) {
+fx_text_init(fx_t *app, float x, float y, float width, float height, fx_text_t **result) {
   GtkWidget *handle = gtk_label_new(NULL);
 
   if (handle == NULL) return -1;
@@ -34,28 +34,28 @@ fx_text_init (fx_t *app, float x, float y, float width, float height, fx_text_t 
 }
 
 int
-fx_text_destroy (fx_text_t *text) {
+fx_text_destroy(fx_text_t *text) {
   free(text);
 
   return 0;
 }
 
 int
-fx_get_text_data (fx_text_t *text, void **result) {
+fx_get_text_data(fx_text_t *text, void **result) {
   *result = text->data;
 
   return 0;
 }
 
 int
-fx_set_text_data (fx_text_t *text, void *data) {
+fx_set_text_data(fx_text_t *text, void *data) {
   text->data = data;
 
   return 0;
 }
 
 int
-fx_get_text_bounds (fx_text_t *text, float *x, float *y, float *width, float *height) {
+fx_get_text_bounds(fx_text_t *text, float *x, float *y, float *width, float *height) {
   if (x) *x = text->bounds.x;
   if (y) *y = text->bounds.y;
   if (width) *width = text->bounds.width;
@@ -65,7 +65,7 @@ fx_get_text_bounds (fx_text_t *text, float *x, float *y, float *width, float *he
 }
 
 int
-fx_get_text_bounds_used (fx_text_t *text, float *x, float *y, float *width, float *height) {
+fx_get_text_bounds_used(fx_text_t *text, float *x, float *y, float *width, float *height) {
   if (x) *x = text->bounds.x;
   if (y) *y = text->bounds.y;
   if (width) *width = gtk_widget_get_allocated_width(GTK_WIDGET(text->handle));
@@ -75,7 +75,7 @@ fx_get_text_bounds_used (fx_text_t *text, float *x, float *y, float *width, floa
 }
 
 int
-fx_set_text_bounds (fx_text_t *text, float x, float y, float width, float height) {
+fx_set_text_bounds(fx_text_t *text, float x, float y, float width, float height) {
   text->bounds.x = x;
   text->bounds.y = y;
   text->bounds.width = width;
@@ -85,7 +85,7 @@ fx_set_text_bounds (fx_text_t *text, float x, float y, float width, float height
 }
 
 int
-fx_append_text_span (fx_text_t *text, const char *value, size_t len, fx_text_span_t **result) {
+fx_append_text_span(fx_text_t *text, const char *value, size_t len, fx_text_span_t **result) {
   gtk_label_set_text(text->handle, value);
 
   if (result) {

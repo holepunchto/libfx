@@ -7,7 +7,7 @@
 #include <stdlib.h>
 
 int
-fx_image_init (fx_t *app, float x, float y, float width, float height, fx_image_t **result) {
+fx_image_init(fx_t *app, float x, float y, float width, float height, fx_image_t **result) {
   GtkWidget *handle = gtk_picture_new();
 
   if (handle == NULL) return -1;
@@ -35,28 +35,28 @@ fx_image_init (fx_t *app, float x, float y, float width, float height, fx_image_
 }
 
 int
-fx_image_destroy (fx_image_t *image) {
+fx_image_destroy(fx_image_t *image) {
   free(image);
 
   return 0;
 }
 
 int
-fx_get_image_data (fx_image_t *image, void **result) {
+fx_get_image_data(fx_image_t *image, void **result) {
   *result = image->data;
 
   return 0;
 }
 
 int
-fx_set_image_data (fx_image_t *image, void *data) {
+fx_set_image_data(fx_image_t *image, void *data) {
   image->data = data;
 
   return 0;
 }
 
 int
-fx_get_image_bounds (fx_image_t *image, float *x, float *y, float *width, float *height) {
+fx_get_image_bounds(fx_image_t *image, float *x, float *y, float *width, float *height) {
   if (x) *x = image->bounds.x;
   if (y) *y = image->bounds.y;
   if (width) *width = image->bounds.width;
@@ -66,7 +66,7 @@ fx_get_image_bounds (fx_image_t *image, float *x, float *y, float *width, float 
 }
 
 int
-fx_set_image_bounds (fx_image_t *image, float x, float y, float width, float height) {
+fx_set_image_bounds(fx_image_t *image, float x, float y, float width, float height) {
   image->bounds.x = x;
   image->bounds.y = y;
   image->bounds.width = width;
@@ -76,14 +76,14 @@ fx_set_image_bounds (fx_image_t *image, float x, float y, float width, float hei
 }
 
 int
-fx_image_load_file (fx_image_t *image, const char *path, size_t len) {
+fx_image_load_file(fx_image_t *image, const char *path, size_t len) {
   gtk_picture_set_filename(image->handle, path);
 
   return 0;
 }
 
 int
-fx_image_load_pixels (fx_image_t *image, const uint8_t *pixels, int width, int height, int stride) {
+fx_image_load_pixels(fx_image_t *image, const uint8_t *pixels, int width, int height, int stride) {
   if (stride == -1) stride = width * 4;
 
   GdkPixbuf *buffer = gdk_pixbuf_new_from_data(

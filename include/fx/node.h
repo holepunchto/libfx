@@ -22,9 +22,9 @@ struct fx_node_s {
 };
 
 int
-fx_set_child (fx_node_t *parent, fx_node_t *child, size_t index);
+fx_set_child(fx_node_t *parent, fx_node_t *child, size_t index);
 
 int
-fx_unset_child (fx_node_t *parent, fx_node_t *child, size_t index);
+fx_unset_child(fx_node_t *parent, fx_node_t *child, size_t index);
 
 #endif // FX_NODE_H

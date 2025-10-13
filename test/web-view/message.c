@@ -4,7 +4,7 @@
 #include <string.h>
 
 static void
-on_message (fx_web_view_t *web_view, const char *message, size_t len) {
+on_message(fx_web_view_t *web_view, const char *message, size_t len) {
   int e;
 
   printf("%s\n", message);
@@ -14,7 +14,7 @@ on_message (fx_web_view_t *web_view, const char *message, size_t len) {
 }
 
 static void
-on_launch (fx_t *app) {
+on_launch(fx_t *app) {
   int e;
 
   fx_view_t *view;
@@ -48,7 +48,7 @@ on_launch (fx_t *app) {
 }
 
 int
-main () {
+main() {
   int e;
 
   fx_t *app;

@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 int
-fx_video_init (fx_t *app, const char *url, size_t len, float x, float y, float width, float height, int flags, fx_video_t **result) {
+fx_video_init(fx_t *app, const char *url, size_t len, float x, float y, float width, float height, int flags, fx_video_t **result) {
   GtkMediaStream *stream = gtk_media_file_new_for_filename(url);
 
   if (stream == NULL) return -1;
@@ -45,28 +45,28 @@ fx_video_init (fx_t *app, const char *url, size_t len, float x, float y, float w
 }
 
 int
-fx_video_destroy (fx_video_t *video) {
+fx_video_destroy(fx_video_t *video) {
   free(video);
 
   return 0;
 }
 
 int
-fx_get_video_data (fx_video_t *video, void **result) {
+fx_get_video_data(fx_video_t *video, void **result) {
   *result = video->data;
 
   return 0;
 }
 
 int
-fx_set_video_data (fx_video_t *video, void *data) {
+fx_set_video_data(fx_video_t *video, void *data) {
   video->data = data;
 
   return 0;
 }
 
 int
-fx_get_video_bounds (fx_video_t *video, float *x, float *y, float *width, float *height) {
+fx_get_video_bounds(fx_video_t *video, float *x, float *y, float *width, float *height) {
   if (x) *x = video->bounds.x;
   if (y) *y = video->bounds.y;
   if (width) *width = video->bounds.width;
@@ -76,7 +76,7 @@ fx_get_video_bounds (fx_video_t *video, float *x, float *y, float *width, float 
 }
 
 int
-fx_set_video_bounds (fx_video_t *video, float x, float y, float width, float height) {
+fx_set_video_bounds(fx_video_t *video, float x, float y, float width, float height) {
   video->bounds.x = x;
   video->bounds.y = y;
   video->bounds.width = width;
@@ -86,26 +86,26 @@ fx_set_video_bounds (fx_video_t *video, float x, float y, float width, float hei
 }
 
 bool
-fx_is_video_loop (fx_video_t *video) {
+fx_is_video_loop(fx_video_t *video) {
   return gtk_media_stream_get_loop(video->stream);
 }
 
 bool
-fx_set_video_loop (fx_video_t *video, bool loop) {
+fx_set_video_loop(fx_video_t *video, bool loop) {
   gtk_media_stream_set_loop(video->stream, loop);
 
   return 0;
 }
 
 int
-fx_play_video (fx_video_t *video) {
+fx_play_video(fx_video_t *video) {
   gtk_media_stream_play(video->stream);
 
   return 0;
 }
 
 int
-fx_pause_video (fx_video_t *video) {
+fx_pause_video(fx_video_t *video) {
   gtk_media_stream_pause(video->stream);
 
   return 0;

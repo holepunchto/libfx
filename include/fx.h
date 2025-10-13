@@ -18,43 +18,43 @@ typedef void (*fx_resume_cb)(fx_t *app);
 typedef void (*fx_message_cb)(fx_t *receiver, const uv_buf_t *message, fx_t *sender);
 
 int
-fx_init (uv_loop_t *loop, fx_t **result);
+fx_init(uv_loop_t *loop, fx_t **result);
 
 int
-fx_destroy (fx_t *app);
+fx_destroy(fx_t *app);
 
 int
-fx_run (fx_t *app, fx_launch_cb on_launch, fx_terminate_cb on_terminate);
+fx_run(fx_t *app, fx_launch_cb on_launch, fx_terminate_cb on_terminate);
 
 bool
-fx_is_main (fx_t *app);
+fx_is_main(fx_t *app);
 
 bool
-fx_is_worker (fx_t *app);
+fx_is_worker(fx_t *app);
 
 int
-fx_on_suspend (fx_t *app, fx_suspend_cb cb);
+fx_on_suspend(fx_t *app, fx_suspend_cb cb);
 
 int
-fx_on_resume (fx_t *app, fx_resume_cb cb);
+fx_on_resume(fx_t *app, fx_resume_cb cb);
 
 int
-fx_get_data (fx_t *app, void **result);
+fx_get_data(fx_t *app, void **result);
 
 int
-fx_set_data (fx_t *app, void *data);
+fx_set_data(fx_t *app, void *data);
 
 int
-fx_dispatch (fx_dispatch_cb cb, void *data);
+fx_dispatch(fx_dispatch_cb cb, void *data);
 
 int
-fx_broadcast (fx_t *sender, const uv_buf_t *message);
+fx_broadcast(fx_t *sender, const uv_buf_t *message);
 
 int
-fx_read_start (fx_t *receiver, fx_message_cb cb);
+fx_read_start(fx_t *receiver, fx_message_cb cb);
 
 int
-fx_read_stop (fx_t *receiver);
+fx_read_stop(fx_t *receiver);
 
 #include "fx/image.h"
 #include "fx/node.h"

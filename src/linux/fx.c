@@ -14,7 +14,7 @@ struct fx_dispatch_s {
 };
 
 static int
-on_dispatch (void *data) {
+on_dispatch(void *data) {
   fx_dispatch_t *dispatch = (fx_dispatch_t *) data;
 
   dispatch->cb(fx_main_app, dispatch->data);
@@ -25,7 +25,7 @@ on_dispatch (void *data) {
 }
 
 int
-fx_run (fx_t *app, fx_launch_cb on_launch, fx_terminate_cb on_terminate) {
+fx_run(fx_t *app, fx_launch_cb on_launch, fx_terminate_cb on_terminate) {
   app->platform->on_launch = on_launch;
   app->platform->on_terminate = on_terminate;
 
@@ -35,7 +35,7 @@ fx_run (fx_t *app, fx_launch_cb on_launch, fx_terminate_cb on_terminate) {
 }
 
 int
-fx_dispatch (fx_dispatch_cb cb, void *data) {
+fx_dispatch(fx_dispatch_cb cb, void *data) {
   fx_dispatch_t *dispatch = malloc(sizeof(fx_dispatch_t));
 
   dispatch->cb = cb;

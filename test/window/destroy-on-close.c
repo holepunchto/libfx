@@ -3,7 +3,7 @@
 #include <assert.h>
 
 static void
-on_close (fx_window_t *window) {
+on_close(fx_window_t *window) {
   int e;
 
   e = fx_window_destroy(window);
@@ -11,7 +11,7 @@ on_close (fx_window_t *window) {
 }
 
 static void
-on_launch (fx_t *app) {
+on_launch(fx_t *app) {
   int e;
 
   fx_view_t *view;
@@ -30,7 +30,7 @@ on_launch (fx_t *app) {
 }
 
 int
-main () {
+main() {
   int e;
 
   fx_t *app;

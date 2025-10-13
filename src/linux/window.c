@@ -12,14 +12,14 @@
 static const char *fx_default_window_title = "";
 
 static void
-on_close (GtkWindow *self, void *data) {
+on_close(GtkWindow *self, void *data) {
   fx_window_t *window = (fx_window_t *) data;
 
   if (window->on_close) window->on_close(window);
 }
 
 static void
-on_resize (GObject *object, GParamSpec *params, void *data) {
+on_resize(GObject *object, GParamSpec *params, void *data) {
   fx_window_t *window = (fx_window_t *) data;
 
   int width, height;
@@ -33,7 +33,7 @@ on_resize (GObject *object, GParamSpec *params, void *data) {
 }
 
 int
-fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float height, int flags, fx_window_t **result) {
+fx_window_init(fx_t *app, fx_view_t *view, float x, float y, float width, float height, int flags, fx_window_t **result) {
   GtkWidget *handle = gtk_window_new();
 
   if (handle == NULL) return -1;
@@ -85,7 +85,7 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 }
 
 int
-fx_window_destroy (fx_window_t *window) {
+fx_window_destroy(fx_window_t *window) {
   gtk_window_destroy(window->handle);
 
   free(window);
@@ -94,56 +94,56 @@ fx_window_destroy (fx_window_t *window) {
 }
 
 int
-fx_on_window_resize (fx_window_t *window, fx_window_resize_cb cb) {
+fx_on_window_resize(fx_window_t *window, fx_window_resize_cb cb) {
   window->on_resize = cb;
 
   return 0;
 }
 
 int
-fx_on_window_move (fx_window_t *window, fx_window_move_cb cb) {
+fx_on_window_move(fx_window_t *window, fx_window_move_cb cb) {
   window->on_move = cb;
 
   return 0;
 }
 
 int
-fx_on_window_minimize (fx_window_t *window, fx_window_minimize_cb cb) {
+fx_on_window_minimize(fx_window_t *window, fx_window_minimize_cb cb) {
   window->on_minimize = cb;
 
   return 0;
 }
 
 int
-fx_on_window_deminimize (fx_window_t *window, fx_window_deminimize_cb cb) {
+fx_on_window_deminimize(fx_window_t *window, fx_window_deminimize_cb cb) {
   window->on_deminimize = cb;
 
   return 0;
 }
 
 int
-fx_on_window_close (fx_window_t *window, fx_window_close_cb cb) {
+fx_on_window_close(fx_window_t *window, fx_window_close_cb cb) {
   window->on_close = cb;
 
   return 0;
 }
 
 int
-fx_get_window_data (fx_window_t *window, void **result) {
+fx_get_window_data(fx_window_t *window, void **result) {
   *result = window->data;
 
   return 0;
 }
 
 int
-fx_set_window_data (fx_window_t *window, void *data) {
+fx_set_window_data(fx_window_t *window, void *data) {
   window->data = data;
 
   return 0;
 }
 
 int
-fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, float *height) {
+fx_get_window_bounds(fx_window_t *window, float *x, float *y, float *width, float *height) {
   if (x) *x = window->bounds.x;
   if (y) *y = window->bounds.y;
   if (width) *width = window->bounds.width;
@@ -153,7 +153,7 @@ fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, flo
 }
 
 int
-fx_get_window_title (fx_window_t *window, char *title, size_t len, size_t *result) {
+fx_get_window_title(fx_window_t *window, char *title, size_t len, size_t *result) {
   const char *bytes = gtk_window_get_title(window->handle);
 
   if (title == NULL) {
@@ -174,43 +174,43 @@ fx_get_window_title (fx_window_t *window, char *title, size_t len, size_t *resul
 }
 
 int
-fx_set_window_title (fx_window_t *window, const char *title, size_t len) {
+fx_set_window_title(fx_window_t *window, const char *title, size_t len) {
   gtk_window_set_title(window->handle, title);
 
   return 0;
 }
 
 bool
-fx_is_window_visible (fx_window_t *window) {
+fx_is_window_visible(fx_window_t *window) {
   return gtk_widget_get_visible(GTK_WIDGET(window->handle));
 }
 
 int
-fx_set_window_visible (fx_window_t *window, bool visible) {
+fx_set_window_visible(fx_window_t *window, bool visible) {
   gtk_widget_set_visible(GTK_WIDGET(window->handle), visible);
 
   return 0;
 }
 
 bool
-fx_is_window_resizable (fx_window_t *window) {
+fx_is_window_resizable(fx_window_t *window) {
   return gtk_window_get_resizable(window->handle);
 }
 
 int
-fx_set_window_resizable (fx_window_t *window, bool resizable) {
+fx_set_window_resizable(fx_window_t *window, bool resizable) {
   gtk_window_set_resizable(window->handle, resizable);
 
   return 0;
 }
 
 int
-fx_activate_window (fx_window_t *window) {
+fx_activate_window(fx_window_t *window) {
   return fx_show_window(window);
 }
 
 int
-fx_close_window (fx_window_t *window) {
+fx_close_window(fx_window_t *window) {
   gtk_window_close(window->handle);
 
   return 0;

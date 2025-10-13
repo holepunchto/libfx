@@ -7,19 +7,19 @@
 extern DispatcherQueue *fx_dispatcher;
 
 struct FX : public ApplicationT<FX, IXamlMetadataProvider> {
-  FX ();
+  FX();
 
   void
-  OnLaunched (LaunchActivatedEventArgs const &);
+  OnLaunched(LaunchActivatedEventArgs const &);
 
   IXamlType
-  GetXamlType (hstring const &name);
+  GetXamlType(hstring const &name);
 
   IXamlType
-  GetXamlType (TypeName const &type);
+  GetXamlType(TypeName const &type);
 
   com_array<XmlnsDefinition>
-  GetXmlnsDefinitions ();
+  GetXmlnsDefinitions();
 
 private:
   DispatcherQueue dispatcher;

@@ -9,21 +9,23 @@
 #include <uv.h>
 
 static void
-on_notify (uv_async_t *async) {
+on_notify(uv_async_t *async) {
   fx_channel_t *channel = (fx_channel_t *) async->data;
 
   if (!channel->paused) channel->on_notify(channel);
 }
 
 static void
-on_notify_dispatch (fx_t *app, void *data) {
+on_notify_dispatch(fx_t *app, void *data) {
   fx_channel_t *channel = (fx_channel_t *) data;
 
   if (!channel->paused) channel->on_notify(channel);
 }
 
 int
-fx_channel_init (fx_t *app, fx_channel_t *channel, uint32_t capacity, fx_channel_notify_cb cb) {
+fx_channel_init(fx_t *app, fx_channel_t *channel, uint32_t capacity, fx_channel_notify_cb cb) {
+  int err;
+
   channel->app = app;
   channel->capacity = capacity;
   channel->size = 0;
@@ -31,8 +33,6 @@ fx_channel_init (fx_t *app, fx_channel_t *channel, uint32_t capacity, fx_channel
   channel->front = 0;
   channel->on_notify = cb;
   channel->notify.data = (void *) channel;
-
-  int err;
 
   err = uv_mutex_init_recursive(&channel->lock);
   assert(err == 0);
@@ -46,14 +46,14 @@ fx_channel_init (fx_t *app, fx_channel_t *channel, uint32_t capacity, fx_channel
 }
 
 static void
-on_close (uv_handle_t *handle) {
+on_close(uv_handle_t *handle) {
   fx_channel_t *channel = (fx_channel_t *) handle->data;
 
   if (channel->on_close) channel->on_close(channel);
 }
 
 int
-fx_channel_close (fx_channel_t *channel, fx_channel_close_cb cb) {
+fx_channel_close(fx_channel_t *channel, fx_channel_close_cb cb) {
   channel->on_close = cb;
 
   uv_mutex_destroy(&channel->lock);
@@ -66,11 +66,12 @@ fx_channel_close (fx_channel_t *channel, fx_channel_close_cb cb) {
 }
 
 int
-fx_channel_read (fx_channel_t *channel, fx_t **sender, uv_buf_t *message) {
+fx_channel_read(fx_channel_t *channel, fx_t **sender, uv_buf_t *message) {
   uv_mutex_lock(&channel->lock);
 
   if (channel->size == 0) {
     uv_mutex_unlock(&channel->lock);
+
     return -1;
   }
 
@@ -86,15 +87,19 @@ fx_channel_read (fx_channel_t *channel, fx_t **sender, uv_buf_t *message) {
   }
 
   uv_mutex_unlock(&channel->lock);
+
   return 0;
 }
 
 int
-fx_channel_write (fx_channel_t *channel, fx_t *sender, const uv_buf_t *message) {
+fx_channel_write(fx_channel_t *channel, fx_t *sender, const uv_buf_t *message) {
+  int err;
+
   uv_mutex_lock(&channel->lock);
 
   if (channel->size >= channel->capacity) {
     uv_mutex_unlock(&channel->lock);
+
     return -1;
   }
 
@@ -113,24 +118,27 @@ fx_channel_write (fx_channel_t *channel, fx_t *sender, const uv_buf_t *message) 
   }
 
   if (fx_is_main(channel->app)) {
-    fx_dispatch(on_notify_dispatch, (void *) channel);
+    err = fx_dispatch(on_notify_dispatch, (void *) channel);
+    assert(err == 0);
   } else {
-    uv_async_send(&channel->notify);
+    err = uv_async_send(&channel->notify);
+    assert(err == 0);
   }
 
   uv_mutex_unlock(&channel->lock);
+
   return 0;
 }
 
 void
-fx_channel_pause (fx_channel_t *channel) {
+fx_channel_pause(fx_channel_t *channel) {
   channel->paused = true;
 
   uv_unref((uv_handle_t *) &channel->notify);
 }
 
 void
-fx_channel_resume (fx_channel_t *channel) {
+fx_channel_resume(fx_channel_t *channel) {
   channel->paused = false;
 
   uv_ref((uv_handle_t *) &channel->notify);

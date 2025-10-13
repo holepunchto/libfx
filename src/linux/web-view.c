@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 static void
-on_message (WebKitUserContentManager *self, JSCValue *message, void *data) {
+on_message(WebKitUserContentManager *self, JSCValue *message, void *data) {
   fx_web_view_t *web_view = (fx_web_view_t *) data;
 
   GBytes *bytes = jsc_value_to_string_as_bytes(message);
@@ -16,7 +16,7 @@ on_message (WebKitUserContentManager *self, JSCValue *message, void *data) {
 }
 
 int
-fx_web_view_init (fx_t *app, float x, float y, float width, float height, fx_web_view_t **result) {
+fx_web_view_init(fx_t *app, float x, float y, float width, float height, fx_web_view_t **result) {
   GtkWidget *handle = webkit_web_view_new();
 
   if (handle == NULL) return -1;
@@ -58,35 +58,35 @@ fx_web_view_init (fx_t *app, float x, float y, float width, float height, fx_web
 }
 
 int
-fx_web_view_destroy (fx_web_view_t *web_view) {
+fx_web_view_destroy(fx_web_view_t *web_view) {
   free(web_view);
 
   return 0;
 }
 
 int
-fx_on_web_view_message (fx_web_view_t *web_view, fx_web_view_message_cb cb) {
+fx_on_web_view_message(fx_web_view_t *web_view, fx_web_view_message_cb cb) {
   web_view->on_message = cb;
 
   return 0;
 }
 
 int
-fx_get_web_view_data (fx_web_view_t *web_view, void **result) {
+fx_get_web_view_data(fx_web_view_t *web_view, void **result) {
   *result = web_view->data;
 
   return 0;
 }
 
 int
-fx_set_web_view_data (fx_web_view_t *web_view, void *data) {
+fx_set_web_view_data(fx_web_view_t *web_view, void *data) {
   web_view->data = data;
 
   return 0;
 }
 
 int
-fx_get_web_view_bounds (fx_web_view_t *web_view, float *x, float *y, float *width, float *height) {
+fx_get_web_view_bounds(fx_web_view_t *web_view, float *x, float *y, float *width, float *height) {
   if (x) *x = web_view->bounds.x;
   if (y) *y = web_view->bounds.y;
   if (width) *width = web_view->bounds.width;
@@ -96,7 +96,7 @@ fx_get_web_view_bounds (fx_web_view_t *web_view, float *x, float *y, float *widt
 }
 
 int
-fx_set_web_view_bounds (fx_web_view_t *web_view, float x, float y, float width, float height) {
+fx_set_web_view_bounds(fx_web_view_t *web_view, float x, float y, float width, float height) {
   web_view->bounds.x = x;
   web_view->bounds.y = y;
   web_view->bounds.width = width;
@@ -106,7 +106,7 @@ fx_set_web_view_bounds (fx_web_view_t *web_view, float x, float y, float width, 
 }
 
 int
-fx_web_view_post_message (fx_web_view_t *web_view, const char *message, size_t len) {
+fx_web_view_post_message(fx_web_view_t *web_view, const char *message, size_t len) {
   gchar *js = g_strdup_printf("globalThis.bridge.dispatchMessage(%.*s)", (int) len, message);
 
   webkit_web_view_evaluate_javascript(web_view->handle, js, -1, NULL, NULL, NULL, NULL, NULL);
@@ -117,14 +117,14 @@ fx_web_view_post_message (fx_web_view_t *web_view, const char *message, size_t l
 }
 
 int
-fx_web_view_load_url (fx_web_view_t *web_view, const char *url, size_t len) {
+fx_web_view_load_url(fx_web_view_t *web_view, const char *url, size_t len) {
   webkit_web_view_load_uri(web_view->handle, url);
 
   return 0;
 }
 
 int
-fx_web_view_load_html (fx_web_view_t *web_view, const char *html, size_t len) {
+fx_web_view_load_html(fx_web_view_t *web_view, const char *html, size_t len) {
   webkit_web_view_load_html(web_view->handle, html, NULL);
 
   return 0;

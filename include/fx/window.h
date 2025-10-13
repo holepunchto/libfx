@@ -19,69 +19,69 @@ enum {
 };
 
 int
-fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float height, int flags, fx_window_t **result);
+fx_window_init(fx_t *app, fx_view_t *view, float x, float y, float width, float height, int flags, fx_window_t **result);
 
 int
-fx_window_destroy (fx_window_t *window);
+fx_window_destroy(fx_window_t *window);
 
 int
-fx_on_window_resize (fx_window_t *window, fx_window_resize_cb cb);
+fx_on_window_resize(fx_window_t *window, fx_window_resize_cb cb);
 
 int
-fx_on_window_move (fx_window_t *window, fx_window_move_cb cb);
+fx_on_window_move(fx_window_t *window, fx_window_move_cb cb);
 
 int
-fx_on_window_minimize (fx_window_t *window, fx_window_minimize_cb cb);
+fx_on_window_minimize(fx_window_t *window, fx_window_minimize_cb cb);
 
 int
-fx_on_window_deminimize (fx_window_t *window, fx_window_deminimize_cb cb);
+fx_on_window_deminimize(fx_window_t *window, fx_window_deminimize_cb cb);
 
 int
-fx_on_window_close (fx_window_t *window, fx_window_close_cb cb);
+fx_on_window_close(fx_window_t *window, fx_window_close_cb cb);
 
 int
-fx_get_window_data (fx_window_t *window, void **result);
+fx_get_window_data(fx_window_t *window, void **result);
 
 int
-fx_set_window_data (fx_window_t *window, void *data);
+fx_set_window_data(fx_window_t *window, void *data);
 
 int
-fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, float *height);
+fx_get_window_bounds(fx_window_t *window, float *x, float *y, float *width, float *height);
 
 int
-fx_get_window_title (fx_window_t *window, char *title, size_t len, size_t *result);
+fx_get_window_title(fx_window_t *window, char *title, size_t len, size_t *result);
 
 int
-fx_set_window_title (fx_window_t *window, const char *title, size_t len);
+fx_set_window_title(fx_window_t *window, const char *title, size_t len);
 
 int
-fx_set_window_icon (fx_window_t *window, const char *url, size_t len);
+fx_set_window_icon(fx_window_t *window, const char *url, size_t len);
 
 bool
-fx_is_window_visible (fx_window_t *window);
+fx_is_window_visible(fx_window_t *window);
 
 int
-fx_set_window_visible (fx_window_t *window, bool visible);
+fx_set_window_visible(fx_window_t *window, bool visible);
 
 bool
-fx_is_window_resizable (fx_window_t *window);
+fx_is_window_resizable(fx_window_t *window);
 
 int
-fx_set_window_resizable (fx_window_t *window, bool resizable);
+fx_set_window_resizable(fx_window_t *window, bool resizable);
 
 int
-fx_activate_window (fx_window_t *window);
+fx_activate_window(fx_window_t *window);
 
 int
-fx_close_window (fx_window_t *window);
+fx_close_window(fx_window_t *window);
 
 static inline int
-fx_show_window (fx_window_t *window) {
+fx_show_window(fx_window_t *window) {
   return fx_set_window_visible(window, true);
 }
 
 static inline int
-fx_hide_window (fx_window_t *window) {
+fx_hide_window(fx_window_t *window) {
   return fx_set_window_visible(window, false);
 }
 

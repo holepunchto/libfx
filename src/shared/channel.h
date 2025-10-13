@@ -37,22 +37,22 @@ struct fx_message_s {
 };
 
 int
-fx_channel_init (fx_t *app, fx_channel_t *channel, uint32_t capacity, fx_channel_notify_cb cb);
+fx_channel_init(fx_t *app, fx_channel_t *channel, uint32_t capacity, fx_channel_notify_cb cb);
 
 int
-fx_channel_close (fx_channel_t *channel, fx_channel_close_cb cb);
+fx_channel_close(fx_channel_t *channel, fx_channel_close_cb cb);
 
 int
-fx_channel_read (fx_channel_t *channel, fx_t **sender, uv_buf_t *message);
+fx_channel_read(fx_channel_t *channel, fx_t **sender, uv_buf_t *message);
 
 int
-fx_channel_write (fx_channel_t *channel, fx_t *sender, const uv_buf_t *message);
+fx_channel_write(fx_channel_t *channel, fx_t *sender, const uv_buf_t *message);
 
 void
-fx_channel_pause (fx_channel_t *channel);
+fx_channel_pause(fx_channel_t *channel);
 
 void
-fx_channel_resume (fx_channel_t *channel);
+fx_channel_resume(fx_channel_t *channel);
 
 #ifdef __cplusplus
 }

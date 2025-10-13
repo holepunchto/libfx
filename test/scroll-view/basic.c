@@ -5,7 +5,7 @@
 #include <uv.h>
 
 static void
-on_launch (fx_t *app) {
+on_launch(fx_t *app) {
   int e;
 
   fx_view_t *view;
@@ -43,7 +43,7 @@ on_launch (fx_t *app) {
 }
 
 int
-main () {
+main() {
   int e;
 
   fx_t *app;

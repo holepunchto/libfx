@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 int
-fx_screen_release (fx_screen_t *screen) {
+fx_screen_release(fx_screen_t *screen) {
   g_object_unref(screen->monitor);
 
   free(screen);
@@ -15,7 +15,7 @@ fx_screen_release (fx_screen_t *screen) {
 }
 
 int
-fx_get_main_screen (fx_t *app, fx_screen_t **result) {
+fx_get_main_screen(fx_t *app, fx_screen_t **result) {
   GdkDisplay *display = gdk_display_get_default();
 
   GdkMonitor *monitor = GDK_MONITOR(g_list_model_get_item(gdk_display_get_monitors(display), 0));
@@ -34,7 +34,7 @@ fx_get_main_screen (fx_t *app, fx_screen_t **result) {
 }
 
 int
-fx_get_screen_bounds (fx_screen_t *screen, float *x, float *y, float *width, float *height) {
+fx_get_screen_bounds(fx_screen_t *screen, float *x, float *y, float *width, float *height) {
   GdkRectangle rect;
 
   gdk_monitor_get_geometry(screen->monitor, &rect);
