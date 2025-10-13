@@ -54,13 +54,14 @@ fx_get_child_widget (fx_node_t *child, float *x, float *y) {
     return GTK_WIDGET(video->handle);
   }
 
-  case fx_web_view_node:
+  case fx_web_view_node: {
     fx_web_view_t *web_view = (fx_web_view_t *) child;
 
     if (x) *x = web_view->bounds.x;
     if (y) *y = web_view->bounds.y;
 
     return GTK_WIDGET(web_view->handle);
+  }
   }
 
   return NULL;
