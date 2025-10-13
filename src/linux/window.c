@@ -22,6 +22,13 @@ static void
 on_resize (GObject *object, GParamSpec *params, void *data) {
   fx_window_t *window = (fx_window_t *) data;
 
+  int width, height;
+
+  gtk_window_get_default_size(window->handle, &width, &height);
+
+  window->bounds.width = (float) width;
+  window->bounds.height = (float) height;
+
   if (window->on_resize) window->on_resize(window);
 }
 
@@ -38,6 +45,11 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
   window->view = view;
 
   window->data = NULL;
+
+  window->bounds.x = 0;
+  window->bounds.y = 0;
+  window->bounds.width = width;
+  window->bounds.height = height;
 
   window->on_resize = NULL;
   window->on_move = NULL;
@@ -132,10 +144,10 @@ fx_set_window_data (fx_window_t *window, void *data) {
 
 int
 fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, float *height) {
-  if (x) *x = 0;
-  if (y) *y = 0;
-  if (width) *width = 0;
-  if (height) *height = 0;
+  if (x) *x = window->bounds.x;
+  if (y) *y = window->bounds.y;
+  if (width) *width = window->bounds.width;
+  if (height) *height = window->bounds.height;
 
   return 0;
 }

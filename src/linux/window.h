@@ -10,6 +10,13 @@ struct fx_window_s {
 
   fx_view_t *view;
 
+  struct {
+    float x;
+    float y;
+    float width;
+    float height;
+  } bounds;
+
   void *data;
 
   fx_window_resize_cb on_resize;
