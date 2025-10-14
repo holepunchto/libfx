@@ -3,7 +3,7 @@
 import { Bridge } from '../bridge.mjs'
 
 class EdgeBridge extends Bridge {
-  constructor () {
+  constructor() {
     super()
 
     chrome.webview.addEventListener('message', (event) => {
@@ -11,7 +11,7 @@ class EdgeBridge extends Bridge {
     })
   }
 
-  postMessage (message) {
+  postMessage(message) {
     chrome.webview.postMessage(JSON.stringify(message))
   }
 }

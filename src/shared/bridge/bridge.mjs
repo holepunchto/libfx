@@ -1,5 +1,5 @@
 class MessageEvent extends Event {
-  constructor (data, opts) {
+  constructor(data, opts) {
     super('message', opts)
 
     this.data = clone(data)
@@ -7,11 +7,11 @@ class MessageEvent extends Event {
 }
 
 export class Bridge extends EventTarget {
-  dispatchMessage (message) {
+  dispatchMessage(message) {
     return this.dispatchEvent(new MessageEvent(message))
   }
 }
 
-function clone (value) {
+function clone(value) {
   return JSON.parse(JSON.stringify(value))
 }
