@@ -42,7 +42,17 @@ fx_web_view_init(fx_t *app, float x, float y, float width, float height, fx_web_
 
   gtk_widget_set_size_request(handle, width, height);
 
-  WebKitUserScript *script = webkit_user_script_new((const gchar *) webkit_bridge_js, WEBKIT_USER_CONTENT_INJECT_ALL_FRAMES, WEBKIT_USER_SCRIPT_INJECT_AT_DOCUMENT_START, NULL, NULL);
+  gchar *source = g_strndup((const gchar *) webkit_bridge_js, webkit_bridge_js_len);
+
+  WebKitUserScript *script = webkit_user_script_new(
+    source,
+    WEBKIT_USER_CONTENT_INJECT_ALL_FRAMES,
+    WEBKIT_USER_SCRIPT_INJECT_AT_DOCUMENT_START,
+    NULL,
+    NULL
+  );
+
+  g_free(source);
 
   WebKitUserContentManager *user_content_manager = webkit_web_view_get_user_content_manager(web_view->handle);
 
