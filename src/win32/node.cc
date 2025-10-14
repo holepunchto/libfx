@@ -9,7 +9,7 @@
 #include "winui.h"
 
 static inline UIElement
-fx_get_child_element (fx_node_t *child, float *x, float *y) {
+fx_get_child_element(fx_node_t *child, float *x, float *y) {
   switch (child->type) {
   case fx_view_node: {
     auto view = reinterpret_cast<fx_view_t *>(child);
@@ -79,7 +79,7 @@ fx_get_child_element (fx_node_t *child, float *x, float *y) {
 }
 
 extern "C" int
-fx_set_child (fx_node_t *parent, fx_node_t *child, size_t index) {
+fx_set_child(fx_node_t *parent, fx_node_t *child, size_t index) {
   float x, y;
 
   auto child_element = fx_get_child_element(child, &x, &y);
@@ -103,7 +103,7 @@ fx_set_child (fx_node_t *parent, fx_node_t *child, size_t index) {
 }
 
 extern "C" int
-fx_unset_child (fx_node_t *parent, fx_node_t *child, size_t index) {
+fx_unset_child(fx_node_t *parent, fx_node_t *child, size_t index) {
   switch (parent->type) {
   case fx_view_node: {
     auto view = reinterpret_cast<fx_view_t *>(parent);

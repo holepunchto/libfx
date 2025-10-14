@@ -5,7 +5,7 @@
 #include "winui.h"
 
 extern "C" int
-fx_text_init (fx_t *app, float x, float y, float width, float height, fx_text_t **result) {
+fx_text_init(fx_t *app, float x, float y, float width, float height, fx_text_t **result) {
   auto text = new fx_text_t();
 
   text->node.type = fx_text_node;
@@ -26,28 +26,28 @@ fx_text_init (fx_t *app, float x, float y, float width, float height, fx_text_t 
 }
 
 extern "C" int
-fx_text_destroy (fx_text_t *text) {
+fx_text_destroy(fx_text_t *text) {
   delete text;
 
   return 0;
 }
 
 extern "C" int
-fx_get_text_data (fx_text_t *text, void **result) {
+fx_get_text_data(fx_text_t *text, void **result) {
   *result = text->data;
 
   return 0;
 }
 
 extern "C" int
-fx_set_text_data (fx_text_t *text, void *data) {
+fx_set_text_data(fx_text_t *text, void *data) {
   text->data = data;
 
   return 0;
 }
 
 extern "C" int
-fx_get_text_bounds (fx_text_t *text, float *x, float *y, float *width, float *height) {
+fx_get_text_bounds(fx_text_t *text, float *x, float *y, float *width, float *height) {
   if (x) *x = text->bounds.x;
   if (y) *y = text->bounds.y;
   if (width) *width = text->bounds.width;
@@ -58,12 +58,12 @@ fx_get_text_bounds (fx_text_t *text, float *x, float *y, float *width, float *he
 
 template <typename T>
 static inline T
-fx_text_layout_dimension (T value) {
+fx_text_layout_dimension(T value) {
   return isnan(value) ? std::numeric_limits<T>::infinity() : value;
 }
 
 extern "C" int
-fx_get_text_bounds_used (fx_text_t *text, float *x, float *y, float *width, float *height) {
+fx_get_text_bounds_used(fx_text_t *text, float *x, float *y, float *width, float *height) {
   text->handle.Measure({
     fx_text_layout_dimension(text->bounds.width),
     fx_text_layout_dimension(text->bounds.height),
@@ -80,7 +80,7 @@ fx_get_text_bounds_used (fx_text_t *text, float *x, float *y, float *width, floa
 }
 
 extern "C" int
-fx_set_text_bounds (fx_text_t *text, float x, float y, float width, float height) {
+fx_set_text_bounds(fx_text_t *text, float x, float y, float width, float height) {
   text->handle.Width(width);
   text->handle.Height(width);
 
@@ -93,7 +93,7 @@ fx_set_text_bounds (fx_text_t *text, float x, float y, float width, float height
 }
 
 extern "C" int
-fx_append_text_span (fx_text_t *text, const char *value, size_t len, fx_text_span_t **result) {
+fx_append_text_span(fx_text_t *text, const char *value, size_t len, fx_text_span_t **result) {
   int err;
 
   hstring hstr;

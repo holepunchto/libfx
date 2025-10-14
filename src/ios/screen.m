@@ -5,7 +5,7 @@
 #import <UIKit/UIKit.h>
 
 int
-fx_screen_release (fx_screen_t *screen) {
+fx_screen_release(fx_screen_t *screen) {
   [screen->native_screen release];
 
   free(screen);
@@ -14,7 +14,7 @@ fx_screen_release (fx_screen_t *screen) {
 }
 
 int
-fx_get_main_screen (fx_t *app, fx_screen_t **result) {
+fx_get_main_screen(fx_t *app, fx_screen_t **result) {
   fx_screen_t *screen = malloc(sizeof(fx_screen_t));
 
   screen->native_screen = [UIScreen mainScreen];
@@ -27,7 +27,7 @@ fx_get_main_screen (fx_t *app, fx_screen_t **result) {
 }
 
 int
-fx_get_screen_bounds (fx_screen_t *screen, float *x, float *y, float *width, float *height) {
+fx_get_screen_bounds(fx_screen_t *screen, float *x, float *y, float *width, float *height) {
   CGRect bounds = screen->native_screen.bounds;
 
   if (x) *x = bounds.origin.x;

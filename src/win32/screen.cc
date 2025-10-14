@@ -12,14 +12,14 @@
 #include <uv.h>
 
 extern "C" int
-fx_screen_release (fx_screen_t *screen) {
+fx_screen_release(fx_screen_t *screen) {
   delete screen;
 
   return 0;
 }
 
 static inline int
-fx_get_screen (HMONITOR monitor, fx_screen_t **result) {
+fx_get_screen(HMONITOR monitor, fx_screen_t **result) {
   if (monitor == NULL) return -1;
 
   MONITORINFO info;
@@ -57,22 +57,22 @@ fx_get_screen (HMONITOR monitor, fx_screen_t **result) {
 }
 
 extern "C" int
-fx_get_screen_at (fx_t *app, float x, float y, fx_screen_t **result) {
+fx_get_screen_at(fx_t *app, float x, float y, fx_screen_t **result) {
   return fx_get_screen(MonitorFromPoint({LONG(x), LONG(y)}, MONITOR_DEFAULTTONEAREST), result);
 }
 
 extern "C" int
-fx_get_main_screen (fx_t *app, fx_screen_t **result) {
+fx_get_main_screen(fx_t *app, fx_screen_t **result) {
   return fx_get_screen(MonitorFromPoint({0, 0}, MONITOR_DEFAULTTOPRIMARY), result);
 }
 
 extern "C" int
-fx_get_current_screen (fx_window_t *window, fx_screen_t **result) {
+fx_get_current_screen(fx_window_t *window, fx_screen_t **result) {
   return fx_get_screen(MonitorFromWindow(GetWindowFromWindowId(window->handle.AppWindow().Id()), MONITOR_DEFAULTTONEAREST), result);
 }
 
 extern "C" int
-fx_get_screen_bounds (fx_screen_t *screen, float *x, float *y, float *width, float *height) {
+fx_get_screen_bounds(fx_screen_t *screen, float *x, float *y, float *width, float *height) {
   if (x) *x = screen->x;
   if (y) *y = screen->y;
   if (width) *width = screen->width;
@@ -82,7 +82,7 @@ fx_get_screen_bounds (fx_screen_t *screen, float *x, float *y, float *width, flo
 }
 
 extern "C" int
-fx_get_screen_scale (fx_screen_t *screen, float *result) {
+fx_get_screen_scale(fx_screen_t *screen, float *result) {
   *result = screen->scale;
 
   return 0;

@@ -42,7 +42,7 @@
 @end
 
 int
-fx_platform_init (fx_t *app, fx_platform_t **result) {
+fx_platform_init(fx_t *app, fx_platform_t **result) {
   fx_platform_t *platform = malloc(sizeof(fx_platform_t));
 
   FX *native_app = (FX *) [FX sharedApplication];
@@ -58,7 +58,7 @@ fx_platform_init (fx_t *app, fx_platform_t **result) {
 }
 
 int
-fx_platform_destroy (fx_platform_t *platform) {
+fx_platform_destroy(fx_platform_t *platform) {
   free(platform);
 
   return 0;

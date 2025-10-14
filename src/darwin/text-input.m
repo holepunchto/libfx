@@ -25,7 +25,7 @@
 @end
 
 int
-fx_text_input_init (fx_t *app, float x, float y, float width, float height, fx_text_input_t **result) {
+fx_text_input_init(fx_t *app, float x, float y, float width, float height, fx_text_input_t **result) {
   FXTextInput *native_text_input = [[FXTextInput alloc] initWithFrame:CGRectMake(x, y, width, height)];
 
   native_text_input.delegate = [[FXTextInputDelegate alloc] init];
@@ -44,7 +44,7 @@ fx_text_input_init (fx_t *app, float x, float y, float width, float height, fx_t
 }
 
 int
-fx_text_input_destroy (fx_text_input_t *text_input) {
+fx_text_input_destroy(fx_text_input_t *text_input) {
   [text_input->handle release];
 
   free(text_input);
@@ -53,28 +53,28 @@ fx_text_input_destroy (fx_text_input_t *text_input) {
 }
 
 int
-fx_on_text_input_change (fx_text_input_t *text_input, fx_text_input_change_cb cb) {
+fx_on_text_input_change(fx_text_input_t *text_input, fx_text_input_change_cb cb) {
   text_input->on_change = cb;
 
   return 0;
 }
 
 int
-fx_get_text_input_data (fx_text_input_t *text_input, void **result) {
+fx_get_text_input_data(fx_text_input_t *text_input, void **result) {
   *result = text_input->data;
 
   return 0;
 }
 
 int
-fx_set_text_input_data (fx_text_input_t *text_input, void *data) {
+fx_set_text_input_data(fx_text_input_t *text_input, void *data) {
   text_input->data = data;
 
   return 0;
 }
 
 int
-fx_get_text_input_bounds (fx_text_input_t *text_input, float *x, float *y, float *width, float *height) {
+fx_get_text_input_bounds(fx_text_input_t *text_input, float *x, float *y, float *width, float *height) {
   NSRect frame = text_input->handle.frame;
 
   if (x) *x = frame.origin.x;
@@ -86,14 +86,14 @@ fx_get_text_input_bounds (fx_text_input_t *text_input, float *x, float *y, float
 }
 
 int
-fx_set_text_input_bounds (fx_text_input_t *text_input, float x, float y, float width, float height) {
+fx_set_text_input_bounds(fx_text_input_t *text_input, float x, float y, float width, float height) {
   text_input->handle.frame = CGRectMake(x, y, width, height);
 
   return 0;
 }
 
 int
-fx_get_text_input_value (fx_text_input_t *text_input, char *value, size_t len, size_t *result) {
+fx_get_text_input_value(fx_text_input_t *text_input, char *value, size_t len, size_t *result) {
   const char *bytes = [text_input->handle.stringValue UTF8String];
 
   if (value == NULL) {
@@ -114,43 +114,43 @@ fx_get_text_input_value (fx_text_input_t *text_input, char *value, size_t len, s
 }
 
 int
-fx_set_text_input_value (fx_text_input_t *text_input, const char *value, size_t len) {
+fx_set_text_input_value(fx_text_input_t *text_input, const char *value, size_t len) {
   [text_input->handle setStringValue:[[NSString alloc] initWithBytes:value length:len encoding:NSUTF8StringEncoding]];
 
   return 0;
 }
 
 bool
-fx_is_text_input_enabled (fx_text_input_t *text_input) {
+fx_is_text_input_enabled(fx_text_input_t *text_input) {
   return text_input->handle.enabled;
 }
 
 int
-fx_set_text_input_enabled (fx_text_input_t *text_input, bool enabled) {
+fx_set_text_input_enabled(fx_text_input_t *text_input, bool enabled) {
   text_input->handle.enabled = enabled;
 
   return 0;
 }
 
 bool
-fx_is_text_input_selectable (fx_text_input_t *text_input) {
+fx_is_text_input_selectable(fx_text_input_t *text_input) {
   return text_input->handle.selectable;
 }
 
 int
-fx_set_text_input_selectable (fx_text_input_t *text_input, bool selectable) {
+fx_set_text_input_selectable(fx_text_input_t *text_input, bool selectable) {
   text_input->handle.selectable = selectable;
 
   return 0;
 }
 
 bool
-fx_is_text_input_editable (fx_text_input_t *text_input) {
+fx_is_text_input_editable(fx_text_input_t *text_input) {
   return text_input->handle.editable;
 }
 
 int
-fx_set_text_input_editable (fx_text_input_t *text_input, bool editable) {
+fx_set_text_input_editable(fx_text_input_t *text_input, bool editable) {
   text_input->handle.editable = editable;
 
   return 0;

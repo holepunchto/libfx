@@ -6,7 +6,7 @@
 #import <AppKit/AppKit.h>
 
 int
-fx_run (fx_t *app, fx_launch_cb on_launch, fx_terminate_cb on_terminate) {
+fx_run(fx_t *app, fx_launch_cb on_launch, fx_terminate_cb on_terminate) {
   app->platform->on_launch = on_launch;
   app->platform->on_terminate = on_terminate;
 
@@ -16,7 +16,7 @@ fx_run (fx_t *app, fx_launch_cb on_launch, fx_terminate_cb on_terminate) {
 }
 
 int
-fx_dispatch (fx_dispatch_cb cb, void *data) {
+fx_dispatch(fx_dispatch_cb cb, void *data) {
   dispatch_async(dispatch_get_main_queue(), ^{
     cb(fx_main_app, data);
   });

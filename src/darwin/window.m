@@ -34,7 +34,7 @@
 @end
 
 int
-fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float height, int flags, fx_window_t **result) {
+fx_window_init(fx_t *app, fx_view_t *view, float x, float y, float width, float height, int flags, fx_window_t **result) {
   NSWindowStyleMask style;
 
   if (flags & fx_window_no_frame) {
@@ -80,7 +80,7 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 }
 
 int
-fx_window_destroy (fx_window_t *window) {
+fx_window_destroy(fx_window_t *window) {
   [window->handle.delegate release];
   [window->handle release];
 
@@ -90,56 +90,56 @@ fx_window_destroy (fx_window_t *window) {
 }
 
 int
-fx_on_window_resize (fx_window_t *window, fx_window_resize_cb cb) {
+fx_on_window_resize(fx_window_t *window, fx_window_resize_cb cb) {
   window->on_resize = cb;
 
   return 0;
 }
 
 int
-fx_on_window_move (fx_window_t *window, fx_window_move_cb cb) {
+fx_on_window_move(fx_window_t *window, fx_window_move_cb cb) {
   window->on_move = cb;
 
   return 0;
 }
 
 int
-fx_on_window_minimize (fx_window_t *window, fx_window_minimize_cb cb) {
+fx_on_window_minimize(fx_window_t *window, fx_window_minimize_cb cb) {
   window->on_minimize = cb;
 
   return 0;
 }
 
 int
-fx_on_window_deminimize (fx_window_t *window, fx_window_deminimize_cb cb) {
+fx_on_window_deminimize(fx_window_t *window, fx_window_deminimize_cb cb) {
   window->on_deminimize = cb;
 
   return 0;
 }
 
 int
-fx_on_window_close (fx_window_t *window, fx_window_close_cb cb) {
+fx_on_window_close(fx_window_t *window, fx_window_close_cb cb) {
   window->on_close = cb;
 
   return 0;
 }
 
 int
-fx_get_window_data (fx_window_t *window, void **result) {
+fx_get_window_data(fx_window_t *window, void **result) {
   *result = window->data;
 
   return 0;
 }
 
 int
-fx_set_window_data (fx_window_t *window, void *data) {
+fx_set_window_data(fx_window_t *window, void *data) {
   window->data = data;
 
   return 0;
 }
 
 int
-fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, float *height) {
+fx_get_window_bounds(fx_window_t *window, float *x, float *y, float *width, float *height) {
   NSRect frame = window->handle.frame;
 
   if (x) *x = frame.origin.x;
@@ -151,7 +151,7 @@ fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, flo
 }
 
 int
-fx_get_window_title (fx_window_t *window, char *title, size_t len, size_t *result) {
+fx_get_window_title(fx_window_t *window, char *title, size_t len, size_t *result) {
   const char *bytes = [window->handle.title UTF8String];
 
   if (title == NULL) {
@@ -172,31 +172,31 @@ fx_get_window_title (fx_window_t *window, char *title, size_t len, size_t *resul
 }
 
 int
-fx_set_window_title (fx_window_t *window, const char *title, size_t len) {
+fx_set_window_title(fx_window_t *window, const char *title, size_t len) {
   window->handle.title = fx__string(title, len);
 
   return 0;
 }
 
 bool
-fx_is_window_visible (fx_window_t *window) {
+fx_is_window_visible(fx_window_t *window) {
   return window->handle.visible;
 }
 
 int
-fx_set_window_visible (fx_window_t *window, bool visible) {
+fx_set_window_visible(fx_window_t *window, bool visible) {
   [window->handle setIsVisible:visible];
 
   return 0;
 }
 
 bool
-fx_is_window_resizable (fx_window_t *window) {
+fx_is_window_resizable(fx_window_t *window) {
   return (window->handle.styleMask & NSWindowStyleMaskResizable) != 0;
 }
 
 int
-fx_set_window_resizable (fx_window_t *window, bool resizable) {
+fx_set_window_resizable(fx_window_t *window, bool resizable) {
   NSWindowStyleMask style = window->handle.styleMask;
 
   if (resizable) {
@@ -211,14 +211,14 @@ fx_set_window_resizable (fx_window_t *window, bool resizable) {
 }
 
 int
-fx_activate_window (fx_window_t *window) {
+fx_activate_window(fx_window_t *window) {
   [window->handle makeKeyAndOrderFront:window->handle];
 
   return 0;
 }
 
 int
-fx_close_window (fx_window_t *window) {
+fx_close_window(fx_window_t *window) {
   [window->handle close];
 
   return 0;

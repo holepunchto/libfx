@@ -5,7 +5,7 @@
 #include "winui.h"
 
 extern "C" int
-fx_video_init (fx_t *app, const char *url, size_t len, float x, float y, float width, float height, int flags, fx_video_t **result) {
+fx_video_init(fx_t *app, const char *url, size_t len, float x, float y, float width, float height, int flags, fx_video_t **result) {
   int err;
 
   hstring hstr;
@@ -34,28 +34,28 @@ fx_video_init (fx_t *app, const char *url, size_t len, float x, float y, float w
 }
 
 extern "C" int
-fx_video_destroy (fx_video_t *video) {
+fx_video_destroy(fx_video_t *video) {
   delete video;
 
   return 0;
 }
 
 extern "C" int
-fx_get_video_data (fx_video_t *video, void **result) {
+fx_get_video_data(fx_video_t *video, void **result) {
   *result = video->data;
 
   return 0;
 }
 
 extern "C" int
-fx_set_video_data (fx_video_t *video, void *data) {
+fx_set_video_data(fx_video_t *video, void *data) {
   video->data = data;
 
   return 0;
 }
 
 extern "C" int
-fx_get_video_bounds (fx_video_t *video, float *x, float *y, float *width, float *height) {
+fx_get_video_bounds(fx_video_t *video, float *x, float *y, float *width, float *height) {
   if (x) *x = 0;
   if (y) *y = 0;
   if (width) *width = 0;
@@ -65,26 +65,26 @@ fx_get_video_bounds (fx_video_t *video, float *x, float *y, float *width, float 
 }
 
 extern "C" int
-fx_set_video_bounds (fx_video_t *video, float x, float y, float width, float height) {
+fx_set_video_bounds(fx_video_t *video, float x, float y, float width, float height) {
   return 0;
 }
 
 bool
-fx_is_video_loop (fx_video_t *video) {
+fx_is_video_loop(fx_video_t *video) {
   return false;
 }
 
 bool
-fx_set_video_loop (fx_video_t *video, bool loop) {
+fx_set_video_loop(fx_video_t *video, bool loop) {
   return 0;
 }
 
 extern "C" int
-fx_play_video (fx_video_t *video) {
+fx_play_video(fx_video_t *video) {
   return 0;
 }
 
 extern "C" int
-fx_pause_video (fx_video_t *video) {
+fx_pause_video(fx_video_t *video) {
   return 0;
 }

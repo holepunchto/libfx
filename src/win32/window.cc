@@ -9,7 +9,7 @@
 #include "winui.h"
 
 extern "C" int
-fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float height, int flags, fx_window_t **result) {
+fx_window_init(fx_t *app, fx_view_t *view, float x, float y, float width, float height, int flags, fx_window_t **result) {
   int err;
 
   fx_screen_t *screen;
@@ -61,63 +61,63 @@ fx_window_init (fx_t *app, fx_view_t *view, float x, float y, float width, float
 }
 
 extern "C" int
-fx_window_destroy (fx_window_t *window) {
+fx_window_destroy(fx_window_t *window) {
   delete window;
 
   return 0;
 }
 
 extern "C" int
-fx_on_window_resize (fx_window_t *window, fx_window_resize_cb cb) {
+fx_on_window_resize(fx_window_t *window, fx_window_resize_cb cb) {
   window->on_resize = cb;
 
   return 0;
 }
 
 extern "C" int
-fx_on_window_move (fx_window_t *window, fx_window_move_cb cb) {
+fx_on_window_move(fx_window_t *window, fx_window_move_cb cb) {
   window->on_move = cb;
 
   return 0;
 }
 
 extern "C" int
-fx_on_window_minimize (fx_window_t *window, fx_window_minimize_cb cb) {
+fx_on_window_minimize(fx_window_t *window, fx_window_minimize_cb cb) {
   window->on_minimize = cb;
 
   return 0;
 }
 
 extern "C" int
-fx_on_window_deminimize (fx_window_t *window, fx_window_deminimize_cb cb) {
+fx_on_window_deminimize(fx_window_t *window, fx_window_deminimize_cb cb) {
   window->on_deminimize = cb;
 
   return 0;
 }
 
 extern "C" int
-fx_on_window_close (fx_window_t *window, fx_window_close_cb cb) {
+fx_on_window_close(fx_window_t *window, fx_window_close_cb cb) {
   window->on_close = cb;
 
   return 0;
 }
 
 extern "C" int
-fx_get_window_data (fx_window_t *window, void **result) {
+fx_get_window_data(fx_window_t *window, void **result) {
   *result = window->data;
 
   return 0;
 }
 
 extern "C" int
-fx_set_window_data (fx_window_t *window, void *data) {
+fx_set_window_data(fx_window_t *window, void *data) {
   window->data = data;
 
   return 0;
 }
 
 extern "C" int
-fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, float *height) {
+fx_get_window_bounds(fx_window_t *window, float *x, float *y, float *width, float *height) {
   auto bounds = window->handle.Bounds();
 
   if (x) *x = bounds.X;
@@ -129,7 +129,7 @@ fx_get_window_bounds (fx_window_t *window, float *x, float *y, float *width, flo
 }
 
 extern "C" int
-fx_get_window_title (fx_window_t *window, char *title, size_t len, size_t *result) {
+fx_get_window_title(fx_window_t *window, char *title, size_t len, size_t *result) {
   auto hstr = window->handle.Title();
 
   if (title == NULL) {
@@ -150,7 +150,7 @@ fx_get_window_title (fx_window_t *window, char *title, size_t len, size_t *resul
 }
 
 extern "C" int
-fx_set_window_title (fx_window_t *window, const char *title, size_t len) {
+fx_set_window_title(fx_window_t *window, const char *title, size_t len) {
   int err;
 
   hstring hstr;
@@ -163,7 +163,7 @@ fx_set_window_title (fx_window_t *window, const char *title, size_t len) {
 }
 
 extern "C" int
-fx_set_window_icon (fx_window_t *window, const char *url, size_t len) {
+fx_set_window_icon(fx_window_t *window, const char *url, size_t len) {
   int err;
 
   hstring hstr;
@@ -176,38 +176,38 @@ fx_set_window_icon (fx_window_t *window, const char *url, size_t len) {
 }
 
 extern "C" bool
-fx_is_window_visible (fx_window_t *window) {
+fx_is_window_visible(fx_window_t *window) {
   return window->handle.AppWindow().IsVisible();
 }
 
 extern "C" int
-fx_set_window_visible (fx_window_t *window, bool visible) {
+fx_set_window_visible(fx_window_t *window, bool visible) {
   window->handle.AppWindow().Show(visible);
 
   return 0;
 }
 
 extern "C" bool
-fx_is_window_resizable (fx_window_t *window) {
+fx_is_window_resizable(fx_window_t *window) {
   return window->presenter.IsResizable();
 }
 
 extern "C" int
-fx_set_window_resizable (fx_window_t *window, bool resizable) {
+fx_set_window_resizable(fx_window_t *window, bool resizable) {
   window->presenter.IsResizable(resizable);
 
   return 0;
 }
 
 extern "C" int
-fx_activate_window (fx_window_t *window) {
+fx_activate_window(fx_window_t *window) {
   window->handle.Activate();
 
   return 0;
 }
 
 extern "C" int
-fx_close_window (fx_window_t *window) {
+fx_close_window(fx_window_t *window) {
   window->handle.Close();
 
   return 0;

@@ -18,7 +18,7 @@ FX::OnLaunched(LaunchActivatedEventArgs const &) {
 
   if (platform->on_launch) platform->on_launch(fx_main_app);
 
-  dispatcher.ShutdownCompleted([=] (const auto &sender, const auto &args) {
+  dispatcher.ShutdownCompleted([=](const auto &sender, const auto &args) {
     if (platform->on_terminate) platform->on_terminate(fx_main_app);
   });
 }
@@ -39,7 +39,7 @@ FX::GetXmlnsDefinitions() {
 }
 
 extern "C" int
-fx_platform_init (fx_t *app, fx_platform_t **result) {
+fx_platform_init(fx_t *app, fx_platform_t **result) {
   HRESULT res;
 
   res = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
@@ -57,7 +57,7 @@ fx_platform_init (fx_t *app, fx_platform_t **result) {
 }
 
 extern "C" int
-fx_platform_destroy (fx_platform_t *platform) {
+fx_platform_destroy(fx_platform_t *platform) {
   CoUninitialize();
 
   delete platform;

@@ -15,7 +15,7 @@
 @end
 
 int
-fx_video_init (fx_t *app, const char *url, size_t len, float x, float y, float width, float height, int flags, fx_video_t **result) {
+fx_video_init(fx_t *app, const char *url, size_t len, float x, float y, float width, float height, int flags, fx_video_t **result) {
   FXVideo *handle = [[FXVideo alloc] init];
 
   handle.frame = CGRectMake(x, y, width, height);
@@ -40,7 +40,7 @@ fx_video_init (fx_t *app, const char *url, size_t len, float x, float y, float w
 }
 
 int
-fx_video_destroy (fx_video_t *video) {
+fx_video_destroy(fx_video_t *video) {
   if (video->handle.looper) [video->handle.looper release];
 
   [video->handle.player release];
@@ -52,21 +52,21 @@ fx_video_destroy (fx_video_t *video) {
 }
 
 int
-fx_get_video_data (fx_video_t *video, void **result) {
+fx_get_video_data(fx_video_t *video, void **result) {
   *result = video->data;
 
   return 0;
 }
 
 int
-fx_set_video_data (fx_video_t *video, void *data) {
+fx_set_video_data(fx_video_t *video, void *data) {
   video->data = data;
 
   return 0;
 }
 
 int
-fx_get_video_bounds (fx_video_t *video, float *x, float *y, float *width, float *height) {
+fx_get_video_bounds(fx_video_t *video, float *x, float *y, float *width, float *height) {
   NSRect frame = video->handle.frame;
 
   if (x) *x = frame.origin.x;
@@ -78,19 +78,19 @@ fx_get_video_bounds (fx_video_t *video, float *x, float *y, float *width, float 
 }
 
 int
-fx_set_video_bounds (fx_video_t *video, float x, float y, float width, float height) {
+fx_set_video_bounds(fx_video_t *video, float x, float y, float width, float height) {
   video->handle.frame = CGRectMake(x, y, width, height);
 
   return 0;
 }
 
 bool
-fx_is_video_loop (fx_video_t *video) {
+fx_is_video_loop(fx_video_t *video) {
   return video->handle.looper != NULL;
 }
 
 bool
-fx_set_video_loop (fx_video_t *video, bool loop) {
+fx_set_video_loop(fx_video_t *video, bool loop) {
   AVPlayerLooper *looper = video->handle.looper;
 
   if (loop) {
@@ -111,14 +111,14 @@ fx_set_video_loop (fx_video_t *video, bool loop) {
 }
 
 int
-fx_play_video (fx_video_t *video) {
+fx_play_video(fx_video_t *video) {
   [video->handle.player play];
 
   return 0;
 }
 
 int
-fx_pause_video (fx_video_t *video) {
+fx_pause_video(fx_video_t *video) {
   [video->handle.player pause];
 
   return 0;

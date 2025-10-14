@@ -9,7 +9,7 @@
 @end
 
 int
-fx_view_init (fx_t *app, float x, float y, float width, float height, fx_view_t **result) {
+fx_view_init(fx_t *app, float x, float y, float width, float height, fx_view_t **result) {
   FXView *native_view = [[FXView alloc] initWithFrame:CGRectMake(x, y, width, height)];
 
   fx_view_t *view = malloc(sizeof(fx_view_t));
@@ -26,7 +26,7 @@ fx_view_init (fx_t *app, float x, float y, float width, float height, fx_view_t 
 }
 
 int
-fx_view_destroy (fx_view_t *view) {
+fx_view_destroy(fx_view_t *view) {
   [view->native_view release];
 
   free(view);
@@ -35,21 +35,21 @@ fx_view_destroy (fx_view_t *view) {
 }
 
 int
-fx_get_view_data (fx_view_t *view, void **result) {
+fx_get_view_data(fx_view_t *view, void **result) {
   *result = view->data;
 
   return 0;
 }
 
 int
-fx_set_view_data (fx_view_t *view, void *data) {
+fx_set_view_data(fx_view_t *view, void *data) {
   view->data = data;
 
   return 0;
 }
 
 int
-fx_get_view_bounds (fx_view_t *view, float *x, float *y, float *width, float *height) {
+fx_get_view_bounds(fx_view_t *view, float *x, float *y, float *width, float *height) {
   CGRect frame = view->native_view.frame;
 
   if (x) *x = frame.origin.x;
@@ -61,7 +61,7 @@ fx_get_view_bounds (fx_view_t *view, float *x, float *y, float *width, float *he
 }
 
 int
-fx_set_view_bounds (fx_view_t *view, float x, float y, float width, float height) {
+fx_set_view_bounds(fx_view_t *view, float x, float y, float width, float height) {
   view->native_view.frame = CGRectMake(x, y, width, height);
 
   return 0;

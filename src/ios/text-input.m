@@ -32,7 +32,7 @@
 @end
 
 int
-fx_text_input_init (fx_t *app, float x, float y, float width, float height, fx_text_input_t **result) {
+fx_text_input_init(fx_t *app, float x, float y, float width, float height, fx_text_input_t **result) {
   FXTextField *native_text_input = [[FXTextField alloc] initWithFrame:CGRectMake(x, y, width, height)];
 
   native_text_input.delegate = [[FXTextFieldDelegate alloc] init];
@@ -51,7 +51,7 @@ fx_text_input_init (fx_t *app, float x, float y, float width, float height, fx_t
 }
 
 int
-fx_on_text_input_change (fx_text_input_t *text_input, fx_text_input_change_cb cb) {
+fx_on_text_input_change(fx_text_input_t *text_input, fx_text_input_change_cb cb) {
   text_input->on_change = cb;
 
   return 0;

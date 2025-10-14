@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 
 static inline UIView *
-fx_get_child_view (fx_node_t *child) {
+fx_get_child_view(fx_node_t *child) {
   switch (child->type) {
   case fx_view_node:
     return ((fx_view_t *) child)->native_view;
@@ -38,7 +38,7 @@ fx_get_child_view (fx_node_t *child) {
 }
 
 int
-fx_set_child (fx_node_t *parent, fx_node_t *child, size_t index) {
+fx_set_child(fx_node_t *parent, fx_node_t *child, size_t index) {
   UIView *child_view = fx_get_child_view(child);
 
   switch (parent->type) {
@@ -54,7 +54,7 @@ fx_set_child (fx_node_t *parent, fx_node_t *child, size_t index) {
 }
 
 int
-fx_unset_child (fx_node_t *parent, fx_node_t *child, size_t index) {
+fx_unset_child(fx_node_t *parent, fx_node_t *child, size_t index) {
   UIView *child_view = fx_get_child_view(child);
 
   [child_view removeFromSuperview];

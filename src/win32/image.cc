@@ -5,7 +5,7 @@
 #include "winui.h"
 
 extern "C" int
-fx_image_init (fx_t *app, float x, float y, float width, float height, fx_image_t **result) {
+fx_image_init(fx_t *app, float x, float y, float width, float height, fx_image_t **result) {
   auto image = new fx_image_t();
 
   image->node.type = fx_image_node;
@@ -24,28 +24,28 @@ fx_image_init (fx_t *app, float x, float y, float width, float height, fx_image_
 }
 
 extern "C" int
-fx_image_destroy (fx_image_t *image) {
+fx_image_destroy(fx_image_t *image) {
   delete image;
 
   return 0;
 }
 
 extern "C" int
-fx_get_image_data (fx_image_t *image, void **result) {
+fx_get_image_data(fx_image_t *image, void **result) {
   *result = image->data;
 
   return 0;
 }
 
 extern "C" int
-fx_set_image_data (fx_image_t *image, void *data) {
+fx_set_image_data(fx_image_t *image, void *data) {
   image->data = data;
 
   return 0;
 }
 
 extern "C" int
-fx_get_image_bounds (fx_image_t *image, float *x, float *y, float *width, float *height) {
+fx_get_image_bounds(fx_image_t *image, float *x, float *y, float *width, float *height) {
   if (x) *x = 0;
   if (y) *y = 0;
   if (width) *width = 0;
@@ -55,12 +55,12 @@ fx_get_image_bounds (fx_image_t *image, float *x, float *y, float *width, float 
 }
 
 extern "C" int
-fx_set_image_bounds (fx_image_t *image, float x, float y, float width, float height) {
+fx_set_image_bounds(fx_image_t *image, float x, float y, float width, float height) {
   return 0;
 }
 
 extern "C" int
-fx_image_load_file (fx_image_t *image, const char *path, size_t len) {
+fx_image_load_file(fx_image_t *image, const char *path, size_t len) {
   int err;
 
   hstring wstr;
@@ -77,7 +77,7 @@ fx_image_load_file (fx_image_t *image, const char *path, size_t len) {
 }
 
 extern "C" int
-fx_image_load_pixels (fx_image_t *image, const uint8_t *pixels, int width, int height, int stride) {
+fx_image_load_pixels(fx_image_t *image, const uint8_t *pixels, int width, int height, int stride) {
   if (stride == -1) stride = width * 4;
 
   WriteableBitmap bitmap(width, height);
