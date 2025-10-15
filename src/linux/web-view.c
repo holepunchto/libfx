@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 static void
-on_message(WebKitUserContentManager *self, JSCValue *message, void *data) {
+fx__on_web_view_message(WebKitUserContentManager *self, JSCValue *message, void *data) {
   fx_web_view_t *web_view = (fx_web_view_t *) data;
 
   GBytes *bytes = jsc_value_to_string_as_bytes(message);
@@ -60,7 +60,7 @@ fx_web_view_init(fx_t *app, float x, float y, float width, float height, fx_web_
 
   webkit_user_script_unref(script);
 
-  g_signal_connect(G_OBJECT(user_content_manager), "script-message-received::bridge", G_CALLBACK(on_message), web_view);
+  g_signal_connect(G_OBJECT(user_content_manager), "script-message-received::bridge", G_CALLBACK(fx__on_web_view_message), web_view);
 
   webkit_user_content_manager_register_script_message_handler(user_content_manager, "bridge", NULL);
 

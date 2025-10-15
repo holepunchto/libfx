@@ -14,7 +14,7 @@ struct fx_dispatch_s {
 };
 
 static int
-on_dispatch(void *data) {
+fx__on_dispatch(void *data) {
   fx_dispatch_t *dispatch = (fx_dispatch_t *) data;
 
   dispatch->cb(fx_main_app, dispatch->data);
@@ -41,7 +41,7 @@ fx_dispatch(fx_dispatch_cb cb, void *data) {
   dispatch->cb = cb;
   dispatch->data = data;
 
-  g_idle_add(on_dispatch, dispatch);
+  g_idle_add(fx__on_dispatch, dispatch);
 
   return 0;
 }

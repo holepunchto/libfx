@@ -7,7 +7,7 @@
 #include <stdlib.h>
 
 static void
-on_activate(GtkApplication *gtk, gpointer data) {
+fx__on_activate(GtkApplication *gtk, gpointer data) {
   fx_t *app = fx_main_app;
 
   if (app->platform->on_launch) app->platform->on_launch(app);
@@ -19,7 +19,7 @@ fx_platform_init(fx_t *app, fx_platform_t **result) {
 
   platform->app = gtk_application_new(NULL, 0);
 
-  g_signal_connect(platform->app, "activate", G_CALLBACK(on_activate), NULL);
+  g_signal_connect(platform->app, "activate", G_CALLBACK(fx__on_activate), NULL);
 
   platform->on_launch = NULL;
   platform->on_terminate = NULL;

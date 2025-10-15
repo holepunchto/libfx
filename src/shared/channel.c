@@ -9,14 +9,14 @@
 #include <uv.h>
 
 static void
-on_notify(uv_async_t *async) {
+fx__on_channel_notify(uv_async_t *async) {
   fx_channel_t *channel = (fx_channel_t *) async->data;
 
   if (!channel->paused) channel->on_notify(channel);
 }
 
 static void
-on_notify_dispatch(fx_t *app, void *data) {
+fx__on_channel_notify_dispatch(fx_t *app, void *data) {
   fx_channel_t *channel = (fx_channel_t *) data;
 
   if (!channel->paused) channel->on_notify(channel);
@@ -37,7 +37,7 @@ fx_channel_init(fx_t *app, fx_channel_t *channel, uint32_t capacity, fx_channel_
   err = uv_mutex_init_recursive(&channel->lock);
   assert(err == 0);
 
-  err = uv_async_init(app->loop, &channel->notify, on_notify);
+  err = uv_async_init(app->loop, &channel->notify, fx__on_channel_notify);
   assert(err == 0);
 
   channel->messages = calloc(capacity, sizeof(fx_message_t));
@@ -46,7 +46,7 @@ fx_channel_init(fx_t *app, fx_channel_t *channel, uint32_t capacity, fx_channel_
 }
 
 static void
-on_close(uv_handle_t *handle) {
+fx__on_channel_close(uv_handle_t *handle) {
   fx_channel_t *channel = (fx_channel_t *) handle->data;
 
   if (channel->on_close) channel->on_close(channel);
@@ -58,7 +58,7 @@ fx_channel_close(fx_channel_t *channel, fx_channel_close_cb cb) {
 
   uv_mutex_destroy(&channel->lock);
 
-  uv_close((uv_handle_t *) &channel->notify, on_close);
+  uv_close((uv_handle_t *) &channel->notify, fx__on_channel_close);
 
   free(channel->messages);
 
@@ -118,7 +118,7 @@ fx_channel_write(fx_channel_t *channel, fx_t *sender, const uv_buf_t *message) {
   }
 
   if (fx_is_main(channel->app)) {
-    err = fx_dispatch(on_notify_dispatch, (void *) channel);
+    err = fx_dispatch(fx__on_channel_notify_dispatch, (void *) channel);
     assert(err == 0);
   } else {
     err = uv_async_send(&channel->notify);

@@ -12,14 +12,14 @@
 static const char *fx_default_window_title = "";
 
 static void
-on_close(GtkWindow *self, void *data) {
+fx__on_window_close(GtkWindow *self, void *data) {
   fx_window_t *window = (fx_window_t *) data;
 
   if (window->on_close) window->on_close(window);
 }
 
 static void
-on_resize(GObject *object, GParamSpec *params, void *data) {
+fx__on_window_resize(GObject *object, GParamSpec *params, void *data) {
   fx_window_t *window = (fx_window_t *) data;
 
   int width, height;
@@ -71,11 +71,11 @@ fx_window_init(fx_t *app, fx_view_t *view, float x, float y, float width, float 
     gtk_window_set_resizable(window->handle, false);
   }
 
-  g_signal_connect(G_OBJECT(handle), "close-request", G_CALLBACK(on_close), window);
+  g_signal_connect(G_OBJECT(handle), "close-request", G_CALLBACK(fx__on_window_close), window);
 
-  g_signal_connect(G_OBJECT(handle), "notify::default-width", G_CALLBACK(on_resize), window);
+  g_signal_connect(G_OBJECT(handle), "notify::default-width", G_CALLBACK(fx__on_window_resize), window);
 
-  g_signal_connect(G_OBJECT(handle), "notify::default-height", G_CALLBACK(on_resize), window);
+  g_signal_connect(G_OBJECT(handle), "notify::default-height", G_CALLBACK(fx__on_window_resize), window);
 
   gtk_application_add_window(app->platform->app, window->handle);
 
