@@ -17,6 +17,8 @@ typedef void (*fx_suspend_cb)(fx_t *app);
 typedef void (*fx_resume_cb)(fx_t *app);
 typedef void (*fx_message_cb)(fx_t *receiver, const uv_buf_t *message, fx_t *sender);
 
+extern fx_t *fx_main_app;
+
 int
 fx_init(uv_loop_t *loop, fx_t **result);
 
