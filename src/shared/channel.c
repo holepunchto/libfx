@@ -37,8 +37,10 @@ fx_channel_init(fx_t *app, fx_channel_t *channel, uint32_t capacity, fx_channel_
   err = uv_mutex_init_recursive(&channel->lock);
   assert(err == 0);
 
-  err = uv_async_init(app->loop, &channel->notify, fx__on_channel_notify);
-  assert(err == 0);
+  if (fx_is_worker(app)) {
+    err = uv_async_init(app->loop, &channel->notify, fx__on_channel_notify);
+    assert(err == 0);
+  }
 
   channel->messages = calloc(capacity, sizeof(fx_message_t));
 
@@ -54,13 +56,17 @@ fx__on_channel_close(uv_handle_t *handle) {
 
 int
 fx_channel_close(fx_channel_t *channel, fx_channel_close_cb cb) {
-  channel->on_close = cb;
-
   uv_mutex_destroy(&channel->lock);
 
-  uv_close((uv_handle_t *) &channel->notify, fx__on_channel_close);
-
   free(channel->messages);
+
+  if (fx_is_main(channel->app)) {
+    if (cb) cb(channel);
+  } else {
+    channel->on_close = cb;
+
+    uv_close((uv_handle_t *) &channel->notify, fx__on_channel_close);
+  }
 
   return 0;
 }
@@ -134,12 +140,16 @@ void
 fx_channel_pause(fx_channel_t *channel) {
   channel->paused = true;
 
-  uv_unref((uv_handle_t *) &channel->notify);
+  if (fx_is_worker(channel->app)) {
+    uv_unref((uv_handle_t *) &channel->notify);
+  }
 }
 
 void
 fx_channel_resume(fx_channel_t *channel) {
   channel->paused = false;
 
-  uv_ref((uv_handle_t *) &channel->notify);
+  if (fx_is_worker(channel->app)) {
+    uv_ref((uv_handle_t *) &channel->notify);
+  }
 }
