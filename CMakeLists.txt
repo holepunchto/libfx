@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 4.0)
 
 find_package(cmake-fetch REQUIRED PATHS node_modules/cmake-fetch)
+find_package(cmake-ports REQUIRED PATHS node_modules/cmake-ports)
 
 project(fx C)
 
@@ -13,6 +14,10 @@ if(WIN32)
 endif()
 
 fetch_package("github:libuv/libuv@1.51.0")
+
+if(LINUX)
+  find_port(webkitgtk)
+endif()
 
 add_library(fx OBJECT)
 
