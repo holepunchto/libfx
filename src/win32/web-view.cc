@@ -16,7 +16,7 @@ fx_web_view_init_bridge(fx_web_view_t *web_view, hstring bridge) noexcept {
   core_web_view.WebMessageReceived([=](const auto &sender, const auto &args) {
     if (web_view->on_message == NULL) return;
 
-    auto message = args.WebMessageAsJson();
+    auto message = args.TryGetWebMessageAsString();
 
     auto str_len = fx__from_hstring(message, NULL, 0);
 
@@ -24,7 +24,7 @@ fx_web_view_init_bridge(fx_web_view_t *web_view, hstring bridge) noexcept {
 
     fx__from_hstring(message, str, str_len);
 
-    web_view->on_message(web_view, str, str_len);
+    web_view->on_message(web_view, str, str_len - 1 /* NULL */);
 
     delete[] str;
   });
