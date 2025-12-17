@@ -7,6 +7,8 @@
 
 int
 fx_screen_release(fx_screen_t *screen) {
+  g_object_unref(screen->monitor);
+
   free(screen);
 
   return 0;
@@ -20,16 +22,11 @@ fx_get_main_screen(fx_t *app, fx_screen_t **result) {
 
   if (monitor == NULL) return -1;
 
-  GdkRectangle rect;
-
-  gdk_monitor_get_geometry(monitor, &rect);
+  g_object_ref(monitor);
 
   fx_screen_t *screen = malloc(sizeof(fx_screen_t));
 
-  screen->x = rect.x;
-  screen->y = rect.y;
-  screen->width = rect.width;
-  screen->height = rect.height;
+  screen->monitor = monitor;
 
   *result = screen;
 
@@ -38,10 +35,14 @@ fx_get_main_screen(fx_t *app, fx_screen_t **result) {
 
 int
 fx_get_screen_bounds(fx_screen_t *screen, float *x, float *y, float *width, float *height) {
-  if (x) *x = screen->x;
-  if (y) *y = screen->y;
-  if (width) *width = screen->width;
-  if (height) *height = screen->height;
+  GdkRectangle rect;
+
+  gdk_monitor_get_geometry(screen->monitor, &rect);
+
+  if (x) *x = rect.x;
+  if (y) *y = rect.y;
+  if (width) *width = rect.width;
+  if (height) *height = rect.height;
 
   return 0;
 }
