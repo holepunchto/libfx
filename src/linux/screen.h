@@ -6,7 +6,10 @@
 #include <gdk/gdk.h>
 
 struct fx_screen_s {
-  GdkMonitor *monitor;
+  float x;
+  float y;
+  float width;
+  float height;
 };
 
 #endif // FX_LINUX_SCREEN_H
