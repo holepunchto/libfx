@@ -31,6 +31,8 @@ fx_run(fx_t *app, fx_launch_cb on_launch, fx_terminate_cb on_terminate) {
 
   g_application_run(G_APPLICATION(app->platform->app), 0, NULL);
 
+  exit(0);
+
   return 0;
 }
 
